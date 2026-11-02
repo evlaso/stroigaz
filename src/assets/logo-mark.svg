@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 15 205 315" fill="none">
+  <title>СтройГаз — пламя</title>
+  <defs>
+    <linearGradient id="flame-right" x1="112" y1="22" x2="210" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#008735"/>
+      <stop offset="1" stop-color="#006C2B"/>
+    </linearGradient>
+    <linearGradient id="flame-center" x1="79" y1="91" x2="151" y2="270" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#28AD25"/>
+      <stop offset="1" stop-color="#65C815"/>
+    </linearGradient>
+    <linearGradient id="flame-left" x1="33" y1="144" x2="121" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2AB32B"/>
+      <stop offset="1" stop-color="#07962D"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#flame-right)" d="M162 21C121 44 94 79 106 114C116 144 151 167 163 207C176 249 153 291 134 315C182 296 211 258 215 219C219 179 196 149 169 120C141 90 138 57 162 21Z"/>
+  <path fill="url(#flame-center)" d="M97 80C72 108 63 140 90 174C118 209 146 233 134 294C158 260 165 233 145 198C132 175 109 153 99 130C90 110 92 96 97 80Z"/>
+  <path fill="url(#flame-left)" d="M67 124C39 153 20 189 33 226C46 265 100 291 106 326C134 288 131 259 104 228C76 196 56 173 67 124Z"/>
+</svg>

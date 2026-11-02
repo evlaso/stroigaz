@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#078844">
+  <title>{{ title }}</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/vendor/ids/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/ids.css">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body class="ids">
+  <header>
+    <div class="ids__wrapper XL header-layout">
+    {% if page.url == '/' %}
+    <span class="brand" aria-current="page">
+    {% else %}
+    <a class="brand brand-link" href="/" aria-label="СтройГаз — на главную">
+    {% endif %}
+      <span class="brand-mark" aria-hidden="true"><img src="/assets/logo-mark.svg" width="205" height="315" alt=""></span>
+      <span>СтройГаз</span>
+    {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
+    <nav aria-label="Основная навигация">
+      {% if page.url == '/directions/' %}<span aria-current="page">Направления</span>{% else %}<a href="/directions/">Направления</a>{% endif %}
+      {% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}
+    </nav>
+    <a class="header-phone" href="tel:+78136851219">+7 (81368) 512-19</a>
+    </div>
+  </header>
+  <main>
+    {{ content | safe }}
+  </main>
+  <div class="ids__wrapper XL">
+    <footer class="site-footer" aria-label="Контакты компании">
+      <div class="footer-grid">
+        <div class="footer-main">
+          <p class="footer-phone"><a href="tel:+78136851219">+7 (81368) 512-19</a></p>
+          <p class="footer-email"><a href="mailto:stroigaz@bk.ru">stroigaz@bk.ru</a></p>
+          <p class="footer-description">Проектирование и производство<br>промышленного оборудования</p>
+        </div>
+        <div>
+          <p class="footer-label">Ещё один телефон</p>
+          <p><a href="tel:+78136854201">+7 (81368) 542-01</a></p>
+          <div class="ids__space S" aria-hidden="true"></div>
+          <p class="footer-label">Компания</p>
+          <p>{% if page.url == '/directions/' %}<span aria-current="page">Направления</span>{% else %}<a href="/directions/">Направления</a>{% endif %}</p>
+          <p>{% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}</p>
+        </div>
+        <div>
+          <p class="footer-label">Адрес</p>
+          <address>187110, Ленинградская область,<br>г. Кириши, проспект Победы, 30</address>
+          <div class="ids__space S" aria-hidden="true"></div>
+          <p class="footer-label">ООО «СтройГаз»</p>
+          <p>Работаем с 2006 года</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© ООО «СтройГаз», 2006–2026</span>
+        <span>Производственно-инжиниринговая компания</span>
+      </div>
+    </footer>
+    <div class="ids__space S" aria-hidden="true"></div>
+  </div>
+</body>
+</html>

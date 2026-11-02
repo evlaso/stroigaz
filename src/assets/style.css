@@ -1,0 +1,210 @@
+/* Page widths, text measure, typography and spacing come from IDS. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+main {
+  flex: 1;
+}
+
+header {
+  padding: 0.25rem 0;
+}
+
+.header-layout {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--ids__gap-m);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  justify-self: start;
+  color: var(--ids__text);
+  text-decoration: none;
+  font-size: 1em;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  position: relative;
+  display: block;
+  width: calc(1.8em * 205 / 315);
+  height: 1.8em;
+  flex-shrink: 0;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  mask: url("/assets/logo-mark.svg") center / contain no-repeat;
+  opacity: 0;
+}
+
+.brand-link {
+  color: var(--ids__link);
+}
+
+.brand-link .brand-mark img,
+a.brand:hover .brand-mark img,
+a.brand:focus-visible .brand-mark img {
+  opacity: 0;
+}
+
+.brand-link .brand-mark::after,
+a.brand:hover .brand-mark::after,
+a.brand:focus-visible .brand-mark::after {
+  opacity: 1;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--ids__gap-m);
+  color: var(--ids__link);
+  font-size: 1em;
+}
+
+nav a,
+nav span {
+  white-space: nowrap;
+}
+
+header a,
+header a:hover {
+  text-decoration: none;
+}
+
+nav [aria-current="page"] {
+  color: var(--ids__text);
+  text-decoration: none;
+}
+
+.header-phone {
+  justify-self: end;
+  color: var(--ids__link);
+  text-decoration: none;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+header a:hover,
+header a:focus-visible {
+  color: var(--ids__hover);
+}
+
+.intro-block {
+  min-height: 480px;
+  padding: calc(var(--ids__density) * 1rem);
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__accent);
+  color: var(--ids__color-white);
+}
+
+.intro-block h1 {
+  font-size: 4.2em;
+}
+
+.site-footer {
+  --ids__text: #f4f4f4;
+  --ids__link: #f4f4f4;
+  --ids__text-caption: #a9adb0;
+  padding: calc(var(--ids__density) * 1rem);
+  border-radius: var(--ids__radius-s);
+  background: #303234;
+  color: var(--ids__text);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: var(--ids__gap-l);
+}
+
+.site-footer a {
+  color: var(--ids__link);
+  text-decoration: none;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--ids__hover);
+}
+
+.footer-phone,
+.footer-email {
+  font-size: 1.5em;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.footer-description {
+  margin-top: 1.2em;
+  color: var(--ids__text-caption);
+}
+
+.footer-label {
+  color: var(--ids__text-caption);
+}
+
+.site-footer address {
+  font-style: normal;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ids__gap-m);
+  margin-top: var(--ids__spacer-l);
+  padding-top: var(--ids__spacer-s);
+  border-top: 1px solid #55585b;
+  color: var(--ids__text-caption);
+  font-size: 0.7em;
+}
+
+@media (width < 768px) {
+  .intro-block h1 {
+    font-size: 3em;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--ids__gap-s);
+  }
+
+  .header-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .brand {
+    justify-self: center;
+  }
+
+  .header-phone {
+    justify-self: center;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: var(--ids__gap-s);
+  }
+}

@@ -1,0 +1,21 @@
+/* Upstream styles are isolated so the site's styles can override them
+   without changing vendor files or fighting selector specificity. */
+@layer ids;
+@import url("./vendor/ids/css/tokens/palette.css") layer(ids);
+@import url("./vendor/ids/css/tokens/colors.css") layer(ids);
+@import url("./vendor/ids/css/tokens/scales.css") layer(ids);
+@import url("./vendor/ids/css/settings.css") layer(ids);
+@import url("./vendor/ids/css/reset.css") layer(ids);
+@import url("./vendor/ids/css/page-composition/layout.css") layer(ids);
+@import url("./vendor/ids/css/components/ids.css") layer(ids);
+
+/* Project theme. The upstream token names are the public API. */
+:root {
+  --ids__accent: #078844;
+  --ids__link: #008cff;
+  --ids__hover: var(--ids__color-red-500);
+  --ids__text: #25282b;
+  --ids__text-caption: #777d85;
+  --ids__background: var(--ids__color-white);
+  --ids__surface: #f3f6f8;
+}
