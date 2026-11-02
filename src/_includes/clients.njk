@@ -1,4 +1,11 @@
-<section aria-labelledby="clients-title">
-  <h2 class="company-section-title" id="clients-title">Нам доверяют</h2>
+<section aria-label="Опыт поставок">
+  <div class="ids__text-width">
+    {% if page.url != '/' %}
+    <h2 class="company-section-title">Нам доверяют</h2>
+    {% endif %}
+    <p>Среди объектов поставок — предприятия «Газпром нефти» и СИБУРа, Казанская ТЭЦ и Белорусская АЭС. Для них изготавливали насосные станции, системы обратного осмоса, блоки дозирования, узлы отбора проб и металлоконструкции.</p>
+    <p><a href="/partners/">Кому поставляли оборудование</a></p>
+  </div>
+  <div class="ids__space M" aria-hidden="true"></div>
   {% include "client-logos.njk" %}
 </section>

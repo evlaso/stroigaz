@@ -1,6 +1,9 @@
 ---
 layout: layouts/base.njk
 title: СтройГаз — Проектируем и производим промышленное оборудование
+featuredProjects: [sampling, osmosis, dosing]
+contactIntro: >-
+  Обсудим, какое оборудование нужно вашему предприятию. Подберём материалы, разработаем конструкцию и изготовим оборудование на своём производстве.
 ---
     <div class="ids__wrapper XL">
       <div class="ids__space XL" aria-hidden="true"></div>
@@ -11,9 +14,14 @@ title: СтройГаз — Проектируем и производим пр�
     <div class="ids__wrapper">
       <div class="ids__space L" aria-hidden="true"></div>
       <div class="ids__text-width">
-        <p class="page-lead">Насосные станции, системы водоподготовки, установки дозирования и другие технологические узлы для нефтегазовой, химической промышленности и энергетики.</p>
+        <p class="page-lead">«СтройГаз» — компания со своим конструкторским отделом и производством в Киришах Ленинградской области. С 2006 года разрабатываем и изготавливаем промышленное оборудование.</p>
+        <p>Выпускаем насосные станции, системы водоподготовки, установки дозирования и другие технологические узлы для нефтегазовой, химической промышленности и энергетики.</p>
       </div>
+      <div class="ids__space S" aria-hidden="true"></div>
+      {% include "home-projects.njk" %}
       <div class="ids__space L" aria-hidden="true"></div>
       {% include "clients.njk" %}
+      <div class="ids__space L" aria-hidden="true"></div>
+      {% include "project-contact.njk" %}
       <div class="ids__space XL page-end-space" aria-hidden="true"></div>
     </div>

@@ -53,7 +53,7 @@ document.querySelectorAll('[data-project-browser]').forEach((browser) => {
 });
 
 // Reveal lit metal locally, keeping the two versions perfectly registered.
-document.querySelectorAll('.diagram-variant').forEach((diagram) => {
+document.querySelectorAll('.diagram-variant:not([data-linked-reveal])').forEach((diagram) => {
   let frame = 0;
   let point = null;
 

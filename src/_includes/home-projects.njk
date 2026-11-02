@@ -1,0 +1,16 @@
+<section class="home-projects" aria-label="Примеры оборудования">
+  <div class="home-projects-grid">
+    {% for project in caseStudies %}
+    {% if project.slug in featuredProjects %}
+    <a class="home-projects-item" href="/projects/#case-{{ project.slug }}">
+      <div class="home-projects-art diagram-variant" data-linked-reveal aria-hidden="true">
+        <img class="diagram-line" src="{{ project.schematic }}" alt="" width="760" height="500" loading="lazy" decoding="async">
+        <img class="diagram-color" src="{{ project.colorIllustration }}" alt="" width="760" height="500" loading="lazy" decoding="async">
+      </div>
+      <span class="home-projects-name">{% if project.slug == 'sampling' %}Станции отбора проб{% elif project.slug == 'osmosis' %}Обратный осмос{% else %}Дозирование реагентов{% endif %}</span>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+  <a class="home-projects-all" href="/projects/">Все проекты</a>
+</section>

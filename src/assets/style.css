@@ -993,6 +993,7 @@ header a:focus-visible {
 }
 
 .case-study-copy h2 {
+  scroll-margin-top: var(--ids__spacer-m);
   margin-bottom: 0.5em;
   font-size: 1.25em;
   line-height: calc(var(--ids__density) / 1.1);
@@ -1264,4 +1265,98 @@ ids-gallery.case-study-gallery {
 
 .workflow-step .workflow-note {
   margin-top: 0.5em;
+}
+
+/* Open project illustrations on the homepage. */
+.home-projects {
+  min-width: 0;
+}
+
+.home-section-label {
+  margin-bottom: var(--ids__spacer-s);
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.home-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ids__gap-m);
+}
+
+.home-projects-item {
+  display: block;
+  min-width: 0;
+  color: var(--ids__link);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.5s ease;
+}
+
+.home-projects-item:is(:hover, :focus-visible) {
+  color: var(--ids__hover);
+  text-decoration: none;
+  transition-duration: 0s;
+}
+
+.home-projects-name {
+  text-decoration: underline;
+  text-decoration-thickness: var(--ids__border-width-s);
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.home-projects-item:focus-visible {
+  outline: 2px solid var(--ids__accent);
+  outline-offset: 5px;
+  border-radius: var(--ids__radius-s);
+}
+
+.home-projects-item:is(:hover, :focus-visible) .diagram-variant {
+  --diagram-strength: 1;
+  transition-duration: 0s;
+}
+
+.home-projects-art {
+  --diagram-radius: 2000px;
+  --diagram-x: 50%;
+  --diagram-y: 50%;
+  cursor: inherit;
+  width: 100%;
+  height: 14rem;
+  margin-bottom: 0.5em;
+}
+
+.home-projects-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3em;
+  margin-top: var(--ids__spacer-m);
+  padding: 0.6em 1em;
+  border: 0;
+  border-radius: var(--ids__radius-s);
+  background: color-mix(in srgb, var(--ids__link) 10%, white);
+  color: var(--ids__link);
+  font-size: 1.3em;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: color 0.5s ease, background-color 0.5s ease;
+}
+
+.home-projects-all:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--ids__hover) 10%, white);
+  color: var(--ids__hover);
+  text-decoration: none;
+  transition-duration: 0s;
+}
+
+@media (width < 768px) {
+  .home-projects-grid {
+    gap: var(--ids__gap-s);
+  }
+
+  .home-projects-art {
+    height: 9rem;
+  }
 }
