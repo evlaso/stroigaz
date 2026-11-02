@@ -1,72 +1,17 @@
 ---
-layout: layouts/base.njk
-title: Проектный отдел — СтройГаз
 permalink: /project-department/
+eleventyExcludeFromCollections: true
 ---
-<div class="ids__wrapper">
-  <div class="ids__space XL" aria-hidden="true"></div>
-  <div class="ids__text-width project-department-intro">
-    <h1 class="page-title">От проекта до запуска</h1>
-    <p class="page-lead">Подбираем технологии и материалы под условия объекта, разрабатываем конструкцию и готовим документацию.</p>
-    <p>Затем изготавливаем оборудование из металла и полимеров, проводим испытания, шефмонтаж и пусконаладку. Ниже — этапы работы и возможности производства.</p>
-  </div>
-  <div class="ids__space M" aria-hidden="true"></div>
-  <section aria-label="Этапы работы">
-    <ol class="workflow">
-      {% for step in workflow %}
-      <li class="workflow-step">
-        <span class="workflow-number" aria-hidden="true">{{ loop.index }}</span>
-        <div>
-          <h3>{{ step.title }}</h3>
-          {% if step.items %}
-          <ul>{% for item in step.items %}<li>{{ item }}</li>{% endfor %}</ul>
-          {% else %}
-          <p>{{ step.description }}</p>
-          {% endif %}
-        </div>
-      </li>
-      {% endfor %}
-    </ol>
-  </section>
-  <div class="ids__space L" aria-hidden="true"></div>
-  <section aria-labelledby="technologies-title">
-    <div class="ids__text-width">
-      <h2 id="technologies-title">Технологии производства</h2>
-      <p>Раскрой, формовка, соединение деталей и подготовка поверхностей — операции, которые выполняем на собственном производстве.</p>
-    </div>
-    <div class="ids__space M" aria-hidden="true"></div>
-    <div class="project-catalog">
-      {% for technology in technologies %}
-      <article class="project-card" aria-labelledby="technology-{{ technology.slug }}">
-        <div class="project-copy">
-          <div class="project-card-heading">
-            <p class="project-industry">{{ technology.category }}</p>
-            <h3 id="technology-{{ technology.slug }}">{{ technology.title }}</h3>
-          </div>
-          <div class="project-equipment">
-            <p class="project-equipment-label">Возможности</p>
-            <ul>{% for item in technology.items %}<li>{{ item }}</li>{% endfor %}</ul>
-          </div>
-        </div>
-        <div class="technology-illustration" aria-hidden="true"></div>
-      </article>
-      {% endfor %}
-    </div>
-  </section>
-  <div class="ids__space L" aria-hidden="true"></div>
-  <section aria-labelledby="equipment-title">
-    <h2 id="equipment-title">Оснащение производства</h2>
-    <div class="equipment-grid">
-      {% for group in equipment %}
-      <section class="equipment-group" aria-labelledby="equipment-{{ group.slug }}">
-        <h3 id="equipment-{{ group.slug }}">{{ group.title }}</h3>
-        <ul>{% for item in group.items %}<li>{{ item }}</li>{% endfor %}</ul>
-      </section>
-      {% endfor %}
-    </div>
-  </section>
-  <div class="ids__space L" aria-hidden="true"></div>
-  {% include "project-contact.njk" %}
-  {% include "reading-next.njk" %}
-  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
-</div>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=/design-department/">
+  <link rel="canonical" href="/design-department/">
+  <title>Как мы работаем — СтройГаз</title>
+</head>
+<body>
+  <p><a href="/design-department/">Как мы работаем</a></p>
+</body>
+</html>

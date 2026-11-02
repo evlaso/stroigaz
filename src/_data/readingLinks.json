@@ -1,5 +1,23 @@
 [
-  { "title": "Проекты", "url": "/projects/", "image": "/assets/projects/onpz.webp" },
-  { "title": "Проектный отдел", "url": "/project-department/", "image": "/assets/workflow-preview.svg" },
-  { "title": "О компании", "url": "/about/", "image": "/assets/logo-mark.svg", "kind": "brand" }
+  {
+    "title": "Проекты",
+    "url": "/projects/",
+    "image": "/assets/cases/sampling-photo.webp"
+  },
+  {
+    "title": "Партнёры",
+    "url": "/customers/",
+    "image": "/assets/projects/onpz.webp"
+  },
+  {
+    "title": "Как мы работаем",
+    "url": "/design-department/",
+    "image": "/assets/workflow-preview.svg"
+  },
+  {
+    "title": "О компании",
+    "url": "/about/",
+    "image": "/assets/logo-mark.svg",
+    "kind": "brand"
+  }
 ]

@@ -18,9 +18,8 @@ permalink: /about/
 <div class="ids__wrapper">
   <div class="ids__space L" aria-hidden="true"></div>
   <div class="ids__text-width">
-    <p>ООО «СтройГаз» изготавливает насосные станции, системы водоподготовки, установки дозирования и технологические узлы для химической, нефтегазовой и других отраслей промышленности.</p>
-    <p>Подбираем технологии и материалы под условия объекта, готовим проектную документацию. На производстве обрабатываем металл, собираем и испытываем оборудование.</p>
-    <p><a href="/project-department/">Как устроена работа над проектом</a></p>
+    <p>На производстве ООО «СтройГаз» — лазерные и плазменные станки, оборудование для сварки и формовки металла, стенд гидравлических испытаний.</p>
+    <p><a href="/design-department/">Этапы работы и оснащение производства</a></p>
   </div>
   <div class="ids__space M" aria-hidden="true"></div>
   <dl class="company-facts" aria-label="Компания в цифрах">
@@ -32,16 +31,21 @@ permalink: /about/
     <div><dt>{{ documents | length }}</dt><dd>деклараций в разделе документов</dd></div>
   </dl>
   <div class="ids__space L" aria-hidden="true"></div>
-  <section aria-labelledby="company-projects-title" class="ids__text-width">
-    <h2 class="company-section-title" id="company-projects-title">Оборудование для промышленных объектов</h2>
+  <section aria-labelledby="company-projects-title">
+    <div class="ids__text-width">
+    <h2 class="company-section-title" id="company-projects-title">Нам доверяют</h2>
     <p>Среди объектов поставок — предприятия «Газпром нефти» и СИБУРа, Казанская ТЭЦ и Белорусская АЭС. Для них изготавливали насосные станции, системы обратного осмоса, блоки дозирования, узлы отбора проб и металлоконструкции.</p>
-    <p><a href="/projects/">Посмотреть проекты</a></p>
+    <p><a href="/customers/">Посмотреть партнёров и поставленное оборудование</a></p>
+    </div>
+    <div class="ids__space M" aria-hidden="true"></div>
+    {% include "client-logos.njk" %}
   </section>
   <div class="ids__space L" aria-hidden="true"></div>
   <section aria-labelledby="company-documents-title">
     <div class="ids__text-width">
       <h2 class="company-section-title" id="company-documents-title">Разрешительная документация</h2>
       <p>Декларации на оборудование «Велья»: насосные станции, установки водоподготовки и дозирования, резервуары и другие изделия.</p>
+      <p><a href="/assets/documents/stroygaz-declarations.pdf">Все декларации одним файлом, PDF, 117 КБ</a></p>
     </div>
     <ids-gallery class="document-previews" zoom="true" aria-label="Декларации на оборудование">
       {% for document in documents %}{% if loop.index <= 3 %}
@@ -53,7 +57,6 @@ permalink: /about/
       </figure>
       {% endif %}{% endfor %}
     </ids-gallery>
-    <p><a href="/assets/documents/stroygaz-declarations.pdf">Все декларации одним файлом, PDF, 117 КБ</a></p>
   </section>
   {% include "reading-next.njk" %}
   <div class="ids__space XL page-end-space" aria-hidden="true"></div>

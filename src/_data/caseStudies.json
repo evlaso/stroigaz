@@ -1,0 +1,250 @@
+[
+  {
+    "slug": "sampling",
+    "title": "Станции отбора проб высокого давления",
+    "description": "Подбираем материалы для работы под высоким давлением и в агрессивных средах. Для соединения труб используем обжимные фитинги.",
+    "slide": 13,
+    "design": "/assets/cases/sampling-design.webp",
+    "photo": "/assets/cases/sampling-photo.webp",
+    "schematic": "/assets/cases/sampling-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/sampling-gallery-1.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Станции отбора проб высокого давления — фотография 1"
+      },
+      {
+        "image": "/assets/cases/sampling-gallery-2.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Станции отбора проб высокого давления — фотография 2"
+      },
+      {
+        "image": "/assets/cases/sampling-gallery-3.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Станции отбора проб высокого давления — фотография 3"
+      },
+      {
+        "image": "/assets/cases/sampling-gallery-4.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Станции отбора проб высокого давления — фотография 4"
+      }
+    ]
+  },
+  {
+    "slug": "boiler",
+    "title": "Котельные для газового оборудования",
+    "description": "Утеплённый корпус защищает газовое оборудование при уличном размещении. Внутри устанавливаем основные агрегаты и вспомогательное оборудование.",
+    "slide": 14,
+    "design": "/assets/cases/boiler-design.webp",
+    "photo": "/assets/cases/boiler-photo.webp",
+    "schematic": "/assets/cases/boiler-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/boiler-gallery-1.webp",
+        "width": 524,
+        "height": 712,
+        "alt": "Котельные для газового оборудования — фотография 1"
+      },
+      {
+        "image": "/assets/cases/boiler-gallery-2.webp",
+        "width": 960,
+        "height": 1280,
+        "alt": "Котельные для газового оборудования — фотография 2"
+      },
+      {
+        "image": "/assets/cases/boiler-gallery-3.webp",
+        "width": 911,
+        "height": 1177,
+        "alt": "Котельные для газового оборудования — фотография 3"
+      },
+      {
+        "image": "/assets/cases/boiler-gallery-4.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Котельные для газового оборудования — фотография 4"
+      }
+    ]
+  },
+  {
+    "slug": "structures",
+    "title": "Опорные конструкции и площадки обслуживания",
+    "description": "Разрабатываем опоры и площадки под конкретное оборудование. При расчёте и изготовлении учитываем его присоединительные размеры.",
+    "slide": 15,
+    "design": "/assets/cases/structures-design.webp",
+    "photo": "/assets/cases/structures-photo.webp",
+    "schematic": "/assets/cases/structures-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/structures-gallery-1.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Опорные конструкции и площадки обслуживания — фотография 1"
+      },
+      {
+        "image": "/assets/cases/structures-gallery-2.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Опорные конструкции и площадки обслуживания — фотография 2"
+      }
+    ]
+  },
+  {
+    "slug": "cip",
+    "title": "Установки химической промывки",
+    "description": "Рассчитываем установку и подбираем материалы под условия промывки. Насосы, ёмкости и трубопроводы собираем в единый узел.",
+    "slide": 16,
+    "design": "/assets/cases/cip-design.webp",
+    "photo": "/assets/cases/cip-photo.webp",
+    "schematic": "/assets/cases/cip-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/cip-gallery-1.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установки химической промывки — фотография 1"
+      },
+      {
+        "image": "/assets/cases/cip-gallery-2.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установки химической промывки — фотография 2"
+      }
+    ]
+  },
+  {
+    "slug": "osmosis",
+    "title": "Установки обратного осмоса",
+    "description": "При проектировании используем расчёты ROSA и VONTRON. Изготавливаем рамы и обвязку из нержавеющей стали и полимерных материалов.",
+    "slide": 17,
+    "design": "/assets/cases/osmosis-design.webp",
+    "photo": "/assets/cases/osmosis-photo.webp",
+    "schematic": "/assets/cases/osmosis-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/osmosis-gallery-1.webp",
+        "width": 1800,
+        "height": 1350,
+        "alt": "Установки обратного осмоса — фотография 1"
+      },
+      {
+        "image": "/assets/cases/osmosis-gallery-2.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установки обратного осмоса — фотография 2"
+      }
+    ]
+  },
+  {
+    "slug": "vacuum",
+    "title": "Установка вакуумирования с насосной станцией",
+    "description": "Установка выполняет вакуумную обработку в автоматическом режиме и входит в состав блочно-модульной насосной станции. Предусмотрен удалённый контроль её работы.",
+    "slide": 18,
+    "design": "/assets/cases/vacuum-design.webp",
+    "photo": "/assets/cases/vacuum-photo.webp",
+    "schematic": "/assets/cases/vacuum-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/vacuum-gallery-1.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установка вакуумирования с насосной станцией — фотография 1"
+      },
+      {
+        "image": "/assets/cases/vacuum-gallery-2.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установка вакуумирования с насосной станцией — фотография 2"
+      }
+    ]
+  },
+  {
+    "slug": "dosing",
+    "title": "Установки дозирования химических реагентов",
+    "description": "Собираем дозирующие насосы, трубопроводы, арматуру и шкаф управления на общей раме. Установка подаёт химические реагенты в заданной дозировке.",
+    "slide": 19,
+    "design": "/assets/cases/dosing-design.webp",
+    "photo": "/assets/cases/dosing-photo.webp",
+    "schematic": "/assets/cases/dosing-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/dosing-gallery-1.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установки дозирования химических реагентов — фотография 1"
+      },
+      {
+        "image": "/assets/cases/dosing-gallery-2.webp",
+        "width": 1024,
+        "height": 1024,
+        "alt": "Установки дозирования химических реагентов — фотография 2"
+      }
+    ]
+  },
+  {
+    "slug": "surface-water",
+    "title": "Установка очистки поверхностных вод",
+    "description": "Оборудование для очистки воды размещаем в отдельном модуле. Внутри корпуса — трубопроводы, запорная арматура и шкаф управления.",
+    "slide": 20,
+    "design": "/assets/cases/surface-water-design.webp",
+    "photo": "/assets/cases/surface-water-photo.webp",
+    "schematic": "/assets/cases/surface-water-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/surface-water-gallery-1.webp",
+        "width": 866,
+        "height": 866,
+        "alt": "Установка очистки поверхностных вод — фотография 1"
+      }
+    ]
+  },
+  {
+    "slug": "water-pumping",
+    "title": "Насосная станция технического водоснабжения",
+    "description": "Насосы, трубопроводы и управление размещаем в отдельном модуле. Станция подаёт техническую воду в автоматическом режиме.",
+    "slide": 21,
+    "design": "/assets/cases/water-pumping-design.webp",
+    "photo": "/assets/cases/water-pumping-photo.webp",
+    "schematic": "/assets/cases/water-pumping-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/water-pumping-gallery-1.webp",
+        "width": 780,
+        "height": 780,
+        "alt": "Насосная станция технического водоснабжения — фотография 1"
+      },
+      {
+        "image": "/assets/cases/water-pumping-gallery-2.webp",
+        "width": 1800,
+        "height": 1347,
+        "alt": "Насосная станция технического водоснабжения — фотография 2"
+      }
+    ]
+  },
+  {
+    "slug": "drinking-water",
+    "title": "Мобильный комплекс подготовки питьевой воды",
+    "description": "Поставляем модуль в полной заводской готовности для питьевого водоснабжения месторождений, экспедиций и коттеджных посёлков. Комплекс также предназначен для работы при чрезвычайных ситуациях.",
+    "slide": 22,
+    "design": "/assets/cases/drinking-water-design.webp",
+    "photo": "/assets/cases/drinking-water-photo.webp",
+    "schematic": "/assets/cases/drinking-water-schematic.svg",
+    "photos": [
+      {
+        "image": "/assets/cases/drinking-water-gallery-1.webp",
+        "width": 821,
+        "height": 821,
+        "alt": "Мобильный комплекс подготовки питьевой воды — фотография 1"
+      },
+      {
+        "image": "/assets/cases/drinking-water-gallery-2.webp",
+        "width": 821,
+        "height": 821,
+        "alt": "Мобильный комплекс подготовки питьевой воды — фотография 2"
+      }
+    ]
+  }
+]

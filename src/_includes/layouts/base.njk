@@ -9,6 +9,7 @@
   <link rel="preload" href="/assets/fonts/golos-text/GolosText-Variable.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/assets/ids.css">
   <link rel="stylesheet" href="/assets/style.css">
+  <noscript><style>.project-media:not(.is-loaded) > .project-photo, .project-media:not(.is-loaded) > .project-client-badge, .project-media:not(.is-loaded) > .project-logo-contrast { visibility: visible; }</style></noscript>
   {% if gallery %}
   <script src="/assets/vendor/ids/js/lib/photoswipe.umd.min.js" defer></script>
   <script src="/assets/vendor/ids/js/lib/photoswipe-lightbox.umd.min.js" defer></script>
@@ -29,7 +30,8 @@
     {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
     <nav aria-label="Основная навигация">
       {% if page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
-      {% if page.url == '/project-department/' %}<span aria-current="page">Проектный отдел</span>{% else %}<a href="/project-department/">Проектный отдел</a>{% endif %}
+      {% if page.url == '/customers/' %}<span aria-current="page">Партнёры</span>{% else %}<a href="/customers/">Партнёры</a>{% endif %}
+      {% if page.url == '/design-department/' %}<span aria-current="page">Как мы работаем</span>{% else %}<a href="/design-department/">Как мы работаем</a>{% endif %}
       {% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}
     </nav>
     <a class="header-phone" href="tel:+78136851219">+7 (81368) 512-19</a>
@@ -60,9 +62,6 @@
         <div>
           <p class="footer-label">Адрес</p>
           <address>187110, Ленинградская область,<br>г. Кириши, проспект Победы, 30</address>
-          <div class="ids__space S" aria-hidden="true"></div>
-          <p class="footer-label">Разрешительная документация</p>
-          <p><a href="/assets/documents/stroygaz-declarations.pdf">Декларации на оборудование</a></p>
         </div>
       </div>
       <div class="footer-bottom">

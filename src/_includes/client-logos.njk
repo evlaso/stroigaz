@@ -1,0 +1,7 @@
+<ul class="client-logos">
+  {% for client in clients %}
+  {% if client.image %}
+  <li><img src="/assets/clients/{{ client.image }}" alt="{{ client.name }}" loading="lazy"></li>
+  {% endif %}
+  {% endfor %}
+</ul>

@@ -5,6 +5,24 @@ document.addEventListener('click', (event) => {
   }
 });
 
+document.querySelectorAll('.project-media').forEach((media) => {
+  const photo = media.querySelector('.project-photo');
+  if (!photo) return;
+
+  async function reveal() {
+    if (!photo.naturalWidth) return;
+    try {
+      await photo.decode();
+    } catch {
+      // A successfully loaded image can still be displayed if decoding rejects.
+    }
+    if (photo.naturalWidth) media.classList.add('is-loaded');
+  }
+
+  photo.addEventListener('load', reveal, { once: true });
+  if (photo.complete) reveal();
+});
+
 document.querySelectorAll('[data-project-browser]').forEach((browser) => {
   const filters = browser.querySelector('.project-filters');
   const buttons = [...browser.querySelectorAll('[data-industry-filter]')];
