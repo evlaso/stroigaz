@@ -94,6 +94,6 @@ const colorTokens=Object.fromEntries([...colored.matchAll(/(--[\w-]+):([^;}]+)/g
 for(let i=0;i<3;i++)colored=colored.replace(/var\((--[\w-]+)\)/g,(match,key)=>colorTokens[key]||match);
 writeFileSync('src/assets/technologies/laser-cutting-color.svg',colored);
 // Flat assembly-manual linework: opaque paper for occlusion, no shade or shadow.
-svg=svg.replace('</style>',`.iso[data-theme="light"]{--anatomy-paper:#f5f6f7;--anatomy-top:#f5f6f7;--anatomy-shade-0:#f5f6f7;--anatomy-shade-1:#f5f6f7;--anatomy-shade-2:#f5f6f7;--anatomy-shade-3:#f5f6f7;--anatomy-mid:#383e43;--anatomy-lo:#596168;--anatomy-hi:#292e32;--anatomy-face:#f5f6f7;--anatomy-lit-top:#f5f6f7;--anatomy-lit-shade:#f5f6f7;--anatomy-lit:#292e32;--anatomy-weight:1.05px;--anatomy-halo-opacity:0}.iso-shade,.iso-top,.iso-bevel,.iso-halo{display:none}.iso-dots circle{opacity:.7}</style>`);
+svg=svg.replace('</style>',`.iso[data-theme="light"]{--anatomy-paper:#ffffff;--anatomy-top:#ffffff;--anatomy-shade-0:#ffffff;--anatomy-shade-1:#ffffff;--anatomy-shade-2:#ffffff;--anatomy-shade-3:#ffffff;--anatomy-mid:#383e43;--anatomy-lo:#596168;--anatomy-hi:#292e32;--anatomy-face:#ffffff;--anatomy-lit-top:#ffffff;--anatomy-lit-shade:#ffffff;--anatomy-lit:#292e32;--anatomy-weight:1.05px;--anatomy-halo-opacity:0}.iso-shade,.iso-top,.iso-bevel,.iso-halo{display:none}.iso-dots circle{opacity:.7}</style>`);
 writeFileSync('src/assets/technologies/laser-cutting-schematic.svg',svg);
 console.log(`Laser-cutting schematic: ${partCount} solid parts`);

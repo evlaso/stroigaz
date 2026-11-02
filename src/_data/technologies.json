@@ -17,7 +17,8 @@
     "illustration": "/assets/technologies/laser-cutting-schematic.svg",
     "illustrationAlt": "Схема станка лазерного раскроя: рабочий стол, портал с лазерной головкой и пульт управления.",
     "illustrationScale": 1,
-    "imageAlt": "Станок лазерного раскроя MetalTec в производственном цехе"
+    "imageAlt": "Станок лазерного раскроя MetalTec в производственном цехе",
+    "summary": "Режем листовой металл и трубы, делаем отверстия, гравировку и маркировку на MetalTec 1530HT."
   },
   {
     "slug": "bending",
@@ -35,7 +36,8 @@
     "illustration": "/assets/technologies/bending-schematic.svg",
     "illustrationAlt": "Контурная схема листогибочного пресса с пуансоном, матрицей и листом металла.",
     "illustrationScale": 1.3,
-    "imageAlt": "Листогибочные прессы Rodma Machines в производственном цехе"
+    "imageAlt": "Листогибочные прессы Rodma Machines в производственном цехе",
+    "summary": "Гнём сталь и цветные металлы на прессах Rodma Machines. Длина гиба — 2,5 и 3 м."
   },
   {
     "slug": "laser-cleaning",
@@ -55,7 +57,8 @@
     "illustration": "/assets/technologies/laser-cleaning-schematic.svg",
     "illustrationAlt": "Контурная схема комплекса лазерной очистки с ручной головкой и деталью на столе.",
     "illustrationScale": 1.2,
-    "imageAlt": "Лазерная очистка поверхности металлической трубы"
+    "imageAlt": "Лазерная очистка поверхности металлической трубы",
+    "summary": "Удаляем ржавчину и старые покрытия лазером. Зачищаем кромки перед сваркой и швы нержавеющей стали."
   },
   {
     "slug": "laser-welding",
@@ -74,7 +77,8 @@
     "illustration": "/assets/technologies/laser-welding-schematic.svg",
     "illustrationAlt": "Контурная схема лазерной сварки с блоком подачи проволоки, горелкой и сварочным столом.",
     "illustrationScale": 1.25,
-    "imageAlt": "Лазерная сварка металлических деталей"
+    "imageAlt": "Лазерная сварка металлических деталей",
+    "summary": "Свариваем тонколистовые конструкции и герметичные стыки. Используем GrosseMARK с двухканальной подачей проволоки."
   },
   {
     "slug": "surface-coating",
@@ -94,6 +98,7 @@
     "illustration": "/assets/technologies/surface-coating-schematic.svg",
     "illustrationAlt": "Контурная схема окрасочной камеры с подвешенной деталью и окрасочным аппаратом.",
     "illustrationScale": 1.15,
-    "imageAlt": "Металлическое изделие после нанесения защитного покрытия"
+    "imageAlt": "Металлическое изделие после нанесения защитного покрытия",
+    "summary": "Готовим поверхность и наносим жидкие или порошковые покрытия. Проверяем толщину слоя, адгезию и внешний вид."
   }
 ]

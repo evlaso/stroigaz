@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#078844">
+  {% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <title>{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — СтройГаз', '') }} · СтройГаз{% endif %}</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/golos-text/GolosText-Variable.ttf" as="font" type="font/ttf" crossorigin>
@@ -30,8 +31,8 @@
     {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
     <nav aria-label="Основная навигация">
       {% if page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
-      {% if page.url == '/customers/' %}<span aria-current="page">Партнёры</span>{% else %}<a href="/customers/">Партнёры</a>{% endif %}
-      {% if page.url == '/design-department/' %}<span aria-current="page">Как мы работаем</span>{% else %}<a href="/design-department/">Как мы работаем</a>{% endif %}
+      {% if page.url == '/partners/' %}<span aria-current="page">Партнёры</span>{% else %}<a href="/partners/">Партнёры</a>{% endif %}
+      {% if page.url == '/process/' %}<span aria-current="page">Как мы работаем</span>{% else %}<a href="/process/">Как мы работаем</a>{% endif %}
       {% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}
     </nav>
     <a class="header-phone" href="tel:+78136851219">+7 (81368) 512-19</a>

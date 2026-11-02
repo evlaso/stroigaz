@@ -1,0 +1,53 @@
+---
+layout: layouts/base.njk
+title: Фирменный стиль — СтройГаз
+noindex: true
+permalink: /brand/
+eleventyExcludeFromCollections: true
+palette:
+  - name: Основной зелёный
+    hex: '#078844'
+    token: 'var(--ids__accent)'
+  - name: Текст
+    hex: '#25282B'
+    token: 'var(--ids__text)'
+  - name: Белый
+    hex: '#FFFFFF'
+    token: 'var(--ids__background)'
+  - name: Светлый фон
+    hex: '#F5F6F7'
+    token: '#f5f6f7'
+  - name: Вторичный текст
+    hex: '#777D85'
+    token: 'var(--ids__text-caption)'
+  - name: Наведение
+    hex: '#FF6600'
+    token: 'var(--ids__hover)'
+---
+<div class="ids__wrapper">
+<div class="ids__space XL" aria-hidden="true"></div>
+<h1 class="page-title">Фирменный стиль</h1>
+<div class="ids__space M" aria-hidden="true"></div>
+<section aria-labelledby="brand-logo-title">
+  <h2 class="brand-section-title" id="brand-logo-title">Логотип</h2>
+  <div class="brand-logo-preview" role="img" aria-label="Логотип СтройГаз: зелёный квадрат и название компании">
+    <img src="/assets/logo-mark.svg" alt="" width="96" height="96">
+    <span>СтройГаз</span>
+  </div>
+</section>
+<section class="brand-palette-section" aria-labelledby="brand-colors-title">
+  <h2 class="brand-section-title" id="brand-colors-title">Основная палитра</h2>
+  <div class="brand-palette">
+    {% for color in palette %}
+    <figure class="brand-color">
+      <div class="brand-color-swatch" style="--brand-swatch: {{ color.token }};" aria-hidden="true"></div>
+      <figcaption>
+        <span>{{ color.name }}</span>
+        <code>{{ color.hex }}</code>
+      </figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+<div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>

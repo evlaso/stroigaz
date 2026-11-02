@@ -63,7 +63,8 @@ document.querySelectorAll('.diagram-variant').forEach((diagram) => {
     const bounds = diagram.getBoundingClientRect();
     diagram.style.setProperty('--diagram-x', `${point.x - bounds.left}px`);
     diagram.style.setProperty('--diagram-y', `${point.y - bounds.top}px`);
-    diagram.style.setProperty('--diagram-radius', `${Math.min(170, Math.max(95, bounds.width * 0.25))}px`);
+    diagram.style.setProperty('--diagram-radius', `${Math.min(270, Math.max(150, bounds.width * 0.4))}px`);
+    diagram.classList.add('is-revealing');
   }
 
   function move(event) {
@@ -76,7 +77,7 @@ document.querySelectorAll('.diagram-variant').forEach((diagram) => {
     point = null;
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
-    diagram.style.removeProperty('--diagram-radius');
+    diagram.classList.remove('is-revealing');
   }
 
   diagram.addEventListener('pointerenter', move);

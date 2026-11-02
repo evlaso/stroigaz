@@ -994,7 +994,7 @@ header a:focus-visible {
 
 .case-study-copy h2 {
   margin-bottom: 0.5em;
-  font-size: 1.5em;
+  font-size: 1.25em;
   line-height: calc(var(--ids__density) / 1.1);
 }
 
@@ -1095,92 +1095,70 @@ ids-gallery.case-study-gallery {
   }
 }
 
-/* Production technologies use an open reference list. */
+/* Three-column technology overview with line illustrations. */
 .technology-list {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ids__spacer-m) var(--ids__gap-m);
 }
 
-.technology-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: auto minmax(0, 1fr);
-  align-items: start;
-  gap: var(--ids__gap-l);
-  padding-block: var(--ids__spacer-m) var(--ids__spacer-l);
-  border-top: 1px solid var(--ids__border);
-}
-
-.technology-row > h3,
-.technology-additional > h3 {
-  margin-bottom: 0;
-  font-size: 1.5em;
-}
-
-.technology-row > h3 {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.technology-details {
-  grid-column: 1;
-  grid-row: 2;
+.technology-tile {
   min-width: 0;
 }
 
-.technology-row .technology-equipment {
-  margin-top: 0;
-}
-
-.technology-row .project-equipment ul {
-  margin-bottom: 0;
-}
-
-.technology-row .technology-illustration {
-  grid-column: 1;
-  grid-row: 2;
+.technology-tile-illustration {
+  display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 3 / 2;
-  align-self: start;
+  object-fit: contain;
+  object-position: left center;
+  margin-bottom: 0.5em;
 }
 
-.technology-row .technology-illustration img {
-  transform: none;
+.technology-tile-laser-cutting .technology-tile-illustration {
+  transform: scale(0.88);
+  transform-origin: left center;
 }
 
-.technology-additional {
-  padding-top: var(--ids__spacer-m);
-  border-top: 1px solid var(--ids__border);
+.technology-tile .technology-tile-title {
+  margin-bottom: 0.25em;
+  font-size: 1em;
+  line-height: var(--ids__density);
 }
 
-.technology-additional .additional-equipment {
-  margin-top: var(--ids__spacer-m);
+.technology-tile-title strong {
+  font-weight: 600;
+}
+
+.technology-tile p {
+  margin-bottom: 0;
 }
 
 @media (width < 768px) {
-  .technology-row {
+  .technology-list {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--ids__gap-m);
   }
 
-  .technology-details {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .technology-row .technology-illustration {
-    width: 100%;
-    max-width: 20rem;
-    justify-self: center;
-    aspect-ratio: 3 / 2;
-  }
 }
 
 /* A soft inspection spot reveals lit metal beneath the contour drawing. */
+@property --diagram-strength {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 .diagram-variant {
+  --diagram-strength: 0;
   display: grid;
   cursor: default;
   border-radius: var(--ids__radius-s);
+  transition: --diagram-strength 0.5s ease;
+}
+
+.diagram-variant.is-revealing {
+  --diagram-strength: 1;
+  transition-duration: 0s;
 }
 
 .diagram-variant > img {
@@ -1195,13 +1173,13 @@ ids-gallery.case-study-gallery {
 }
 
 .diagram-variant > .diagram-color {
-  -webkit-mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), #000 0%, rgb(0 0 0 / 97%) 10%, rgb(0 0 0 / 89%) 20%, rgb(0 0 0 / 74%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 26%) 65%, rgb(0 0 0 / 10%) 80%, rgb(0 0 0 / 2%) 92%, transparent 100%);
-  mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), #000 0%, rgb(0 0 0 / 97%) 10%, rgb(0 0 0 / 89%) 20%, rgb(0 0 0 / 74%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 26%) 65%, rgb(0 0 0 / 10%) 80%, rgb(0 0 0 / 2%) 92%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), rgb(0 0 0 / calc(var(--diagram-strength) * 1)) 0%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.97)) 10%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.89)) 20%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.74)) 35%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.5)) 50%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.26)) 65%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.1)) 80%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.02)) 92%, rgb(0 0 0 / calc(var(--diagram-strength) * 0)) 100%);
+  mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), rgb(0 0 0 / calc(var(--diagram-strength) * 1)) 0%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.97)) 10%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.89)) 20%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.74)) 35%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.5)) 50%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.26)) 65%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.1)) 80%, rgb(0 0 0 / calc(var(--diagram-strength) * 0.02)) 92%, rgb(0 0 0 / calc(var(--diagram-strength) * 0)) 100%);
 }
 
 .diagram-variant > .diagram-line {
-  -webkit-mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), transparent 0%, rgb(0 0 0 / 3%) 10%, rgb(0 0 0 / 11%) 20%, rgb(0 0 0 / 26%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 74%) 65%, rgb(0 0 0 / 90%) 80%, rgb(0 0 0 / 98%) 92%, #000 100%);
-  mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), transparent 0%, rgb(0 0 0 / 3%) 10%, rgb(0 0 0 / 11%) 20%, rgb(0 0 0 / 26%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 74%) 65%, rgb(0 0 0 / 90%) 80%, rgb(0 0 0 / 98%) 92%, #000 100%);
+  -webkit-mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), rgb(0 0 0 / calc(1 - var(--diagram-strength) * 1)) 0%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.97)) 10%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.89)) 20%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.74)) 35%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.5)) 50%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.26)) 65%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.1)) 80%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.02)) 92%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0)) 100%);
+  mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), rgb(0 0 0 / calc(1 - var(--diagram-strength) * 1)) 0%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.97)) 10%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.89)) 20%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.74)) 35%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.5)) 50%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.26)) 65%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.1)) 80%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.02)) 92%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0)) 100%);
 }
 
 .diagram-variant:focus-visible {
@@ -1209,30 +1187,81 @@ ids-gallery.case-study-gallery {
   outline-offset: 4px;
 }
 
-.technology-photo {
-  grid-column: 2;
-  grid-row: 1 / -1;
+/* Unlisted identity reference at /brand/. */
+.brand-section-title {
+  margin-bottom: var(--ids__spacer-s);
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.brand-logo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  min-height: 12rem;
+  padding: 2rem 1rem;
+  border: 1px solid var(--ids__border);
+  border-radius: var(--ids__radius-s);
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: -0.04em;
+}
+
+.brand-logo-preview img {
+  flex: 0 0 1em;
+  width: 1em;
+  height: 1em;
+}
+
+.brand-palette-section {
+  margin-top: var(--ids__spacer-l);
+}
+
+.brand-palette {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ids__gap-l) var(--ids__gap-m);
+}
+
+.brand-color {
   min-width: 0;
   margin: 0;
 }
 
-.technology-photo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 20rem;
-  object-fit: contain;
-  object-position: top right;
+.brand-color-swatch {
+  aspect-ratio: 2 / 1;
   border-radius: var(--ids__radius-s);
+  background: var(--brand-swatch);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 6%);
+}
+
+.brand-color figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25em 0.5em;
+  margin: 0.5em 0 0;
+  font-size: 1em;
+}
+
+.brand-color code {
+  padding: 0;
+  background: none;
+  color: var(--ids__text-caption);
+  font-family: inherit;
+  font-size: 1em;
 }
 
 @media (width < 768px) {
-  .technology-photo {
-    grid-column: 1;
-    grid-row: 3;
+  .brand-palette {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .technology-photo img {
-    object-position: top left;
+  .brand-logo-preview {
+    min-height: 9rem;
   }
+}
+
+.workflow-step .workflow-note {
+  margin-top: 0.5em;
 }

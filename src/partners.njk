@@ -1,0 +1,48 @@
+---
+layout: layouts/base.njk
+title: Партнёры — СтройГаз
+permalink: /partners/
+contactIntro: >-
+  Разработаем и изготовим оборудование для вашего предприятия с учётом условий эксплуатации.
+---
+<div class="ids__wrapper">
+  <div class="ids__space XL" aria-hidden="true"></div>
+  <div class="ids__text-width project-intro">
+    <h1 class="page-title">Нам доверяют крупные предприятия</h1>
+    <p class="page-lead">Поставляли насосные станции, системы водоподготовки и технологические узлы на заводы, ТЭЦ и АЭС.</p>
+  </div>
+  <div data-project-browser>
+    <div class="project-filters" role="group" aria-label="Фильтр по отраслям" hidden>
+      <button class="project-filter" type="button" data-industry-filter="" aria-pressed="true" aria-controls="project-catalog">Все</button>
+      {% for industry, industryProjects in projects | groupby('industry') %}
+      <button class="project-filter" type="button" data-industry-filter="{{ industry }}" aria-pressed="false" aria-controls="project-catalog">{% if industry == 'Нефтегазовая промышленность' %}Нефтегаз{% elif industry == 'Нефтехимическая промышленность' %}Нефтехимия{% else %}{{ industry }}{% endif %}</button>
+      {% endfor %}
+    </div>
+    <span class="project-filter-status" role="status" aria-live="polite" data-filter-status></span>
+    <div class="project-catalog project-catalog-vertical" id="project-catalog">
+    {% for project in projects %}
+    <article class="project-card" data-industry="{{ project.industry }}" aria-labelledby="project-{{ project.slug }}">
+      <div class="project-media" style="--project-image-position: {{ project.imagePosition or '50% 50%' }}; --project-image-fit: {{ project.imageFit or 'cover' }}; --project-image-filter: {{ project.imageFilter or 'saturate(0.85) contrast(1.03) brightness(1.03)' }}; --project-image-scale: {{ project.imageScale or 1 }};">
+      <img class="project-photo" src="{{ project.image }}" alt="{{ project.imageAlt }}" width="{{ project.imageWidth }}" height="{{ project.imageHeight }}" loading="{% if loop.first %}eager{% else %}lazy{% endif %}" decoding="async">
+        {% if project.imageLogoContrast %}<div class="project-logo-contrast" aria-hidden="true"></div>{% endif %}
+        <div class="project-client-badge{% if project.slug == 'kazan' or project.slug == 'belarus' %} project-client-badge-compact{% endif %}" style="--project-logo-height: {{ project.logoHeight }}; --project-logo-optical-y: {{ project.logoOpticalY }};">
+          <img class="project-client-logo{% if project.logoTone == 'dark' %} project-client-logo-dark{% endif %}" src="/assets/projects/logos/{{ project.logo }}" alt="{{ project.company }}" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <div class="project-copy">
+        <div class="project-card-heading">
+          <h3 id="project-{{ project.slug }}">{{ project.name }}</h3>
+        </div>
+        <div class="project-equipment">
+          <ul>{% for item in project.items %}<li>{{ item }}</li>{% endfor %}</ul>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+    </div>
+  </div>
+  <div class="ids__space L" aria-hidden="true"></div>
+  {% include "project-contact.njk" %}
+  {% include "reading-next.njk" %}
+  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>

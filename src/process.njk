@@ -1,0 +1,54 @@
+---
+layout: layouts/base.njk
+title: Как мы работаем — СтройГаз
+permalink: /process/
+contactIntro: >-
+  Начинаем с задачи и условий объекта: по ним определяем конструкцию, материалы и способы изготовления оборудования.
+---
+<div class="ids__wrapper">
+  <div class="ids__space XL" aria-hidden="true"></div>
+  <div class="ids__text-width process-intro">
+    <h1 class="page-title">Производство полного цикла</h1>
+    <p class="page-lead">Подбираем материалы и технологии под условия вашего объекта. На собственном производстве работаем с металлом и полимерами — от расчётов и чертежей до испытаний и пусконаладки.</p>
+  </div>
+  <div class="ids__space M" aria-hidden="true"></div>
+  <section aria-label="Этапы работы">
+    <ol class="workflow">
+      {% for step in workflow %}
+      <li class="workflow-step">
+        <span class="workflow-number" aria-hidden="true">{{ loop.index }}</span>
+        <div>
+          <h3>{{ step.title }}</h3>
+          {% if step.items %}
+          <ul>{% for item in step.items %}<li>{{ item }}</li>{% endfor %}</ul>
+          {% else %}
+          <p>{{ step.description }}</p>
+          {% endif %}
+          {% if step.note %}<p class="workflow-note">{{ step.note }}</p>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <section aria-label="Технологии производства">
+    <div class="ids__text-width">
+      <p>Режем, гнём и свариваем металл, очищаем поверхности и наносим защитные покрытия.</p>
+    </div>
+    <div class="ids__space M" aria-hidden="true"></div>
+    <div class="technology-list">
+      {% for technology in technologies %}
+      <article class="technology-tile technology-tile-{{ technology.slug }}" aria-labelledby="technology-{{ technology.slug }}">
+        <img class="technology-tile-illustration" src="{{ technology.illustration }}" width="760" height="500" alt="{{ technology.illustrationAlt }}" loading="lazy" decoding="async">
+        <p class="technology-tile-title" id="technology-{{ technology.slug }}"><strong>{{ technology.title }}</strong></p>
+        <p>{{ technology.summary }}</p>
+      </article>
+      {% endfor %}
+    </div>
+
+  </section>
+  <div class="ids__space L" aria-hidden="true"></div>
+  {% include "project-contact.njk" %}
+  {% include "reading-next.njk" %}
+  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>

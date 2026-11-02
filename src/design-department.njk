@@ -1,71 +1,18 @@
 ---
-layout: layouts/base.njk
-title: Как мы работаем — СтройГаз
 permalink: /design-department/
+eleventyExcludeFromCollections: true
 ---
-<div class="ids__wrapper">
-  <div class="ids__space XL" aria-hidden="true"></div>
-  <div class="ids__text-width project-department-intro">
-    <h1 class="page-title">Как мы работаем</h1>
-    <p class="page-lead">Конструкцию оборудования определяют условия объекта: они влияют на выбор материалов, технологий изготовления и методов контроля.</p>
-    <p>Работаем с металлом и полимерами на собственном производстве. В распоряжении конструкторов — лазерная и плазменная резка, сварка, формовка и испытательное оборудование.</p>
-  </div>
-  <div class="ids__space M" aria-hidden="true"></div>
-  <section aria-label="Этапы работы">
-    <ol class="workflow">
-      {% for step in workflow %}
-      <li class="workflow-step">
-        <span class="workflow-number" aria-hidden="true">{{ loop.index }}</span>
-        <div>
-          <h3>{{ step.title }}</h3>
-          {% if step.items %}
-          <ul>{% for item in step.items %}<li>{{ item }}</li>{% endfor %}</ul>
-          {% else %}
-          <p>{{ step.description }}</p>
-          {% endif %}
-        </div>
-      </li>
-      {% endfor %}
-    </ol>
-  </section>
-  <div class="ids__space L" aria-hidden="true"></div>
-  <section aria-label="Технологии производства">
-    <div class="ids__text-width">
-      <p>На производстве используем лазерные комплексы, листогибочные прессы и окрасочные камеры. Ниже — что делаем с их помощью.</p>
-    </div>
-    <div class="ids__space M" aria-hidden="true"></div>
-    <div class="technology-list">
-      {% for technology in technologies %}
-      <article class="technology-row" aria-labelledby="technology-{{ technology.slug }}" style="--technology-scale: {{ technology.illustrationScale or 1 }};">
-        <h3 id="technology-{{ technology.slug }}">{{ technology.title }}</h3>
-        <div class="technology-details">
-          <p class="technology-equipment">{{ technology.equipment }}</p>
-          <div class="project-equipment">
-            <ul>{% for item in technology.items %}<li>{{ item }}</li>{% endfor %}</ul>
-          </div>
-        </div>
-        <figure class="technology-photo">
-          <img src="{{ technology.image }}" width="{{ technology.width }}" height="{{ technology.height }}" alt="{{ technology.imageAlt }}" loading="lazy" decoding="async">
-        </figure>
-      </article>
-      {% endfor %}
-      <article class="technology-additional" aria-labelledby="additional-equipment-title">
-        <h3 id="additional-equipment-title">Дополнительное оснащение</h3>
-        <div class="additional-equipment">
-          {% for group in equipment %}
-          {% if group.slug == 'rigging' or group.slug == 'quality' %}
-          <section class="equipment-group" aria-labelledby="additional-{{ group.slug }}">
-            <h4 id="additional-{{ group.slug }}">{{ group.title }}</h4>
-            <ul>{% for item in group.items %}<li>{{ item }}</li>{% endfor %}</ul>
-          </section>
-          {% endif %}
-          {% endfor %}
-        </div>
-      </article>
-    </div>
-  </section>
-  <div class="ids__space L" aria-hidden="true"></div>
-  {% include "project-contact.njk" %}
-  {% include "reading-next.njk" %}
-  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
-</div>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=/process/">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="/process/">
+  <title>Как мы работаем — СтройГаз</title>
+</head>
+<body>
+  <p><a href="/process/">Как мы работаем</a></p>
+</body>
+</html>
