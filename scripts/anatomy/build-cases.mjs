@@ -20,9 +20,10 @@ function figure(slug, label, build, bounds={x:-135,y:-65,w:270,d:150,h:185}) {
   for(let i=0;i<n;i++){
    const j=(i+1)%n;
    // Occluders must still be closed, but facet lines aren't tube seams.
-   s.occluder?.([ends[0][i],ends[0][j],ends[1][j],ends[1][i]]);
+   const normal=index=>{const t=index/n*2*Math.PI+tangent;return axis==='z'?[Math.cos(t),Math.sin(t),0]:[0,Math.cos(t),Math.sin(t)];};
+   s.occluder?.([ends[0][i],ends[0][j],ends[1][j],ends[1][i]],{normals:[normal(i),normal(j),normal(j),normal(i)]});
   }
-  for(const i of [0,16])cable([ends[0][i],ends[1][i]]);
+  for(const i of [0,16])cable([ends[0][i],ends[1][i]],false);
  };
  const frame=(x,y,w,d,h)=>{
   s.feet(x,y,w,d);box(x,y,w,d,12,5);

@@ -51,3 +51,43 @@ document.querySelectorAll('[data-project-browser]').forEach((browser) => {
   update();
   filters.hidden = false;
 });
+
+// Reveal lit metal locally, keeping the two versions perfectly registered.
+document.querySelectorAll('.diagram-variant').forEach((diagram) => {
+  let frame = 0;
+  let point = null;
+
+  function paint() {
+    frame = 0;
+    if (!point) return;
+    const bounds = diagram.getBoundingClientRect();
+    diagram.style.setProperty('--diagram-x', `${point.x - bounds.left}px`);
+    diagram.style.setProperty('--diagram-y', `${point.y - bounds.top}px`);
+    diagram.style.setProperty('--diagram-radius', `${Math.min(170, Math.max(95, bounds.width * 0.25))}px`);
+  }
+
+  function move(event) {
+    if (event.pointerType === 'touch') return;
+    point = { x: event.clientX, y: event.clientY };
+    if (!frame) frame = requestAnimationFrame(paint);
+  }
+
+  function clear() {
+    point = null;
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
+    diagram.style.removeProperty('--diagram-radius');
+  }
+
+  diagram.addEventListener('pointerenter', move);
+  diagram.addEventListener('pointermove', move);
+  diagram.addEventListener('pointerleave', clear);
+  diagram.addEventListener('pointercancel', clear);
+  diagram.addEventListener('focus', () => {
+    if (!diagram.matches(':focus-visible')) return;
+    const bounds = diagram.getBoundingClientRect();
+    point = { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 };
+    paint();
+  });
+  diagram.addEventListener('blur', clear);
+});

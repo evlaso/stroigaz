@@ -18,7 +18,10 @@ permalink: /projects/
           <h2 id="case-{{ project.slug }}">{{ project.title }}</h2>
           {% if project.description %}<p>{{ project.description }}</p>{% endif %}
         </div>
-        <img class="case-study-schematic" src="{{ project.schematic }}" alt="Иллюстративная схема: {{ project.title }}" width="760" height="500" loading="lazy" decoding="async">
+        <div class="case-study-schematic diagram-variant" tabindex="0" role="img" aria-label="Иллюстративная схема: {{ project.title }}">
+          <img class="diagram-line" src="{{ project.schematic }}" alt="" aria-hidden="true" width="760" height="500" loading="lazy" decoding="async">
+          <img class="diagram-color" src="{% if project.colorIllustration %}{{ project.colorIllustration }}{% else %}{{ project.schematic | replace('-schematic.svg', '-color.svg') }}{% endif %}" alt="" aria-hidden="true" width="760" height="500" loading="lazy" decoding="async">
+        </div>
       </div>
       <ids-gallery class="case-study-gallery" zoom="true" aria-label="Фотографии: {{ project.title }}">
         {% for photo in project.photos %}

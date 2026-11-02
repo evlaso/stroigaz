@@ -44,9 +44,9 @@ permalink: /design-department/
             <ul>{% for item in technology.items %}<li>{{ item }}</li>{% endfor %}</ul>
           </div>
         </div>
-        <div class="technology-illustration"{% if not technology.illustration %} aria-hidden="true"{% endif %}>
-          {% if technology.illustration %}<img src="{{ technology.illustration }}" width="760" height="500" alt="{{ technology.illustrationAlt }}" loading="lazy" decoding="async">{% endif %}
-        </div>
+        <figure class="technology-photo">
+          <img src="{{ technology.image }}" width="{{ technology.width }}" height="{{ technology.height }}" alt="{{ technology.imageAlt }}" loading="lazy" decoding="async">
+        </figure>
       </article>
       {% endfor %}
       <article class="technology-additional" aria-labelledby="additional-equipment-title">

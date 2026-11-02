@@ -10,13 +10,14 @@
       "Лазерная гравировка и маркировка изделий"
     ],
     "image": "/assets/technologies/laser-cutting.webp",
-    "width": 600,
-    "height": 601,
+    "width": 1024,
+    "height": 1024,
     "sourcePage": 8,
     "equipment": "Оптоволоконный лазерный станок MetalTec 1530HT с модулем обработки труб.",
     "illustration": "/assets/technologies/laser-cutting-schematic.svg",
     "illustrationAlt": "Схема станка лазерного раскроя: рабочий стол, портал с лазерной головкой и пульт управления.",
-    "illustrationScale": 1
+    "illustrationScale": 1,
+    "imageAlt": "Станок лазерного раскроя MetalTec в производственном цехе"
   },
   {
     "slug": "bending",
@@ -27,13 +28,14 @@
       "Подготовка деталей и элементов конструкций"
     ],
     "image": "/assets/technologies/bending.webp",
-    "width": 467,
-    "height": 469,
+    "width": 1024,
+    "height": 1024,
     "sourcePage": 9,
     "equipment": "Листогибочные прессы Rodma Machines с цифровой настройкой параметров. Длина гиба — 2,5 и 3 м, суммарно 5 м.",
     "illustration": "/assets/technologies/bending-schematic.svg",
     "illustrationAlt": "Контурная схема листогибочного пресса с пуансоном, матрицей и листом металла.",
-    "illustrationScale": 1.3
+    "illustrationScale": 1.3,
+    "imageAlt": "Листогибочные прессы Rodma Machines в производственном цехе"
   },
   {
     "slug": "laser-cleaning",
@@ -46,13 +48,14 @@
       "Очистка без абразивного песка и химического травления"
     ],
     "image": "/assets/technologies/laser-cleaning.webp",
-    "width": 636,
-    "height": 401,
+    "width": 1024,
+    "height": 673,
     "sourcePage": 10,
     "equipment": "Комплекс лазерной подготовки поверхностей GrosseMARK.",
     "illustration": "/assets/technologies/laser-cleaning-schematic.svg",
     "illustrationAlt": "Контурная схема комплекса лазерной очистки с ручной головкой и деталью на столе.",
-    "illustrationScale": 1.2
+    "illustrationScale": 1.2,
+    "imageAlt": "Лазерная очистка поверхности металлической трубы"
   },
   {
     "slug": "laser-welding",
@@ -64,13 +67,14 @@
       "Сварка стыков и герметичных соединений"
     ],
     "image": "/assets/technologies/laser-welding.webp",
-    "width": 715,
-    "height": 401,
+    "width": 640,
+    "height": 360,
     "sourcePage": 11,
     "equipment": "Комплекс лазерной сварки GrosseMARK.",
     "illustration": "/assets/technologies/laser-welding-schematic.svg",
     "illustrationAlt": "Контурная схема лазерной сварки с блоком подачи проволоки, горелкой и сварочным столом.",
-    "illustrationScale": 1.25
+    "illustrationScale": 1.25,
+    "imageAlt": "Лазерная сварка металлических деталей"
   },
   {
     "slug": "surface-coating",
@@ -83,12 +87,13 @@
       "Проверка адгезии и визуальный контроль покрытия"
     ],
     "image": "/assets/technologies/surface-coating.webp",
-    "width": 533,
-    "height": 535,
+    "width": 1024,
+    "height": 1024,
     "sourcePage": 12,
     "equipment": "Пескоструйная установка, окрасочный аппарат и камеры порошковой окраски.",
     "illustration": "/assets/technologies/surface-coating-schematic.svg",
     "illustrationAlt": "Контурная схема окрасочной камеры с подвешенной деталью и окрасочным аппаратом.",
-    "illustrationScale": 1.15
+    "illustrationScale": 1.15,
+    "imageAlt": "Металлическое изделие после нанесения защитного покрытия"
   }
 ]

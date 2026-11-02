@@ -1011,7 +1011,6 @@ header a:focus-visible {
   min-width: 0;
   min-height: 0;
   object-fit: contain;
-  pointer-events: none;
 }
 
 ids-gallery.case-study-gallery {
@@ -1035,6 +1034,7 @@ ids-gallery.case-study-gallery {
 }
 
 .case-study-gallery a {
+  position: relative;
   display: block;
   height: 100%;
   overflow: hidden;
@@ -1048,11 +1048,25 @@ ids-gallery.case-study-gallery {
   max-width: none;
   height: 100%;
   object-fit: contain;
-  transition: filter 0.3s;
 }
 
-.case-study-gallery a:hover img {
-  filter: brightness(1.06);
+.case-study-gallery a::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: rgb(255 255 255 / 12%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.case-study-gallery a:is(:hover, :focus-visible) {
+  opacity: 1;
+}
+
+.case-study-gallery a:is(:hover, :focus-visible)::after {
+  opacity: 1;
+  transition-duration: 0s;
 }
 
 .case-study-gallery a:focus-visible {
@@ -1088,7 +1102,8 @@ ids-gallery.case-study-gallery {
 
 .technology-row {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 1fr);
   align-items: start;
   gap: var(--ids__gap-l);
   padding-block: var(--ids__spacer-m) var(--ids__spacer-l);
@@ -1101,7 +1116,14 @@ ids-gallery.case-study-gallery {
   font-size: 1.5em;
 }
 
+.technology-row > h3 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 .technology-details {
+  grid-column: 1;
+  grid-row: 2;
   min-width: 0;
 }
 
@@ -1114,9 +1136,12 @@ ids-gallery.case-study-gallery {
 }
 
 .technology-row .technology-illustration {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1;
-  align-self: center;
+  aspect-ratio: 3 / 2;
+  align-self: start;
 }
 
 .technology-row .technology-illustration img {
@@ -1138,10 +1163,76 @@ ids-gallery.case-study-gallery {
     gap: var(--ids__gap-m);
   }
 
+  .technology-details {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
   .technology-row .technology-illustration {
-    width: 80%;
+    width: 100%;
     max-width: 20rem;
     justify-self: center;
     aspect-ratio: 3 / 2;
+  }
+}
+
+/* A soft inspection spot reveals lit metal beneath the contour drawing. */
+.diagram-variant {
+  display: grid;
+  cursor: default;
+  border-radius: var(--ids__radius-s);
+}
+
+.diagram-variant > img {
+  grid-area: 1 / 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.diagram-variant > .diagram-color {
+  -webkit-mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), #000 0%, rgb(0 0 0 / 97%) 10%, rgb(0 0 0 / 89%) 20%, rgb(0 0 0 / 74%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 26%) 65%, rgb(0 0 0 / 10%) 80%, rgb(0 0 0 / 2%) 92%, transparent 100%);
+  mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), #000 0%, rgb(0 0 0 / 97%) 10%, rgb(0 0 0 / 89%) 20%, rgb(0 0 0 / 74%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 26%) 65%, rgb(0 0 0 / 10%) 80%, rgb(0 0 0 / 2%) 92%, transparent 100%);
+}
+
+.diagram-variant > .diagram-line {
+  -webkit-mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), transparent 0%, rgb(0 0 0 / 3%) 10%, rgb(0 0 0 / 11%) 20%, rgb(0 0 0 / 26%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 74%) 65%, rgb(0 0 0 / 90%) 80%, rgb(0 0 0 / 98%) 92%, #000 100%);
+  mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), transparent 0%, rgb(0 0 0 / 3%) 10%, rgb(0 0 0 / 11%) 20%, rgb(0 0 0 / 26%) 35%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 74%) 65%, rgb(0 0 0 / 90%) 80%, rgb(0 0 0 / 98%) 92%, #000 100%);
+}
+
+.diagram-variant:focus-visible {
+  outline: 2px solid var(--ids__accent);
+  outline-offset: 4px;
+}
+
+.technology-photo {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  min-width: 0;
+  margin: 0;
+}
+
+.technology-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 20rem;
+  object-fit: contain;
+  object-position: top right;
+  border-radius: var(--ids__radius-s);
+}
+
+@media (width < 768px) {
+  .technology-photo {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .technology-photo img {
+    object-position: top left;
   }
 }

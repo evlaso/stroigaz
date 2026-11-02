@@ -32,7 +32,8 @@
         "height": 1024,
         "alt": "Станции отбора проб высокого давления — фотография 4"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/sampling-lit.webp"
   },
   {
     "slug": "boiler",
@@ -67,7 +68,8 @@
         "height": 1024,
         "alt": "Котельные для газового оборудования — фотография 4"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/boiler-lit.webp"
   },
   {
     "slug": "structures",
@@ -90,7 +92,8 @@
         "height": 1024,
         "alt": "Опорные конструкции и площадки обслуживания — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/structures-lit.webp"
   },
   {
     "slug": "cip",
@@ -113,7 +116,8 @@
         "height": 1024,
         "alt": "Установки химической промывки — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/cip-lit.webp"
   },
   {
     "slug": "osmosis",
@@ -136,7 +140,8 @@
         "height": 1024,
         "alt": "Установки обратного осмоса — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/osmosis-lit.webp"
   },
   {
     "slug": "vacuum",
@@ -159,7 +164,8 @@
         "height": 1024,
         "alt": "Установка вакуумирования с насосной станцией — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/vacuum-lit.webp"
   },
   {
     "slug": "dosing",
@@ -182,7 +188,8 @@
         "height": 1024,
         "alt": "Установки дозирования химических реагентов — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/dosing-lit.webp"
   },
   {
     "slug": "surface-water",
@@ -199,7 +206,8 @@
         "height": 866,
         "alt": "Установка очистки поверхностных вод — фотография 1"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/surface-water-lit.webp"
   },
   {
     "slug": "water-pumping",
@@ -222,7 +230,8 @@
         "height": 1347,
         "alt": "Насосная станция технического водоснабжения — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/water-pumping-lit.webp"
   },
   {
     "slug": "drinking-water",
@@ -245,6 +254,7 @@
         "height": 821,
         "alt": "Мобильный комплекс подготовки питьевой воды — фотография 2"
       }
-    ]
+    ],
+    "colorIllustration": "/assets/cases/drinking-water-lit.webp"
   }
 ]
