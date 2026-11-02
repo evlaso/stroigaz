@@ -1,4 +1,7 @@
+import { HtmlBasePlugin } from "@11ty/eleventy";
+
 export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addFilter("nextReadingLinks", (items, currentUrl) => {
     const current = items.findIndex((item) => item.url === currentUrl);
     if (current === -1) return items.slice(0, 2);
