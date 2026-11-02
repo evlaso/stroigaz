@@ -31,6 +31,72 @@ main {
   height: calc(var(--ids__spacer-xl) * 2);
 }
 
+.reading-next {
+  display: block;
+  margin-top: var(--ids__spacer-l);
+}
+
+.reading-next-label {
+  color: var(--ids__text);
+  font-size: 0.85em;
+  margin-bottom: var(--ids__spacer-s);
+}
+
+.reading-next-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ids__gap-l) 4rem;
+}
+
+.reading-next-link {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  text-decoration: none;
+}
+
+.reading-next-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  overflow: hidden;
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__surface);
+  transition: filter 0.5s var(--ids__easing-base);
+}
+
+.reading-next-link:hover .reading-next-preview,
+.reading-next-link:focus-visible .reading-next-preview {
+  filter: brightness(1.12);
+  transition-duration: 0s;
+}
+
+.reading-next-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reading-next-preview-brand img {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.reading-next-title {
+  font-size: 2.4em;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  white-space: normal;
+}
+
 header {
   padding: 0.4rem 0 0.25rem;
 }
@@ -55,41 +121,19 @@ header {
 }
 
 .brand-mark {
-  position: relative;
   display: block;
+  flex: 0 0 32px;
   width: 32px;
   height: 32px;
-  flex-shrink: 0;
-}
-
-.brand-mark img {
-  width: 100%;
-  height: 100%;
-}
-
-.brand-mark::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: currentColor;
-  mask: url("/assets/logo-mark.svg") center / contain no-repeat;
-  opacity: 0;
+  background: var(--ids__accent);
 }
 
 .brand-link {
   color: var(--ids__link);
 }
 
-.brand-link .brand-mark img,
-a.brand:hover .brand-mark img,
-a.brand:focus-visible .brand-mark img {
-  opacity: 0;
-}
-
-.brand-link .brand-mark::after,
-a.brand:hover .brand-mark::after,
-a.brand:focus-visible .brand-mark::after {
-  opacity: 1;
+.brand-link .brand-mark {
+  background: currentColor;
 }
 
 nav {
@@ -231,6 +275,63 @@ header a:focus-visible {
   gap: var(--ids__gap-m);
 }
 
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ids__gap-s);
+  margin-bottom: var(--ids__spacer-m);
+}
+
+.project-filters[hidden],
+.project-card[hidden] {
+  display: none;
+}
+
+.project-filter {
+  appearance: none;
+  margin: 0;
+  font: inherit;
+  font-size: 1em;
+  line-height: var(--ids__density);
+  cursor: pointer;
+  padding: 0.2em 0.4em;
+  border: var(--ids__border-width-s) solid transparent;
+  border-radius: var(--ids__radius-s);
+  background: transparent;
+  color: var(--ids__link);
+}
+
+.project-filter[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--ids__link) 10%, transparent);
+  color: var(--ids__text);
+}
+
+.project-filter:hover {
+  background: color-mix(in srgb, var(--ids__hover) 10%, transparent);
+  color: var(--ids__hover);
+}
+
+.project-filter[aria-pressed="true"]:hover {
+  background: color-mix(in srgb, var(--ids__hover) 10%, transparent);
+  color: var(--ids__hover);
+}
+
+.project-filter:focus-visible {
+  outline: 2px solid var(--ids__accent);
+  outline-offset: 3px;
+}
+
+.project-filter-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .project-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -273,9 +374,78 @@ header a:focus-visible {
   margin-bottom: 0;
 }
 
+.project-catalog-vertical {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-catalog-vertical .project-card {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  height: auto;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.project-catalog-vertical .project-photo {
+  display: block;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 0;
+}
+
+.project-catalog-vertical .project-copy {
+  padding: calc(var(--ids__density) * 0.8rem);
+  padding-bottom: calc(var(--ids__density) * 1.6rem);
+}
+
+.project-catalog-vertical .project-equipment {
+  margin-top: 0.35em;
+}
+
+.project-catalog-vertical .project-card h3 {
+  font-size: 1.25em;
+}
+
+.project-catalog-vertical .project-equipment ul {
+  font-size: 0.85em;
+}
+
+.project-media {
+  position: relative;
+  min-width: 0;
+}
+
+.project-client-badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+}
+
+.project-client-logo {
+  display: block;
+  width: auto;
+  max-width: 6.5rem;
+  height: 1.9rem;
+  object-fit: contain;
+  object-position: left center;
+  filter: brightness(0) invert(1);
+}
+
+.project-client-logo-dark {
+  filter: brightness(0);
+}
+
+.project-contact-text .project-contact-invitation {
+  font-size: 1.5em;
+  line-height: var(--ids__density);
+}
+
 .workflow {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 0;
   padding: 0;
   border-right: 1px solid var(--ids__border);
@@ -304,7 +474,7 @@ header a:focus-visible {
 
 .workflow-number,
 .workflow-step h3 {
-  font-size: 1.1em;
+  font-size: 0.95em;
   font-weight: 600;
 }
 
@@ -324,12 +494,7 @@ header a:focus-visible {
 
 .workflow-step p {
   font-size: 0.85em;
-}
-
-.workflow-step .workflow-owner {
-  margin: var(--ids__spacer-s) 0 0;
-  color: var(--ids__text-caption);
-  font-size: 0.7em;
+  margin-bottom: 0;
 }
 
 .equipment-grid {
@@ -363,6 +528,13 @@ header a:focus-visible {
 .about-photo {
   aspect-ratio: 16 / 9;
   border-radius: var(--ids__radius-s);
+}
+
+.company-section-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: var(--ids__density);
+  margin-bottom: 0.5em;
 }
 
 .company-facts {
@@ -578,6 +750,15 @@ header a:focus-visible {
 }
 
 @media (width < 768px) {
+  .reading-next-links {
+    flex-direction: column;
+    gap: var(--ids__gap-l);
+  }
+
+  .project-catalog-vertical {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .client-logos {
     padding-right: 0;
   }

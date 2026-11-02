@@ -1,0 +1,13 @@
+<nav class="reading-next" aria-label="Читать дальше">
+  <p class="reading-next-label">Читать дальше:</p>
+  <div class="reading-next-links">
+    {% for item in readingLinks %}{% if item.url != page.url %}
+    <a class="reading-next-link" href="{{ item.url }}">
+      <span class="reading-next-preview{% if item.kind == 'brand' %} reading-next-preview-brand{% endif %}" aria-hidden="true">
+        <img src="{{ item.image }}" alt="" width="104" height="104" loading="lazy" decoding="async">
+      </span>
+      <span class="reading-next-title">{{ item.title }}</span>
+    </a>
+    {% endif %}{% endfor %}
+  </div>
+</nav>

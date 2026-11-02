@@ -5,13 +5,13 @@ permalink: /project-department/
 ---
 <div class="ids__wrapper">
   <div class="ids__space XL" aria-hidden="true"></div>
-  <div class="ids__text-width">
-    <h1 class="page-title">Проектный отдел</h1>
-    <p class="page-lead">Сопровождаем проект от технического задания до запуска: разрабатываем документацию, подбираем материалы, изготавливаем и испытываем оборудование.</p>
+  <div class="ids__text-width project-department-intro">
+    <h1 class="page-title">От проекта до запуска</h1>
+    <p class="page-lead">Проектируем и производим промышленное оборудование — от технического задания до запуска на объекте.</p>
+    <p>Подбираем технологии и материалы под условия объекта. Изготавливаем оборудование и конструкции из металла и полимеров. Вот из каких этапов состоит наша работа.</p>
   </div>
-  <div class="ids__space L" aria-hidden="true"></div>
-  <section aria-labelledby="workflow-title">
-    <h2 id="workflow-title">Как проходит работа</h2>
+  <div class="ids__space M" aria-hidden="true"></div>
+  <section aria-label="Этапы работы">
     <ol class="workflow">
       {% for step in workflow %}
       <li class="workflow-step">
@@ -19,7 +19,6 @@ permalink: /project-department/
         <div>
           <h3>{{ step.title }}</h3>
           <p>{{ step.description }}</p>
-          <p class="workflow-owner">{{ step.owner }}</p>
         </div>
       </li>
       {% endfor %}
@@ -63,11 +62,8 @@ permalink: /project-department/
     </div>
   </section>
   <div class="ids__space L" aria-hidden="true"></div>
-  <div class="ids__text-width">
-    <h2>С чего начать</h2>
-    <p>Пришлите техническое задание или описание задачи: какое оборудование требуется, для какого объекта и в каких условиях оно будет работать.</p>
-    <p><a href="mailto:stroigaz@bk.ru">stroigaz@bk.ru</a><br><a href="tel:+78136851219">+7 (81368) 512-19</a></p>
-    <p><a href="/projects/">Посмотреть объекты поставок</a></p>
-  </div>
+  {% set projectContactIntro = 'Пришлите техническое задание или описание задачи: какое оборудование требуется, для какого объекта и в каких условиях оно будет работать.' %}
+  {% include "project-contact.njk" %}
+  {% include "reading-next.njk" %}
   <div class="ids__space XL page-end-space" aria-hidden="true"></div>
 </div>

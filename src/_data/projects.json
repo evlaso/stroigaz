@@ -1,28 +1,40 @@
 [
   {
     "slug": "agpz",
-    "name": "Газпром нефть · АГПЗ",
+    "name": "АГПЗ",
     "industry": "Нефтегазовая промышленность",
     "items": [
       "Насосные станции, в том числе погружные",
       "Опорные и подопорные конструкции"
     ],
-    "image": "/assets/projects/agpz.webp"
+    "image": "/assets/projects/agpz.webp",
+    "imageAlt": "Амурский газоперерабатывающий завод зимой",
+    "imageWidth": 1600,
+    "imageHeight": 900,
+    "logo": "gazprom-neft.svg",
+    "company": "Газпром нефть",
+    "logoTone": "light"
   },
   {
     "slug": "onpz",
-    "name": "Газпром нефть · ОНПЗ",
+    "name": "ОНПЗ",
     "industry": "Нефтегазовая промышленность",
     "items": [
       "Установки обратного осмоса",
       "Обвязка ФСД",
       "Опорные и подопорные металлические конструкции"
     ],
-    "image": "/assets/projects/onpz.webp"
+    "image": "/assets/projects/onpz.webp",
+    "imageAlt": "Комплекс Омского нефтеперерабатывающего завода",
+    "imageWidth": 1600,
+    "imageHeight": 900,
+    "logo": "gazprom-neft.svg",
+    "company": "Газпром нефть",
+    "logoTone": "light"
   },
   {
     "slug": "mnpz",
-    "name": "Газпром нефть · МНПЗ",
+    "name": "МНПЗ",
     "industry": "Нефтегазовая промышленность",
     "items": [
       "Декарбонизаторы",
@@ -30,21 +42,33 @@
       "Узлы отбора проб",
       "Фильтр-поглотители"
     ],
-    "image": "/assets/projects/mnpz.webp"
+    "image": "/assets/projects/mnpz.webp",
+    "imageAlt": "Комплекс «Евро+» Московского нефтеперерабатывающего завода",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "logo": "gazprom-neft.svg",
+    "company": "Газпром нефть",
+    "logoTone": "light"
   },
   {
     "slug": "zsnh",
-    "name": "СИБУР · ЗСНХ",
+    "name": "ЗСНХ",
     "industry": "Нефтехимическая промышленность",
     "items": [
       "Канализационные насосные станции",
       "Растариватели биг-бегов"
     ],
-    "image": "/assets/projects/zsnh.webp"
+    "image": "/assets/projects/zsnh.webp",
+    "imageAlt": "Панорама комплекса «ЗапСибНефтехим»",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "logo": "sibur.svg",
+    "company": "СИБУР",
+    "logoTone": "light"
   },
   {
     "slug": "nknh",
-    "name": "СИБУР · НКНХ",
+    "name": "НКНХ",
     "industry": "Нефтехимическая промышленность",
     "items": [
       "Установка растаривания и транспортировки угля",
@@ -52,18 +76,30 @@
       "Песколовка",
       "Узлы отбора проб"
     ],
-    "image": "/assets/projects/nknh.webp"
+    "image": "/assets/projects/nknh.webp",
+    "imageAlt": "Панорама предприятия «Нижнекамскнефтехим»",
+    "imageWidth": 1600,
+    "imageHeight": 900,
+    "logo": "sibur.svg",
+    "company": "СИБУР",
+    "logoTone": "light"
   },
   {
     "slug": "tnhk",
-    "name": "СИБУР · ТНХК",
+    "name": "ТНХК",
     "industry": "Нефтехимическая промышленность",
     "items": [
       "Установки обратного осмоса",
       "Установка химической промывки",
       "Блоки дозирования химических реагентов"
     ],
-    "image": "/assets/projects/tnhk.webp"
+    "image": "/assets/projects/tnhk.webp",
+    "imageAlt": "Производственная площадка «Томскнефтехима»",
+    "imageWidth": 1600,
+    "imageHeight": 1066,
+    "logo": "sibur.svg",
+    "company": "СИБУР",
+    "logoTone": "light"
   },
   {
     "slug": "rnk",
@@ -75,7 +111,13 @@
       "Донные скребковые механизмы",
       "Сетчатые фильтры"
     ],
-    "image": "/assets/projects/rnk.webp"
+    "image": "/assets/projects/rnk.webp",
+    "imageAlt": "Визуализация производственного комплекса Русской нержавеющей компании",
+    "imageWidth": 1600,
+    "imageHeight": 1131,
+    "logo": "rnk.svg",
+    "company": "Русская нержавеющая компания",
+    "logoTone": "dark"
   },
   {
     "slug": "atyrau",
@@ -87,7 +129,13 @@
       "Опорные и подопорные металлические конструкции",
       "Насосные станции"
     ],
-    "image": "/assets/projects/atyrau.webp"
+    "image": "/assets/projects/atyrau.webp",
+    "imageAlt": "Нефтехимический комплекс KPI в Атырауской области",
+    "imageWidth": 1600,
+    "imageHeight": 900,
+    "logo": "nipt.svg",
+    "company": "СЭЗ «НИНТ»",
+    "logoTone": "light"
   },
   {
     "slug": "kazan",
@@ -98,7 +146,13 @@
       "Обвязка ФСД",
       "Опорные и подопорные металлические конструкции"
     ],
-    "image": "/assets/projects/kazan.webp"
+    "image": "/assets/projects/kazan.webp",
+    "imageAlt": "Газотурбинная установка Казанской ТЭЦ-3",
+    "imageWidth": 1349,
+    "imageHeight": 654,
+    "logo": "tgc16.svg",
+    "company": "ТГК-16",
+    "logoTone": "light"
   },
   {
     "slug": "belarus",
@@ -111,6 +165,12 @@
       "Насосные станции",
       "Сетчатые фильтры"
     ],
-    "image": "/assets/projects/belarus.webp"
+    "image": "/assets/projects/belarus.webp",
+    "imageAlt": "Энергоблоки и градирни Белорусской АЭС",
+    "imageWidth": 1600,
+    "imageHeight": 1066,
+    "logo": "belarus-aes.svg",
+    "company": "Белорусская АЭС",
+    "logoTone": "light"
   }
 ]

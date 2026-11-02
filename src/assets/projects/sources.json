@@ -1,0 +1,72 @@
+{
+  "agpz.webp": {
+    "page": "https://neftegazpro.ru/masshtabnye-obekty/stroitelstvo-amurskogo-gpz-krupneishii-gazopererabatyvayushii-zavod-gazproma",
+    "image": "https://neftegazpro.ru/uploads/news/953/origin_w2048-68ebe205a6d5d.jpg",
+    "originalWidth": 2048,
+    "originalHeight": 1152,
+    "kind": "photo"
+  },
+  "onpz.webp": {
+    "page": "https://ret.ronesans.com/en/projects/gazprom-neft-neft-omsk-refinery-ii-stage",
+    "image": "https://ret.ronesans.com/content/files/dji-0604-4945669669c7e80655.88896968.webp",
+    "originalWidth": 4000,
+    "originalHeight": 2250,
+    "kind": "photo"
+  },
+  "mnpz.webp": {
+    "page": "https://www.ogj.com/refining-processing/refining/article/14180301/gazprom-neft-launches-new-complex-confirms-next-modernization-phase-at-moscow-refinery",
+    "image": "https://img.ogj.com/files/base/ebm/ogj/image/2020/07/200724_JSC_Gazpromneft_MNPZ_Moscow_Refinery_1.5f1b178228b30.png",
+    "originalWidth": 1024,
+    "originalHeight": 576,
+    "kind": "photo"
+  },
+  "zsnh.webp": {
+    "page": "https://itscan.ru/projects/organizaciya-obespecheniya-stroitelstva-kombinata-sibur-predpriyatie-zapsibneftehim",
+    "image": "https://itscan.ru/sites/default/files/styles/zapsibneftehim2.jpg",
+    "originalWidth": 1200,
+    "originalHeight": 800,
+    "kind": "photo"
+  },
+  "nknh.webp": {
+    "page": "https://eco.tatarstan.ru/eng/index.htm/news/2026064.htm",
+    "image": "https://tatarstan.ru/file/news/32_n2026064_big.jpg",
+    "originalWidth": 1600,
+    "originalHeight": 900,
+    "kind": "photo"
+  },
+  "tnhk.webp": {
+    "page": "https://obzor.city/article/665397---losy-i-turbiny.-kak-tomskneftehim-rabotaet-nad-ekologicheskoj-bezopasnostju-predprijatija",
+    "image": "https://obzor.city/data/images/news_2023/03/tnh/1.jpg",
+    "originalWidth": 2000,
+    "originalHeight": 1332,
+    "kind": "photo"
+  },
+  "rnk.webp": {
+    "page": "https://www.rustainless.ru/about",
+    "image": "https://www.rustainless.ru/img/r/rnk-axono.jpg",
+    "originalWidth": 1919,
+    "originalHeight": 1356,
+    "kind": "render"
+  },
+  "atyrau.webp": {
+    "page": "https://kpi.kz/",
+    "image": "https://kpi.kz/upload/iblock/aae/bd99sw36pa30zrkz086qjfffso1puq88/DJI_0178.jpg",
+    "originalWidth": 4320,
+    "originalHeight": 2430,
+    "kind": "photo"
+  },
+  "kazan.webp": {
+    "page": "https://vzornn.ru/projects/portfolio/kazanskaya-tets-3-oao-tgk-16.html",
+    "image": "https://vzornn.ru/image/projects/portfolio/upload/fdae79a8183897ee36582a53dce77e5d69f0388d.jpg",
+    "originalWidth": 1349,
+    "originalHeight": 654,
+    "kind": "photo"
+  },
+  "belarus.webp": {
+    "page": "https://www.atomic-energy.ru/news/2023/05/17/135350",
+    "image": "https://www.atomic-energy.ru/files/images/2023/05/img_7961-1.jpg",
+    "originalWidth": 2000,
+    "originalHeight": 1333,
+    "kind": "photo"
+  }
+}
