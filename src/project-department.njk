@@ -34,7 +34,6 @@ permalink: /project-department/
     <div class="project-catalog">
       {% for technology in technologies %}
       <article class="project-card" aria-labelledby="technology-{{ technology.slug }}">
-        <div class="project-photo image-placeholder" aria-hidden="true"></div>
         <div class="project-copy">
           <div class="project-card-heading">
             <p class="project-industry">{{ technology.category }}</p>
@@ -45,6 +44,7 @@ permalink: /project-department/
             <ul>{% for item in technology.items %}<li>{{ item }}</li>{% endfor %}</ul>
           </div>
         </div>
+        <div class="technology-illustration" aria-hidden="true"></div>
       </article>
       {% endfor %}
     </div>

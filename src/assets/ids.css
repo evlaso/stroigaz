@@ -18,5 +18,5 @@
   --ids__text: #25282b;
   --ids__text-caption: #777d85;
   --ids__background: var(--ids__color-white);
-  --ids__surface: #f4f4f4;
+  --ids__surface: var(--ids__color-gray-100);
 }
