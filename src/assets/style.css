@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Days One";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/days-one/DaysOne-Regular.ttf") format("truetype");
+}
+
 /* Page widths, text measure, typography and spacing come from IDS. */
 :root {
   --site-max-width: 1600px;
@@ -84,9 +92,14 @@ main {
   object-fit: cover;
 }
 
+.reading-next-preview-brand {
+  background: var(--ids__accent);
+}
+
 .reading-next-preview-brand img {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2.3rem;
+  height: 2.3rem;
+  object-fit: contain;
 }
 
 .reading-next-title {
@@ -111,7 +124,7 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.25em;
+  gap: 0;
   justify-self: start;
   color: var(--ids__text);
   text-decoration: none;
@@ -120,21 +133,37 @@ header {
   white-space: nowrap;
 }
 
+.brand strong {
+  font-family: "Days One", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  -webkit-text-stroke: 0.018em currentColor;
+  paint-order: stroke fill;
+}
+
 .brand-mark {
   display: block;
   flex: 0 0 32px;
   width: 32px;
   height: 32px;
-  background: var(--ids__accent);
+  color: #118A43;
+  transition: color 0.5s var(--ids__easing-base);
+}
+
+.brand-link:hover .brand-mark,
+.brand-link:focus-visible .brand-mark {
+  color: var(--ids__hover);
+  transition-duration: 0s;
+}
+
+.brand-mark {
+  overflow: visible;
 }
 
 .brand-link {
   color: var(--ids__link);
 }
 
-.brand-link .brand-mark {
-  background: currentColor;
-}
 
 nav {
   display: flex;
@@ -173,6 +202,13 @@ header a:focus-visible {
 }
 
 .intro-block {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--ids__gap-m);
+  align-items: start;
   aspect-ratio: 16 / 8;
   padding: calc(var(--ids__density) * 1rem);
   border-radius: var(--ids__radius-s);
@@ -190,7 +226,21 @@ header a:focus-visible {
 }
 
 .intro-block h1 {
+  position: relative;
+  z-index: 1;
   max-width: 20ch;
+  margin-bottom: 0;
+}
+
+.intro-equipment {
+  position: absolute;
+  right: -30%;
+  bottom: -30%;
+  display: block;
+  width: 86%;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
 }
 
 .page-lead {
@@ -635,7 +685,12 @@ header a:focus-visible {
 }
 
 .about-photo {
+  display: block;
+  width: 100%;
+  height: auto;
   aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
   border-radius: var(--ids__radius-s);
 }
 
@@ -1195,24 +1250,41 @@ ids-gallery.case-study-gallery {
   font-weight: 400;
 }
 
-.brand-logo-preview {
+.brand-logo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr);
+  gap: 0;
+  overflow: hidden;
+  border-radius: var(--ids__radius-s);
+}
+
+.brand-logo-stage {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25em;
-  min-height: 12rem;
-  padding: 2rem 1rem;
-  border: 1px solid var(--ids__border);
-  border-radius: var(--ids__radius-s);
-  font-size: clamp(2rem, 6vw, 4rem);
-  letter-spacing: -0.04em;
+  min-width: 0;
+  aspect-ratio: 2.6 / 1;
+  text-decoration: none;
+  transition: filter 0.5s var(--ids__easing-base);
 }
 
-.brand-logo-preview img {
-  flex: 0 0 1em;
-  width: 1em;
-  height: 1em;
+.brand-logo-stage:is(:hover, :focus-visible) {
+  filter: brightness(1.08);
+  transition-duration: 0s;
 }
+
+.brand-logo-stage:focus-visible {
+  outline: 2px solid var(--ids__hover);
+  outline-offset: -2px;
+}
+
+.brand-logo-stage-light { background: #F5F6F7; }
+.brand-logo-stage-green { background: var(--ids__accent); }
+.brand-logo-stage-dark { background: var(--ids__text); }
+.brand-logo-stage img { display: block; object-fit: contain; }
+.brand-logo-stage:has(.brand-art-mark) { aspect-ratio: 1; }
+.brand-logo-stage .brand-art-mark { width: 24.36%; height: 70%; }
+.brand-logo-stage .brand-art-logo { width: 78%; height: 70%; }
 
 .brand-palette-section {
   margin-top: var(--ids__spacer-l);
@@ -1225,6 +1297,7 @@ ids-gallery.case-study-gallery {
 }
 
 .brand-color {
+  position: relative;
   min-width: 0;
   margin: 0;
 }
@@ -1237,20 +1310,25 @@ ids-gallery.case-study-gallery {
 }
 
 .brand-color figcaption {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.25em 0.5em;
-  margin: 0.5em 0 0;
-  font-size: 1em;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2em;
+  margin: 0;
+  padding: 0.8em;
+  color: var(--brand-label);
+  font-size: 0.85em;
 }
 
 .brand-color code {
   padding: 0;
+  border: 0;
   background: none;
-  color: var(--ids__text-caption);
+  color: inherit;
   font-family: inherit;
-  font-size: 1em;
+  font-size: 0.85em;
 }
 
 @media (width < 768px) {
@@ -1258,9 +1336,11 @@ ids-gallery.case-study-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .brand-logo-preview {
-    min-height: 9rem;
+  .brand-logo-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
+
+  .brand-color-swatch { aspect-ratio: 1; }
 }
 
 .workflow-step .workflow-note {
@@ -1359,4 +1439,27 @@ ids-gallery.case-study-gallery {
   .home-projects-art {
     height: 9rem;
   }
+}
+
+@media (width < 900px) {
+  .intro-block {
+    grid-template-columns: minmax(0, 1fr);
+    aspect-ratio: auto;
+  }
+
+  .intro-equipment {
+    position: relative;
+    right: -18%;
+    bottom: auto;
+    width: 120%;
+    height: auto;
+    margin-block: 0.5rem -4rem;
+    justify-self: end;
+  }
+}
+
+.intro-copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
 }

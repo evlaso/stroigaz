@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#078844">
   {% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <title>{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — СтройГаз', '') }} · СтройГаз{% endif %}</title>
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon.svg?v=4" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/golos-text/GolosText-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/assets/fonts/days-one/DaysOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/assets/ids.css">
   <link rel="stylesheet" href="/assets/style.css">
   <noscript><style>.project-media:not(.is-loaded) > .project-photo, .project-media:not(.is-loaded) > .project-client-badge, .project-media:not(.is-loaded) > .project-logo-contrast { visibility: visible; }</style></noscript>
@@ -26,8 +27,8 @@
     {% else %}
     <a class="brand brand-link" href="/" aria-label="СтройГаз — на главную">
     {% endif %}
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span>СтройГаз</span>
+      {% include "brand-mark.njk" %}
+      <strong>СТРОЙГАЗ</strong>
     {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
     <nav aria-label="Основная навигация">
       {% if page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}

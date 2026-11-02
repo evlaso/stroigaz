@@ -1,0 +1,50 @@
+[
+  {
+    "image": "/assets/brand/mark-color.svg",
+    "theme": "light",
+    "kind": "mark",
+    "title": "Знак · основной"
+  },
+  {
+    "image": "/assets/brand/logo-color.svg",
+    "theme": "light",
+    "kind": "logo",
+    "title": "Знак с названием · основной"
+  },
+  {
+    "image": "/assets/brand/mark-white.svg",
+    "theme": "green",
+    "kind": "mark",
+    "title": "Знак · на зелёном фоне"
+  },
+  {
+    "image": "/assets/brand/logo-white.svg",
+    "theme": "green",
+    "kind": "logo",
+    "title": "Знак с названием · на зелёном фоне"
+  },
+  {
+    "image": "/assets/brand/mark-mono.svg",
+    "theme": "light",
+    "kind": "mark",
+    "title": "Знак · монохромный"
+  },
+  {
+    "image": "/assets/brand/logo-mono.svg",
+    "theme": "light",
+    "kind": "logo",
+    "title": "Знак с названием · монохромный"
+  },
+  {
+    "image": "/assets/brand/mark-white.svg",
+    "theme": "dark",
+    "kind": "mark",
+    "title": "Знак · на тёмном фоне"
+  },
+  {
+    "image": "/assets/brand/logo-white.svg",
+    "theme": "dark",
+    "kind": "logo",
+    "title": "Знак с названием · на тёмном фоне"
+  }
+]

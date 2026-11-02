@@ -8,9 +8,11 @@ palette:
   - name: Основной зелёный
     hex: '#078844'
     token: 'var(--ids__accent)'
+    ink: '#FFFFFF'
   - name: Текст
     hex: '#25282B'
     token: 'var(--ids__text)'
+    ink: '#FFFFFF'
   - name: Белый
     hex: '#FFFFFF'
     token: 'var(--ids__background)'
@@ -20,6 +22,7 @@ palette:
   - name: Вторичный текст
     hex: '#777D85'
     token: 'var(--ids__text-caption)'
+    ink: '#FFFFFF'
   - name: Наведение
     hex: '#FF6600'
     token: 'var(--ids__hover)'
@@ -28,18 +31,21 @@ palette:
 <div class="ids__space XL" aria-hidden="true"></div>
 <h1 class="page-title">Фирменный стиль</h1>
 <div class="ids__space M" aria-hidden="true"></div>
-<section aria-labelledby="brand-logo-title">
-  <h2 class="brand-section-title" id="brand-logo-title">Логотип</h2>
-  <div class="brand-logo-preview" role="img" aria-label="Логотип СтройГаз: зелёный квадрат и название компании">
-    <img src="/assets/logo-mark.svg" alt="" width="96" height="96">
-    <span>СтройГаз</span>
+<section aria-label="Версии логотипа">
+  <div class="brand-logo-grid">
+    {% for logo in brandLogos %}
+    <a class="brand-logo-stage brand-logo-stage-{{ logo.theme }}" href="{{ logo.image }}" download aria-label="Скачать SVG: {{ logo.title }}">
+      <img class="brand-art-{{ logo.kind }}" src="{{ logo.image }}" alt="{{ logo.title }}" loading="lazy" decoding="async">
+    </a>
+    {% endfor %}
   </div>
+  <a class="home-projects-all" href="/assets/brand/stroigaz-logos.zip" download>Скачать все версии, ZIP</a>
 </section>
 <section class="brand-palette-section" aria-labelledby="brand-colors-title">
   <h2 class="brand-section-title" id="brand-colors-title">Основная палитра</h2>
   <div class="brand-palette">
     {% for color in palette %}
-    <figure class="brand-color">
+    <figure class="brand-color" style="--brand-label: {{ color.ink or '#25282B' }};">
       <div class="brand-color-swatch" style="--brand-swatch: {{ color.token }};" aria-hidden="true"></div>
       <figcaption>
         <span>{{ color.name }}</span>

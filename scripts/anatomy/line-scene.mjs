@@ -2,6 +2,7 @@ import * as k from './iso-kit.mjs';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { orderSurfaces, auditSurfaceOrder } from './surface-order.mjs';
+import { makeContourLighting } from './contour-light.mjs';
 export const LINE_STYLE=`.iso[data-theme="light"]{--anatomy-paper:#f5f6f7;--anatomy-top:#f5f6f7;--anatomy-shade-0:#f5f6f7;--anatomy-shade-1:#f5f6f7;--anatomy-shade-2:#f5f6f7;--anatomy-shade-3:#f5f6f7;--anatomy-mid:#383e43;--anatomy-lo:#596168;--anatomy-hi:#292e32;--anatomy-face:#f5f6f7;--anatomy-lit-top:#f5f6f7;--anatomy-lit-shade:#f5f6f7;--anatomy-lit:#292e32;--anatomy-weight:1.05px;--anatomy-halo-opacity:0}.iso-shade,.iso-top,.iso-bevel,.iso-halo{display:none}.iso-dots circle{opacity:.7}`;
 const sub=(a,b)=>a.map((v,i)=>v-b[i]);
 const add=(a,b)=>a.map((v,i)=>v+b[i]);
@@ -62,7 +63,7 @@ export function scene(bounds,label){
   }
   return false;
  }
- function finish(slug, outputPath){
+ function finish(slug, outputPath, options={}){
   if(process.env.ANATOMY_SCENE_EXPORT){
    const origin=at([0,0,0]);
    const axes=[[1,0,0],[0,1,0],[0,0,1]].map(p=>sub(at(p),origin));
@@ -73,22 +74,46 @@ export function scene(bounds,label){
    writeFileSync(exportFile,JSON.stringify({surfaces,routes,toward,origin,axes,linePath}));
   }
   const paths=[],seen=new Set();
+  const lighting=options.relief?makeContourLighting(edges,surfaces,toward,at):null;
+  const relief=(a,b,weight)=>lighting?lighting.style(a,b):`stroke-width="${weight}"`;
   for(const {a,b,weight} of edges){
    const id=[a.join(','),b.join(',')].sort().join('|');if(seen.has(id))continue;seen.add(id);
    const sa=at(a),sb=at(b),steps=Math.max(2,Math.ceil(Math.hypot(sb[0]-sa[0],sb[1]-sa[1])/.65));
    let run=[];
-   const flush=()=>{if(run.length>1)paths.push(`<path d="M${[run[0],run[run.length-1]].map(p=>p.map(v=>v.toFixed(2)).join(',')).join('L')}" stroke-width="${weight}"/>`);run=[];};
+   const flush=()=>{if(run.length>1)paths.push(`<path d="M${[run[0],run[run.length-1]].map(p=>p.map(v=>v.toFixed(2)).join(',')).join('L')}" ${relief(a,b,weight)}/>`);run=[];};
+   let previousVisible=null,previousT=0;
    for(let i=0;i<=steps;i++){
-    const p=add(a,mul(sub(b,a),i/steps));
-    if(!blocked(p))run.push(at(p));else flush();
+    const t=i/steps,p=add(a,mul(sub(b,a),t)),visible=!blocked(p);
+    if(options.relief && previousVisible!==null && visible!==previousVisible){
+     // Locate the actual silhouette intersection, rather than stopping at
+     // the last coarse sample and leaving a short gap at a joint.
+     let lo=previousT,hi=t;
+     for(let j=0;j<9;j++){
+      const mid=(lo+hi)/2;
+      if((!blocked(add(a,mul(sub(b,a),mid))))===previousVisible)lo=mid;else hi=mid;
+     }
+     const boundary=at(add(a,mul(sub(b,a),(lo+hi)/2)));
+     if(previousVisible){run.push(boundary);flush();}else run=[boundary];
+    }
+    if(visible)run.push(at(p));else if(!options.relief)flush();
+    previousVisible=visible;previousT=t;
    }
    flush();
   }
   for(const {p,r} of dots)if(!blocked(p)){const [cx,cy]=at(p);paths.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#383e43" stroke="none"/>`);}
-  const body=`<g fill="none" stroke="#383e43" stroke-linejoin="round" stroke-linecap="round">${paths.join('')}</g>`;
+  const body=`${lighting?lighting.definitions():''}<g fill="none" stroke="#383e43" stroke-linejoin="round" stroke-linecap="round">${paths.join('')}</g>`;
   let svg=k.figureSvg({width:760,height:500,label,body,standalone:'light'});svg=svg.replace('</style>',LINE_STYLE+'</style>');
   const destination=outputPath || `src/assets/technologies/${slug}-schematic.svg`;
+  if(options.ink)svg=svg.replaceAll('#383e43',options.ink);
+  if(options.fit){
+   const projected=edges.flatMap(({a,b})=>[at(a),at(b)]);
+   const xs=projected.map(p=>p[0]),ys=projected.map(p=>p[1]);
+   const x=Math.min(...xs)-16,y=Math.min(...ys)-16;
+   const w=Math.max(...xs)-x+16,h=Math.max(...ys)-y+16;
+   svg=svg.replace('viewBox="0 0 760 500"',`viewBox="${x} ${y} ${w} ${h}"`);
+  }
   writeFileSync(destination,svg);
+  if(options.color===false){console.log(`${slug}: ${count} parts, contour only`);return;}
   // The alternate uses the same projection and contours: only light and materials change.
   const light=[-.35,-.25,.9];
   const palette={steel:[231,233,235],frame:[192,197,201],graphite:[104,111,117]};
