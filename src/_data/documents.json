@@ -1,0 +1,101 @@
+[
+  {
+    "slug": "decarbonators",
+    "title": "Декарбонизаторы",
+    "model": "Велья ДК",
+    "tu": "28.29.39-002-96141768-2019",
+    "image": "/assets/documents/decarbonators.jpg",
+    "width": 197,
+    "height": 279
+  },
+  {
+    "slug": "sampling",
+    "title": "Пробоотборные устройства",
+    "model": "Велья ПУ",
+    "tu": "19.20.99-012-96141768-2024",
+    "image": "/assets/documents/sampling.jpg",
+    "width": 197,
+    "height": 279
+  },
+  {
+    "slug": "sludge",
+    "title": "Установки промывки, обезвоживания, сбора и удаления осадка и шлама",
+    "model": "Велья ПО",
+    "tu": "28.99.39-010-96141768-2021",
+    "image": "/assets/documents/sludge.jpg",
+    "width": 196,
+    "height": 278
+  },
+  {
+    "slug": "pumping",
+    "title": "Насосные станции",
+    "model": "Велья НС",
+    "tu": "28.13.14-004-96141768-2019",
+    "image": "/assets/documents/pumping.jpg",
+    "width": 197,
+    "height": 278
+  },
+  {
+    "slug": "dosing",
+    "title": "Установки приготовления и дозирования",
+    "model": "Велья Д",
+    "tu": "28.29.39-001-96141768-2025",
+    "image": "/assets/documents/dosing.jpg",
+    "width": 197,
+    "height": 279
+  },
+  {
+    "slug": "chemical-cleaning",
+    "title": "Установки химической промывки",
+    "model": "Велья УХП",
+    "tu": "28.29.39-003-96141768-2019",
+    "image": "/assets/documents/chemical-cleaning.jpg",
+    "width": 197,
+    "height": 279
+  },
+  {
+    "slug": "vacuum",
+    "title": "Установки вакуумирования",
+    "model": "Велья УВ",
+    "tu": "28.29.12-007-96141768-2019",
+    "image": "/assets/documents/vacuum.jpg",
+    "width": 197,
+    "height": 279
+  },
+  {
+    "slug": "tanks",
+    "title": "Резервуары, ёмкости и баки",
+    "model": "Велья РБ",
+    "tu": "28.29.11-009-96141768-2025",
+    "image": "/assets/documents/tanks.jpg",
+    "width": 197,
+    "height": 279
+  },
+  {
+    "slug": "sample-coolers",
+    "title": "Охладители пробоотборных устройств",
+    "model": "Велья ОПУ",
+    "tu": "28.25.11-013-96141768-2024",
+    "image": "/assets/documents/sample-coolers.jpg",
+    "width": 198,
+    "height": 280
+  },
+  {
+    "slug": "desalination",
+    "title": "Установки обессоливания воды",
+    "model": "Велья О",
+    "tu": "28.29.12-006-96141768-2019",
+    "image": "/assets/documents/desalination.jpg",
+    "width": 198,
+    "height": 280
+  },
+  {
+    "slug": "filtration",
+    "title": "Установки напорной фильтрации",
+    "model": "Велья Ф",
+    "tu": "28.29.12-005-96141768-2019",
+    "image": "/assets/documents/filtration.jpg",
+    "width": 197,
+    "height": 279
+  }
+]

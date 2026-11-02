@@ -1,0 +1,12 @@
+{
+  "whatsapp": null,
+  "telegram": null,
+  "departments": [
+    { "name": "Общие вопросы", "email": "stroigaz@bk.ru", "example": false },
+    { "name": "Отдел продаж", "email": "sales@stroygaz.example", "example": true },
+    { "name": "Проектный отдел", "email": "project@stroygaz.example", "example": true },
+    { "name": "Отдел закупок", "email": "zakupki@stroygaz.example", "example": true },
+    { "name": "Отдел логистики", "email": "logistics@stroygaz.example", "example": true },
+    { "name": "Бухгалтерия", "email": "buh@stroygaz.example", "example": true }
+  ]
+}

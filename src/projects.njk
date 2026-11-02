@@ -1,0 +1,36 @@
+---
+layout: layouts/base.njk
+title: Проекты — СтройГаз
+permalink: /projects/
+---
+<div class="ids__wrapper">
+  <div class="ids__space XL" aria-hidden="true"></div>
+  <div class="ids__text-width">
+    <h1 class="page-title">Наши решения для промышленности и энергетики</h1>
+    <p class="page-lead">Поставляем насосные станции, системы водоподготовки, установки дозирования и технологические узлы для промышленности и энергетики.</p>
+  </div>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <div class="project-catalog">
+    {% for project in projects %}
+    <article class="project-card" aria-labelledby="project-{{ project.slug }}">
+      <div class="project-photo image-placeholder" aria-hidden="true"></div>
+      <div class="project-copy">
+        <div class="project-card-heading">
+          <p class="project-industry">{{ project.industry }}</p>
+          <h2 id="project-{{ project.slug }}">{{ project.name }}</h2>
+        </div>
+        <div class="project-equipment">
+          <p class="project-equipment-label">Состав поставки</p>
+          <ul>{% for item in project.items %}<li>{{ item }}</li>{% endfor %}</ul>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <div class="ids__text-width">
+    <h2>Обсудим ваш объект</h2>
+    <p>Расскажите, какое оборудование требуется и в каких условиях оно будет работать. Позвоните <a href="tel:+78136851219">+7 (81368) 512-19</a> или напишите на <a href="mailto:stroigaz@bk.ru">stroigaz@bk.ru</a>.</p>
+  </div>
+  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>

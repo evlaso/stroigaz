@@ -1,25 +1,62 @@
 ---
 layout: layouts/base.njk
+gallery: true
 title: О компании — СтройГаз
 permalink: /about/
 ---
 <div class="ids__wrapper">
+  <div class="ids__space XL" aria-hidden="true"></div>
+  <h1 class="page-title">О компании</h1>
+</div>
+<div class="ids__wrapper XL">
+  <div class="about-photo image-placeholder" aria-hidden="true"></div>
+</div>
+<div class="ids__wrapper">
   <div class="ids__space L" aria-hidden="true"></div>
   <div class="ids__text-width">
-    <h1>О компании</h1>
-    <p>СтройГаз — производственно-инжиниринговая компания из Киришей Ленинградской области. Работаем с 2006 года, разрабатываем и изготавливаем оборудование для промышленных предприятий.</p>
-    <div class="ids__space M" aria-hidden="true"></div>
-    <h2>Своё производство и конструкторский отдел</h2>
-    <p>Проектируем системы и сооружения, подбираем технологии и материалы. На собственном производстве изготавливаем оборудование, конструкции и технологические узлы из металла и полимерных материалов.</p>
-    <p>Сопровождаем проект от технического задания до ввода в эксплуатацию: готовим документацию, контролируем качество, проводим шефмонтаж и пусконаладку.</p>
-    <div class="ids__space M" aria-hidden="true"></div>
-    <h2>Оборудование для промышленных объектов</h2>
-    <p>Среди объектов поставок — предприятия «Газпром нефти» и СИБУРа, Казанская ТЭЦ и Белорусская АЭС. Для них изготавливали насосные станции, системы обратного осмоса, блоки дозирования, узлы отбора проб и металлоконструкции.</p>
-    <p><a href="/directions/">Посмотреть направления работы</a></p>
-    <div class="ids__space M" aria-hidden="true"></div>
-    <h2>Контакты</h2>
-    <p>Ленинградская область, г. Кириши, проспект Победы, 30.</p>
-    <p><a href="tel:+78136851219">+7 (81368) 512-19</a><br><a href="tel:+78136854201">+7 (81368) 542-01</a><br><a href="mailto:stroigaz@bk.ru">stroigaz@bk.ru</a></p>
+    <p class="page-lead">ООО «СтройГаз» — производственно-инжиниринговая компания из Киришей Ленинградской области. С 2006 года разрабатываем и производим оборудование для химической, нефтегазовой и других отраслей промышленности.</p>
+    <p>Проектируем системы и сооружения, подбираем технологии и материалы под условия объекта. Изготавливаем оборудование, конструкции и технологические узлы из металла и полимерных материалов.</p>
+    <p>Собственное производство и конструкторский отдел позволяют сопровождать проект от технического задания до ввода в эксплуатацию. Готовим документацию, контролируем качество, проводим шефмонтаж и пусконаладку.</p>
+    <p><a href="/project-department/">Как устроена работа над проектом</a></p>
   </div>
+  <div class="ids__space M" aria-hidden="true"></div>
+  <dl class="company-facts" aria-label="Компания в цифрах">
+    <div><dt>2006</dt><dd>год основания компании</dd></div>
+    <div><dt>40+</dt><dd>сотрудников</dd></div>
+    <div><dt>2700+ <span>м²</span></dt><dd>площадь производства</dd></div>
+    <div><dt>8+</dt><dd>станков точной обработки</dd></div>
+    <div><dt>500+</dt><dd>изделий и единиц оборудования в год</dd></div>
+    <div><dt>11+</dt><dd>сертификатов на собственную продукцию</dd></div>
+  </dl>
   <div class="ids__space L" aria-hidden="true"></div>
+  <section aria-labelledby="company-projects-title" class="ids__text-width">
+    <h2 id="company-projects-title">Оборудование для промышленных объектов</h2>
+    <p>Среди объектов поставок — предприятия «Газпром нефти» и СИБУРа, Казанская ТЭЦ и Белорусская АЭС. Для них изготавливали насосные станции, системы обратного осмоса, блоки дозирования, узлы отбора проб и металлоконструкции.</p>
+    <p><a href="/projects/">Посмотреть проекты</a></p>
+  </section>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <section aria-labelledby="company-documents-title">
+    <div class="ids__text-width">
+      <h2 id="company-documents-title">Разрешительная документация</h2>
+      <p>Декларации на оборудование «Велья»: насосные станции, установки водоподготовки и дозирования, резервуары и другие изделия.</p>
+    </div>
+    <ids-gallery class="document-previews" zoom="true" aria-label="Декларации на оборудование">
+      {% for document in documents %}{% if loop.index <= 3 %}
+      <figure>
+        <a class="document-scan" href="{{ document.image }}" data-pswp-width="{{ document.width }}" data-pswp-height="{{ document.height }}" aria-label="Открыть декларацию: {{ document.title }}">
+          <img src="{{ document.image }}" width="{{ document.width }}" height="{{ document.height }}" alt="Декларация на {{ document.model }}" loading="lazy">
+        </a>
+        <figcaption>{{ document.title }}, «{{ document.model }}»</figcaption>
+      </figure>
+      {% endif %}{% endfor %}
+    </ids-gallery>
+    <p><a href="/assets/documents/stroygaz-declarations.pdf">Все декларации одним файлом, PDF, 117 КБ</a></p>
+  </section>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <section class="ids__text-width" aria-labelledby="about-contacts-title">
+    <h2 id="about-contacts-title">Контакты</h2>
+    <p>187110, Ленинградская область, г. Кириши, проспект Победы, 30.</p>
+    <p><a href="tel:+78136851219">+7 (81368) 512-19</a><br><a href="tel:+78136854201">+7 (81368) 542-01</a><br><a href="mailto:stroigaz@bk.ru">stroigaz@bk.ru</a></p>
+  </section>
+  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
 </div>

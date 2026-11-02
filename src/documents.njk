@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+gallery: true
+title: Документация — СтройГаз
+permalink: /documents/
+---
+<div class="ids__wrapper">
+  <div class="ids__space XL" aria-hidden="true"></div>
+  <div class="ids__text-width">
+    <h1 class="page-title">Документация</h1>
+    <p class="page-lead">Разрешительная документация на оборудование «Велья» собственного производства.</p>
+    <p><a href="/assets/documents/stroygaz-declarations.pdf">Все декларации одним файлом, PDF, 117 КБ</a></p>
+    <p>Здесь приведены уменьшенные копии деклараций из презентации. Чтобы получить полные документы на нужное оборудование, напишите на <a href="mailto:stroigaz@bk.ru?subject=Запрос%20документации">stroigaz@bk.ru</a>.</p>
+  </div>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <ids-gallery class="documents-grid" zoom="true" aria-label="Разрешительная документация">
+    {% for document in documents %}
+    <figure class="document-card" aria-labelledby="document-{{ document.slug }}">
+      <a class="document-scan" href="{{ document.image }}" data-pswp-width="{{ document.width }}" data-pswp-height="{{ document.height }}" aria-label="Посмотреть копию декларации: {{ document.title }}">
+        <img src="{{ document.image }}" alt="Копия декларации на {{ document.model }}" width="{{ document.width }}" height="{{ document.height }}" loading="lazy" decoding="async">
+      </a>
+      <figcaption>
+        <h2 id="document-{{ document.slug }}">{{ document.title }}</h2>
+        <p>{{ document.model }}</p>
+        <p class="document-tu">ТУ {{ document.tu }}</p>
+      </figcaption>
+    </figure>
+    {% endfor %}
+  </ids-gallery>
+  <div class="ids__space L" aria-hidden="true"></div>
+  <p><a href="/about/">О компании</a></p>
+  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>

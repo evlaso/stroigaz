@@ -1,6 +1,6 @@
 ---
 layout: layouts/base.njk
-title: СтройГаз
+title: СтройГаз — Проектируем и производим промышленное оборудование
 ---
     <div class="ids__wrapper XL">
       <div class="ids__space XL" aria-hidden="true"></div>
@@ -11,7 +11,18 @@ title: СтройГаз
     <div class="ids__wrapper">
       <div class="ids__space L" aria-hidden="true"></div>
       <div class="ids__text-width">
-        <p>Насосные станции, системы водоподготовки, установки дозирования и другие технологические узлы. Разрабатываем конструкцию, изготавливаем на собственном производстве, проводим шефмонтаж и пусконаладку.</p>
+        <p class="page-lead">Насосные станции, системы водоподготовки, установки дозирования и другие технологические узлы. Разрабатываем конструкцию, изготавливаем на собственном производстве, проводим шефмонтаж и пусконаладку.</p>
       </div>
       <div class="ids__space L" aria-hidden="true"></div>
+      <section aria-labelledby="clients-title">
+        <h2 id="clients-title">Нам доверяют</h2>
+        <ul class="client-logos">
+          {% for client in clients %}
+          {% if client.image %}
+          <li><img src="/assets/clients/{{ client.image }}" alt="{{ client.name }}" loading="lazy"></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </section>
+      <div class="ids__space XL page-end-space" aria-hidden="true"></div>
     </div>

@@ -1,0 +1,55 @@
+[
+  {
+    "name": "КИНЕФ",
+    "image": "kinef.svg"
+  },
+  {
+    "name": "Газпром нефть",
+    "image": "gazprom-neft.svg"
+  },
+  {
+    "name": "СИБУР",
+    "image": "sibur.svg"
+  },
+  {
+    "name": "РЖД",
+    "image": "rzd.svg"
+  },
+  {
+    "name": "Роснефть",
+    "image": "rosneft.svg"
+  },
+  {
+    "name": "Афипский НПЗ",
+    "image": "afipsky.svg"
+  },
+  {
+    "name": "Ильский НПЗ",
+    "image": "ilsky.svg"
+  },
+  {
+    "name": "РусГидро",
+    "image": "rushydro.svg"
+  },
+  {
+    "name": "Башнефть",
+    "image": "bashneft.svg"
+  },
+  {
+    "name": "ТАНЕКО",
+    "image": "taneco.svg"
+  },
+  {
+    "name": "Русская нержавеющая компания",
+    "image": "rnk.svg"
+  },
+  {
+    "name": "Белорусская АЭС",
+    "image": "belarus-aes.svg"
+  },
+  {
+    "name": "Национальный индустриальный нефтехимический технопарк в Атырауской области (Казахстан)",
+    "image": "nipt.svg",
+    "caption": "СЭЗ «НИНТ» · Казахстан"
+  }
+]

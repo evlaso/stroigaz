@@ -1,4 +1,21 @@
 /* Page widths, text measure, typography and spacing come from IDS. */
+:root {
+  --site-max-width: 1600px;
+}
+
+.ids__wrapper.XL {
+  max-width: var(--site-max-width);
+}
+
+.ids__wrapper.L {
+  max-width: calc(var(--site-max-width) * 0.85);
+}
+
+.ids__wrapper:not(.L):not(.XL):not(.XXL) {
+  width: 76%;
+  max-width: calc(var(--site-max-width) * 0.76);
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -10,8 +27,12 @@ main {
   flex: 1;
 }
 
+.page-end-space {
+  height: calc(var(--ids__spacer-xl) * 2);
+}
+
 header {
-  padding: 0.25rem 0;
+  padding: 0.4rem 0 0.25rem;
 }
 
 .header-layout {
@@ -24,7 +45,7 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.25em;
   justify-self: start;
   color: var(--ids__text);
   text-decoration: none;
@@ -36,8 +57,8 @@ header {
 .brand-mark {
   position: relative;
   display: block;
-  width: calc(1.8em * 205 / 315);
-  height: 1.8em;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
 }
 
@@ -108,15 +129,358 @@ header a:focus-visible {
 }
 
 .intro-block {
-  min-height: 480px;
+  aspect-ratio: 16 / 8;
   padding: calc(var(--ids__density) * 1rem);
   border-radius: var(--ids__radius-s);
   background: var(--ids__accent);
   color: var(--ids__color-white);
 }
 
-.intro-block h1 {
+.intro-block h1,
+.page-title {
   font-size: 4.2em;
+}
+
+.intro-block h1 {
+  max-width: 20ch;
+}
+
+.page-lead {
+  font-size: 1.3em;
+  line-height: var(--ids__density);
+}
+
+.client-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.5rem 3rem;
+  padding-right: 6rem;
+}
+
+.client-logos > li {
+  display: flex;
+  flex: 0 0 auto;
+  max-width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.client-logos > li::before {
+  content: none;
+}
+
+.client-logos img {
+  width: auto;
+  max-width: 6.75rem;
+  height: 2.7rem;
+  object-fit: contain;
+}
+
+.client-logos img[alt="РЖД"] {
+  height: 2.025rem;
+  transform: translateY(0.04rem);
+}
+
+.client-logos img[alt="СИБУР"] {
+  height: 2.25rem;
+}
+
+.client-logos img[alt="Роснефть"] {
+  transform: translateY(-0.15rem);
+}
+
+.client-logos img[alt="Газпром нефть"] {
+  transform: translateY(-0.34rem);
+}
+
+.client-logos img[alt="Афипский НПЗ"],
+.client-logos img[alt="Ильский НПЗ"],
+.client-logos img[alt="РусГидро"],
+.client-logos img[alt="ТАНЕКО"] {
+  max-width: 7.875rem;
+  height: 1.8rem;
+}
+
+.client-logos img[alt="Русская нержавеющая компания"] {
+  max-width: 7.875rem;
+  height: 2.25rem;
+}
+
+.client-logos img[alt="КИНЕФ"] {
+  max-width: 7.875rem;
+  height: 2.25rem;
+}
+
+.client-logos img[alt="Белорусская АЭС"] {
+  height: 3.6rem;
+}
+
+.client-logos img[alt^="Национальный индустриальный"] {
+  max-width: 8.1rem;
+  height: 2.97rem;
+}
+
+.project-catalog {
+  display: grid;
+  gap: var(--ids__gap-m);
+}
+
+.project-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 560px;
+  gap: var(--ids__gap-m) var(--ids__gap-l);
+  padding: calc(var(--ids__density) * 0.8rem);
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__surface);
+}
+
+.project-copy {
+  min-width: 0;
+}
+
+.project-card h2,
+.project-card h3 {
+  margin-bottom: 0;
+  font-size: 1.5em;
+}
+
+.project-industry,
+.project-equipment-label {
+  color: var(--ids__text-caption);
+  font-size: 0.75em;
+}
+
+.project-photo {
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--ids__radius-s);
+}
+
+.project-equipment {
+  margin-top: var(--ids__spacer-s);
+}
+
+.project-equipment ul {
+  margin-bottom: 0;
+}
+
+.workflow {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  border-right: 1px solid var(--ids__border);
+  border-bottom: 1px solid var(--ids__border);
+}
+
+.workflow > .workflow-step {
+  display: block;
+  grid-column: span 2;
+  margin: 0;
+  padding: calc(var(--ids__density) * 0.6rem);
+  list-style: none;
+  border: 0;
+  border-top: 1px solid var(--ids__border);
+  border-left: 1px solid var(--ids__border);
+  background: var(--ids__background);
+}
+
+.workflow-number {
+  display: block;
+  margin-bottom: 0.5em;
+  color: var(--ids__text);
+  font-size: 1em;
+  font-variant-numeric: tabular-nums;
+}
+
+.workflow-number,
+.workflow-step h3 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.workflow > .workflow-step:nth-child(1),
+.workflow > .workflow-step:nth-child(10) {
+  grid-column: 1 / -1;
+}
+
+.workflow > .workflow-step:nth-child(8),
+.workflow > .workflow-step:nth-child(9) {
+  grid-column: span 3;
+}
+
+.workflow-step h3 {
+  margin-bottom: 0.25em;
+}
+
+.workflow-step p {
+  font-size: 0.85em;
+}
+
+.workflow-step .workflow-owner {
+  margin: var(--ids__spacer-s) 0 0;
+  color: var(--ids__text-caption);
+  font-size: 0.7em;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-right: 1px solid var(--ids__border);
+  border-bottom: 1px solid var(--ids__border);
+}
+
+.equipment-group {
+  padding: calc(var(--ids__density) * 0.6rem);
+  border-top: 1px solid var(--ids__border);
+  border-left: 1px solid var(--ids__border);
+}
+
+.equipment-group h3 {
+  font-size: 1.1em;
+}
+
+.equipment-group ul {
+  margin-bottom: 0;
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
+
+.image-placeholder {
+  background: #e4e6e8;
+}
+
+.about-photo {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--ids__radius-s);
+}
+
+.company-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border-right: 1px solid var(--ids__border);
+  border-bottom: 1px solid var(--ids__border);
+}
+
+.company-facts > div {
+  padding: calc(var(--ids__density) * 0.6rem);
+  padding-top: calc(var(--ids__density) * 0.4rem);
+  padding-bottom: calc(var(--ids__density) * 1.8rem);
+  border-top: 1px solid var(--ids__border);
+  border-left: 1px solid var(--ids__border);
+}
+
+.company-facts dt {
+  font-size: 3em;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.company-facts dt span {
+  font-size: 0.5em;
+}
+
+.company-facts dd {
+  margin: 0.25em 0 0;
+  max-width: 13em;
+}
+
+.document-previews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ids__gap-l);
+  max-width: 28rem;
+  margin: var(--ids__spacer-m) 0;
+}
+
+.document-previews figure,
+.documents-grid figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.document-previews figcaption,
+.documents-grid figcaption {
+  margin-right: 0;
+}
+
+.document-previews figcaption {
+  font-size: 0.7em;
+}
+
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ids__spacer-m) var(--ids__gap-l);
+}
+
+.document-scan {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: var(--ids__spacer-s);
+  padding: 0.5rem;
+  border: 1px solid var(--ids__border);
+  cursor: zoom-in;
+  transition: border-color var(--ids__duration-base), box-shadow var(--ids__duration-base);
+}
+
+.document-scan:hover,
+.document-scan:focus-visible {
+  border-color: var(--ids__hover);
+  box-shadow: 0 0 0 1px var(--ids__hover);
+}
+
+.document-scan img {
+  width: 7rem;
+  height: auto;
+}
+
+.document-card h2 {
+  font-size: 1em;
+}
+
+.document-card p {
+  font-size: 0.85em;
+}
+
+.document-card .document-tu {
+  color: var(--ids__text-caption);
+  font-size: 0.7em;
+  overflow-wrap: anywhere;
+}
+
+.pswp__caption h2 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.pswp__caption p {
+  margin: 0.25em 0 0;
+}
+
+.pswp__caption .document-tu {
+  font-size: 0.8em;
+}
+
+@media (768px <= width < 1100px) {
+  .equipment-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .site-footer {
@@ -125,40 +489,77 @@ header a:focus-visible {
   --ids__text-caption: #a9adb0;
   padding: calc(var(--ids__density) * 1rem);
   border-radius: var(--ids__radius-s);
-  background: #303234;
+  background: #202122;
   color: var(--ids__text);
+}
+
+.site-footer p {
+  margin-bottom: 0.25em;
+}
+
+.site-footer .footer-label {
+  margin-bottom: 0.15em;
+}
+
+.site-footer .ids__space.S {
+  height: 0.5rem;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
+  grid-template-columns: 1.5fr 2fr 1.3fr;
   gap: var(--ids__gap-l);
+}
+
+.footer-grid > :not(.footer-main) {
+  font-size: 0.8em;
 }
 
 .site-footer a {
   color: var(--ids__link);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: var(--ids__border-width-s);
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--ids__link) 20%, transparent);
 }
 
 .site-footer a:hover,
 .site-footer a:focus-visible {
   color: var(--ids__hover);
+  text-decoration-color: color-mix(in srgb, var(--ids__hover) 20%, transparent);
 }
 
 .footer-phone,
-.footer-email {
+.footer-messenger {
   font-size: 1.5em;
   line-height: 1.2;
   letter-spacing: -0.03em;
 }
 
-.footer-description {
-  margin-top: 1.2em;
-  color: var(--ids__text-caption);
+.footer-departments {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem var(--ids__gap-m);
+  overflow-wrap: anywhere;
+}
+
+.footer-departments p:last-child {
+  margin-bottom: 0;
+}
+
+@media (768px <= width < 1100px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1.4fr;
+  }
+
+  .footer-grid > :last-child {
+    grid-column: 1 / -1;
+  }
 }
 
 .footer-label {
-  color: var(--ids__text-caption);
+  color: var(--ids__text);
+  font-weight: 600;
 }
 
 .site-footer address {
@@ -177,7 +578,56 @@ header a:focus-visible {
 }
 
 @media (width < 768px) {
-  .intro-block h1 {
+  .client-logos {
+    padding-right: 0;
+  }
+
+  .company-facts,
+  .documents-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .company-facts dt {
+    font-size: 2.4em;
+  }
+
+  .document-previews {
+    gap: var(--ids__gap-m);
+  }
+
+  .document-scan img {
+    width: 100%;
+    max-width: 7rem;
+  }
+
+  .ids__wrapper:not(.L):not(.XL):not(.XXL) {
+    width: 100%;
+  }
+
+  .equipment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow > .workflow-step:nth-child(n) {
+    grid-column: 1 / -1;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+
+  .project-photo {
+    height: 12rem;
+  }
+
+  .intro-block h1,
+  .page-title {
     font-size: 3em;
   }
 

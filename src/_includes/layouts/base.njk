@@ -4,11 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#078844">
-  <title>{{ title }}</title>
+  <title>{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — СтройГаз', '') }} · СтройГаз{% endif %}</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/vendor/ids/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/ids.css">
   <link rel="stylesheet" href="/assets/style.css">
+  {% if gallery %}
+  <script src="/assets/vendor/ids/js/lib/photoswipe.umd.min.js" defer></script>
+  <script src="/assets/vendor/ids/js/lib/photoswipe-lightbox.umd.min.js" defer></script>
+  <script src="/assets/vendor/ids/js/gallery.js" defer></script>
+  {% endif %}
+  <script src="/assets/main.js" defer></script>
 </head>
 <body class="ids">
   <header>
@@ -18,11 +24,12 @@
     {% else %}
     <a class="brand brand-link" href="/" aria-label="СтройГаз — на главную">
     {% endif %}
-      <span class="brand-mark" aria-hidden="true"><img src="/assets/logo-mark.svg" width="205" height="315" alt=""></span>
+      <span class="brand-mark" aria-hidden="true"><img src="/assets/logo-mark.svg" width="32" height="32" alt=""></span>
       <span>СтройГаз</span>
     {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
     <nav aria-label="Основная навигация">
-      {% if page.url == '/directions/' %}<span aria-current="page">Направления</span>{% else %}<a href="/directions/">Направления</a>{% endif %}
+      {% if page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
+      {% if page.url == '/project-department/' %}<span aria-current="page">Проектный отдел</span>{% else %}<a href="/project-department/">Проектный отдел</a>{% endif %}
       {% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}
     </nav>
     <a class="header-phone" href="tel:+78136851219">+7 (81368) 512-19</a>
@@ -36,28 +43,32 @@
       <div class="footer-grid">
         <div class="footer-main">
           <p class="footer-phone"><a href="tel:+78136851219">+7 (81368) 512-19</a></p>
-          <p class="footer-email"><a href="mailto:stroigaz@bk.ru">stroigaz@bk.ru</a></p>
-          <p class="footer-description">Проектирование и производство<br>промышленного оборудования</p>
+          <p class="footer-messenger">Написать в {% if contacts.whatsapp %}<a href="{{ contacts.whatsapp }}">WhatsApp</a>{% else %}<a href="#" data-placeholder-link>WhatsApp</a>{% endif %}</p>
+          <p class="footer-messenger">Написать в {% if contacts.telegram %}<a href="{{ contacts.telegram }}">Telegram</a>{% else %}<a href="#" data-placeholder-link>Telegram</a>{% endif %}</p>
         </div>
         <div>
-          <p class="footer-label">Ещё один телефон</p>
-          <p><a href="tel:+78136854201">+7 (81368) 542-01</a></p>
-          <div class="ids__space S" aria-hidden="true"></div>
-          <p class="footer-label">Компания</p>
-          <p>{% if page.url == '/directions/' %}<span aria-current="page">Направления</span>{% else %}<a href="/directions/">Направления</a>{% endif %}</p>
-          <p>{% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}</p>
+          <div class="footer-departments">
+            {% for department in contacts.departments %}
+            <div>
+              <p class="footer-label">{{ department.name }}</p>
+              <p>{% if department.example %}<a href="#" data-placeholder-link>{{ department.email }}</a>{% else %}<a href="mailto:{{ department.email }}">{{ department.email }}</a>{% endif %}</p>
+            </div>
+            {% endfor %}
+          </div>
         </div>
         <div>
           <p class="footer-label">Адрес</p>
           <address>187110, Ленинградская область,<br>г. Кириши, проспект Победы, 30</address>
           <div class="ids__space S" aria-hidden="true"></div>
-          <p class="footer-label">ООО «СтройГаз»</p>
-          <p>Работаем с 2006 года</p>
+          <p class="footer-label">Разрешительная документация</p>
+          <p><a href="/assets/documents/stroygaz-declarations.pdf">Декларации на оборудование, PDF</a></p>
+          <div class="ids__space S" aria-hidden="true"></div>
+          <p class="footer-label">Второй телефон</p>
+          <p><a href="tel:+78136854201">+7 (81368) 542-01</a></p>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© ООО «СтройГаз», 2006–2026</span>
-        <span>Производственно-инжиниринговая компания</span>
+        <span>© ООО «СтройГаз» · 2006–2026</span>
       </div>
     </footer>
     <div class="ids__space S" aria-hidden="true"></div>
