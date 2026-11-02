@@ -7,8 +7,8 @@ permalink: /project-department/
   <div class="ids__space XL" aria-hidden="true"></div>
   <div class="ids__text-width project-department-intro">
     <h1 class="page-title">От проекта до запуска</h1>
-    <p class="page-lead">Проектируем и производим промышленное оборудование — от технического задания до запуска на объекте.</p>
-    <p>Подбираем технологии и материалы под условия объекта. Изготавливаем оборудование и конструкции из металла и полимеров. Вот из каких этапов состоит наша работа.</p>
+    <p class="page-lead">Подбираем технологии и материалы под условия объекта, разрабатываем конструкцию и готовим документацию.</p>
+    <p>Затем изготавливаем оборудование из металла и полимеров, проводим испытания, шефмонтаж и пусконаладку. Ниже — этапы работы и возможности производства.</p>
   </div>
   <div class="ids__space M" aria-hidden="true"></div>
   <section aria-label="Этапы работы">
@@ -18,7 +18,11 @@ permalink: /project-department/
         <span class="workflow-number" aria-hidden="true">{{ loop.index }}</span>
         <div>
           <h3>{{ step.title }}</h3>
+          {% if step.items %}
+          <ul>{% for item in step.items %}<li>{{ item }}</li>{% endfor %}</ul>
+          {% else %}
           <p>{{ step.description }}</p>
+          {% endif %}
         </div>
       </li>
       {% endfor %}
@@ -62,7 +66,6 @@ permalink: /project-department/
     </div>
   </section>
   <div class="ids__space L" aria-hidden="true"></div>
-  {% set projectContactIntro = 'Пришлите техническое задание или описание задачи: какое оборудование требуется, для какого объекта и в каких условиях оно будет работать.' %}
   {% include "project-contact.njk" %}
   {% include "reading-next.njk" %}
   <div class="ids__space XL page-end-space" aria-hidden="true"></div>

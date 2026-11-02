@@ -10,11 +10,23 @@
 @import url("./vendor/ids/css/components/ids.css") layer(ids);
 @import url("./vendor/ids/css/components/gallery.css") layer(ids);
 
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("./fonts/golos-text/GolosText-Variable.ttf") format("truetype");
+}
+
+body {
+  font-family: "Golos Text", Arial, sans-serif;
+}
+
 /* Project theme. The upstream token names are the public API. */
 :root {
   --ids__accent: #078844;
   --ids__link: var(--ids__accent);
-  --ids__hover: var(--ids__color-red-500);
+  --ids__hover: #ff6600;
   --ids__text: #25282b;
   --ids__text-caption: #777d85;
   --ids__background: var(--ids__color-white);

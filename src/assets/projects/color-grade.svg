@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="agpz" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="0.99"/>
+        <feFuncG type="linear" slope="1.01"/>
+        <feFuncB type="linear" slope="1.065"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="onpz" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.045"/>
+        <feFuncG type="linear" slope="1.005"/>
+        <feFuncB type="linear" slope="0.975"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="mnpz" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.035"/>
+        <feFuncG type="linear" slope="1.005"/>
+        <feFuncB type="linear" slope="0.98"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="zsnh" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.015"/>
+        <feFuncG type="linear" slope="1.0"/>
+        <feFuncB type="linear" slope="1.0"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="nknh" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.01"/>
+        <feFuncG type="linear" slope="1.0"/>
+        <feFuncB type="linear" slope="1.005"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="tnhk" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.025"/>
+        <feFuncG type="linear" slope="1.0"/>
+        <feFuncB type="linear" slope="0.985"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="rnk" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.02"/>
+        <feFuncG type="linear" slope="1.0"/>
+        <feFuncB type="linear" slope="0.985"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="atyrau" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="0.985"/>
+        <feFuncG type="linear" slope="1.005"/>
+        <feFuncB type="linear" slope="1.04"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="kazan" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.025"/>
+        <feFuncG type="linear" slope="1.0"/>
+        <feFuncB type="linear" slope="0.98"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="belarus" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.025"/>
+        <feFuncG type="linear" slope="1.0"/>
+        <feFuncB type="linear" slope="0.99"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
