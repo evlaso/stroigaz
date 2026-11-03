@@ -1,9 +1,9 @@
 @font-face {
-  font-family: "Days One";
+  font-family: "Prosto One";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./fonts/days-one/DaysOne-Regular.ttf") format("truetype");
+  src: url("./fonts/prosto-one/ProstoOne-Regular.ttf") format("truetype");
 }
 
 /* Page widths, text measure, typography and spacing come from IDS. */
@@ -134,11 +134,13 @@ header {
 }
 
 .brand strong {
-  font-family: "Days One", sans-serif;
+  font-family: "Prosto One", sans-serif;
   font-weight: 400;
   letter-spacing: 0;
   -webkit-text-stroke: 0.018em currentColor;
   paint-order: stroke fill;
+  position: relative;
+  top: 0.07em;
 }
 
 .brand-mark {
@@ -146,14 +148,7 @@ header {
   flex: 0 0 32px;
   width: 32px;
   height: 32px;
-  color: #118A43;
-  transition: color 0.5s var(--ids__easing-base);
-}
-
-.brand-link:hover .brand-mark,
-.brand-link:focus-visible .brand-mark {
-  color: var(--ids__hover);
-  transition-duration: 0s;
+  color: inherit;
 }
 
 .brand-mark {
@@ -1283,8 +1278,12 @@ ids-gallery.case-study-gallery {
 .brand-logo-stage-dark { background: var(--ids__text); }
 .brand-logo-stage img { display: block; object-fit: contain; }
 .brand-logo-stage:has(.brand-art-mark) { aspect-ratio: 1; }
-.brand-logo-stage .brand-art-mark { width: 24.36%; height: 70%; }
-.brand-logo-stage .brand-art-logo { width: 78%; height: 70%; }
+.brand-logo-stage .brand-art-mark,
+.brand-logo-stage .brand-art-logo {
+  width: auto;
+  height: 38.76%;
+  max-width: 90%;
+}
 
 .brand-palette-section {
   margin-top: var(--ids__spacer-l);
@@ -1339,6 +1338,8 @@ ids-gallery.case-study-gallery {
   .brand-logo-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .brand-logo-stage:has(.brand-art-mark) { aspect-ratio: 2.6 / 1; }
 
   .brand-color-swatch { aspect-ratio: 1; }
 }
