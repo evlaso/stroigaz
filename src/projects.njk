@@ -15,7 +15,7 @@ eleventyComputed:
 <div class="ids__wrapper projects-page" data-project-audiences>
   <nav class="project-audience-switch project-audience-switch--tabs" role="group" aria-label="Для кого проекты">
     {% for audience in projectAudiences %}
-    {% if audience.id == projectAudience.id %}<span{% else %}<a href="{{ audience.url }}"{% endif %} class="project-audience-segment" data-url="{{ audience.url }}" data-audience="{{ audience.id }}" data-title="{{ audience.title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ" data-description="{{ audience.description }}" data-canonical="{{ audience.url | htmlBaseUrl(site.url) }}"{% if audience.id == projectAudience.id %} aria-current="page"{% endif %}>{{ audience.label }}{% if audience.id == projectAudience.id %}</span>{% else %}</a>{% endif %}
+    {% if audience.id == projectAudience.id %}<span{% else %}<a href="{{ audience.url }}"{% endif %} class="project-audience-segment" data-url="{{ audience.url | htmlBaseUrl }}" data-audience="{{ audience.id }}" data-title="{{ audience.title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ" data-description="{{ audience.description }}" data-canonical="{{ audience.url | htmlBaseUrl(site.url) }}"{% if audience.id == projectAudience.id %} aria-current="page"{% endif %}>{{ audience.label }}{% if audience.id == projectAudience.id %}</span>{% else %}</a>{% endif %}
     {% endfor %}
   </nav>
   {% for audience in projectAudiences %}
