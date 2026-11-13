@@ -9,18 +9,30 @@ const add=(a,b)=>a.map((v,i)=>v+b[i]);
 const mul=(a,t)=>a.map(v=>v*t);
 const dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0);
 const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
-export function scene(bounds,label){
- const P=k.fitProjection(bounds,760,500,{pad:20,azimuth:55,elevation:31});
+export function scene(bounds,label,options={}){
+ const angle=(options.rotation||0)*Math.PI/180,c=Math.cos(angle),sn=Math.sin(angle),mirrorX=options.mirrorX?-1:1,mirror=options.mirrorY?-1:1;
+ const transform=([x,y,z])=>[c*x*mirrorX-sn*y*mirror,sn*x*mirrorX+c*y*mirror,z];
+ const transformed=options.rotation || options.mirrorX || options.mirrorY;
+ const fixedCanvas=options.fixedCanvas;
+ const P=k.fitProjection(bounds.map(transform),760,500,{pad:20,azimuth:55,elevation:31});
  const a=55*Math.PI/180,e=31*Math.PI/180;
  const toward=[Math.cos(a)*Math.cos(e),Math.sin(a)*Math.cos(e),Math.sin(e)];
  const boxes=[],triangles=[],edges=[],dots=[],surfaces=[],routes=[];
+ let visibilityTiles=null;
  let count=0;
  const at=p=>k.iso(p,P);
- const edge=(a,b,weight=1.05)=>edges.push({a,b,weight});
+ const edge=(a,b,weight=1.05)=>edges.push({a:transform(a),b:transform(b),weight});
  const face=(pts)=>{count++;pts.forEach((p,i)=>edge(p,pts[(i+1)%pts.length]));};
- const panel=(pts)=>{surfaces.push({pts,material:"steel"});face(pts);for(let i=1;i<pts.length-1;i++)triangles.push([pts[0],pts[i],pts[i+1]]);};
- const occluder=(pts,options={})=>{surfaces.push({pts,material:"steel",...options});for(let i=1;i<pts.length-1;i++)triangles.push([pts[0],pts[i],pts[i+1]]);};
- const box=(x,y,w,d,z,h)=>{
+ const occluder=(pts,options={})=>{pts=pts.map(transform);const normals=options.normals?.map(transform);surfaces.push({pts,material:"steel",...options,...(normals?{normals}:{})});for(let i=1;i<pts.length-1;i++)triangles.push([pts[0],pts[i],pts[i+1]]);};
+ const panel=(pts)=>{occluder(pts);face(pts);};
+ const box=(x,y,w,d,z,h,options={})=>{
+  if(transformed){
+   count++;
+   const bottom=[[x,y,z],[x+w,y,z],[x+w,y+d,z],[x,y+d,z]],top=bottom.map(p=>add(p,[0,0,h]));
+   occluder(bottom,options);occluder(top,options);
+   for(let i=0;i<4;i++){const j=(i+1)%4;occluder([bottom[i],bottom[j],top[j],top[i]],options);edge(bottom[i],bottom[j]);edge(top[i],top[j]);edge(bottom[i],top[i]);}
+   return;
+  }
   count++;boxes.push({min:[x,y,z],max:[x+w,y+d,z+h]});
   const bottom=[[x,y,z],[x+w,y,z],[x+w,y+d,z],[x,y+d,z]];
   const top=bottom.map(p=>add(p,[0,0,h]));
@@ -29,9 +41,22 @@ export function scene(bounds,label){
   for(let i=0;i<4;i++)surfaces.push({pts:[bottom[i],bottom[(i+1)%4],top[(i+1)%4],top[i]],material});
   for(let i=0;i<4;i++){edge(bottom[i],bottom[(i+1)%4]);edge(top[i],top[(i+1)%4]);edge(bottom[i],top[i]);}
  };
- const point=(p,r=.8)=>dots.push({p,r});
+ const point=(p,r=.8)=>dots.push({p:transform(p),r});
  const ring=(x,y,r,z)=>{const pts=Array.from({length:24},(_,i)=>[x+Math.cos(i/24*2*Math.PI)*r,y+Math.sin(i/24*2*Math.PI)*r,z]);pts.forEach((p,i)=>edge(p,pts[(i+1)%24],.9));};
- const cable=(pts,physical=true)=>{if(physical)routes.push(pts);pts.slice(1).forEach((p,i)=>edge(pts[i],p,2));};
+ const cable=(pts,physical=true)=>{if(physical)routes.push(pts.map(transform));pts.slice(1).forEach((p,i)=>edge(pts[i],p,2));};
+ const localToward=[mirrorX*(c*toward[0]+sn*toward[1]),mirror*(-sn*toward[0]+c*toward[1]),toward[2]];
+ const revolve=(x,y,z,profile,options={})=>{
+  count++;
+  const mesh=k.revolvedMesh(profile,{origin:[x,y,z],toward:localToward,...options});
+  for(const {pts,...rest} of mesh.surfaces)occluder(pts,rest);
+  for(const [a,b] of mesh.edges)edge(a,b);
+ };
+ const tube=(points,r=.8,options={})=>{
+  for(let i=1;i<points.length;i++){
+   const a=points[i-1],axis=sub(points[i],a),length=Math.hypot(...axis);
+   if(length>1e-8)revolve(...a,[[0,0],[r,0],[r,length],[0,length]],{segments:24,...options,axis});
+  }
+ };
  const feet=(x,y,w,d)=>{for(const [a,b] of k.corners({x,y,w,d,r:0},9)){box(a-6,b-5,12,10,0,3);box(a-4,b-3,8,6,3,9);}};
  const table=(x,y,w,d,h=65)=>{
   for(const [a,b] of k.corners({x,y,w,d,r:0},6)){box(a-4,b-4,8,8,3,h-8);box(a-6,b-6,12,12,0,3);}
@@ -54,7 +79,9 @@ export function scene(bounds,label){
    }
    if(leave>Math.max(enter,.045)+.02)return true;
   }
-  for(const [v0,v1,v2] of triangles){
+   const screen=visibilityTiles?at(p):null;
+   const candidates=visibilityTiles?(visibilityTiles.get(`${Math.floor(screen[0]/24)},${Math.floor(screen[1]/24)}`)||[]):triangles;
+   for(const [v0,v1,v2] of candidates){
    const e1=sub(v1,v0),e2=sub(v2,v0),h=cross(toward,e2),det=dot(e1,h);
    if(Math.abs(det)<1e-8)continue;
    const s=sub(p,v0),u=dot(s,h)/det;if(u<-.0001||u>1.0001)continue;
@@ -63,7 +90,8 @@ export function scene(bounds,label){
   }
   return false;
  }
- function finish(slug, outputPath, options={}){
+  function finish(slug, outputPath, options={}){
+   if(transformed && edges.length)Object.assign(P,k.fitProjection(edges.flatMap(({a,b})=>[a,b]),760,500,{pad:20,azimuth:55,elevation:31}));
   if(process.env.ANATOMY_SCENE_EXPORT){
    const origin=at([0,0,0]);
    const axes=[[1,0,0],[0,1,0],[0,0,1]].map(p=>sub(at(p),origin));
@@ -73,7 +101,21 @@ export function scene(bounds,label){
    const linePath=outputPath || `src/assets/technologies/${slug}-schematic.svg`;
    writeFileSync(exportFile,JSON.stringify({surfaces,routes,toward,origin,axes,linePath}));
   }
-  const paths=[],seen=new Set();
+   // Rotated assemblies use triangle occluders instead of axis-aligned boxes.
+   // Index their screen bounds so detailed revolved parts do not require an
+   // all-triangles ray test for every sub-pixel sample. The ray test is exact.
+   if(transformed){
+    visibilityTiles=new Map();
+    for(const triangle of triangles){
+     const points=triangle.map(at),xs=points.map(p=>p[0]/24),ys=points.map(p=>p[1]/24);
+     for(let x=Math.floor(Math.min(...xs)-1e-5);x<=Math.floor(Math.max(...xs)+1e-5);x++)for(let y=Math.floor(Math.min(...ys)-1e-5);y<=Math.floor(Math.max(...ys)+1e-5);y++){
+      const key=`${x},${y}`;
+      if(!visibilityTiles.has(key))visibilityTiles.set(key,[]);
+      visibilityTiles.get(key).push(triangle);
+     }
+    }
+   }
+   const paths=[],seen=new Set();
   const lighting=options.relief?makeContourLighting(edges,surfaces,toward,at):null;
   const relief=(a,b,weight)=>lighting?lighting.style(a,b):`stroke-width="${weight}"`;
   for(const {a,b,weight} of edges){
@@ -102,7 +144,8 @@ export function scene(bounds,label){
   }
   for(const {p,r} of dots)if(!blocked(p)){const [cx,cy]=at(p);paths.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#383e43" stroke="none"/>`);}
   const body=`${lighting?lighting.definitions():''}<g fill="none" stroke="#383e43" stroke-linejoin="round" stroke-linecap="round">${paths.join('')}</g>`;
-  let svg=k.figureSvg({width:760,height:500,label,body,standalone:'light'});svg=svg.replace('</style>',LINE_STYLE+'</style>');
+   let svg=k.figureSvg({width:760,height:500,label,body,standalone:'light'});svg=svg.replace('</style>',LINE_STYLE+'</style>');
+   if(fixedCanvas)svg=svg.replace('<svg','<svg data-frame="canvas"');
   const destination=outputPath || `src/assets/technologies/${slug}-schematic.svg`;
   if(options.ink)svg=svg.replaceAll('#383e43',options.ink);
   if(options.fit){
@@ -129,9 +172,10 @@ export function scene(bounds,label){
    return `<polygon points="${pts.map(p=>at(p).map(v=>v.toFixed(2)).join(',')).join(' ')}" fill="${fill}" stroke="${fill}" stroke-width=".4"/>`;
   }).join('');
   const colored=`<g>${fills}${body.replace('stroke="#383e43"','stroke="#4d5358" stroke-opacity=".7"')}</g>`;
-  const colorSvg=k.figureSvg({width:760,height:500,label,body:colored,standalone:'light'});
+   let colorSvg=k.figureSvg({width:760,height:500,label,body:colored,standalone:'light'});
+   if(fixedCanvas)colorSvg=colorSvg.replace('<svg','<svg data-frame="canvas"');
   writeFileSync(destination.replace('-schematic.svg','-color.svg'),colorSvg);
   console.log(`${slug}: ${count} parts, ${audited} surface-order checks passed`);
  }
- return {P,at,box,face,panel,occluder,path:()=>{},dot:point,ring,cable,feet,table,cabinet,finish};
+  return {P,at,box,face,panel,occluder,edge,revolve,tube,path:()=>{},dot:point,ring,cable,feet,table,cabinet,finish};
 }

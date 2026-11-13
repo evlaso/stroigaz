@@ -1,0 +1,94 @@
+---
+layout: layouts/base.njk
+title: Обновлённый логотип — СТРОЙГАЗ
+description: >-
+  Знак СТРОЙГАЗ в растре и в векторе: сравнение и построение по окружностям. Форма и цвета прежние.
+noindex: true
+permalink: /logotype/
+eleventyExcludeFromCollections: true
+sizes: [16, 32, 64, 128]
+---
+<div class="ids__wrapper">
+<div class="ids__space XL" aria-hidden="true"></div>
+<div class="ids__text-width">
+  <h1 class="page-title">Обновлённый логотип</h1>
+</div>
+<div class="ids__space M" aria-hidden="true"></div>
+
+<section class="logo-vs-section" aria-label="Геометрия знака">
+  <figure class="logo-vs-figure">
+    <div class="logo-vs-construction">
+      <img src="/assets/brand/mark-construction.svg" width="868" height="1134" alt="Контуры знака в векторе, окружности по его дугам и вертикальная ось" decoding="async">
+    </div>
+    <figcaption>Геометрия знака</figcaption>
+  </figure>
+</section>
+
+<section class="logo-vs-section" aria-label="Было и стало">
+  <div class="logo-vs-pair">
+    <figure class="logo-vs-figure">
+      <div class="logo-vs-stage">
+        <img class="logo-vs-raster" src="/assets/brand/mark-old.png" width="256" height="505" alt="Знак в растре">
+      </div>
+      <figcaption>Было</figcaption>
+    </figure>
+    <figure class="logo-vs-figure">
+      <div class="logo-vs-stage">
+        <img src="/assets/brand/mark-color.svg" width="555" height="971" alt="Знак в векторе">
+      </div>
+      <figcaption>Стало</figcaption>
+    </figure>
+  </div>
+  <h3 class="logo-vs-subtitle">При увеличении ×3</h3>
+  <div class="logo-vs-pair">
+    <figure class="logo-vs-figure">
+      <div class="logo-vs-stage logo-vs-zoom" style="--aspect: 0.507;">
+        <img class="logo-vs-raster" src="/assets/brand/mark-old.png" width="256" height="505" alt="Знак в растре, увеличенный фрагмент">
+      </div>
+      <figcaption>Было, ×3</figcaption>
+    </figure>
+    <figure class="logo-vs-figure">
+      <div class="logo-vs-stage logo-vs-zoom" style="--aspect: 0.571;">
+        <img src="/assets/brand/mark-color.svg" width="555" height="971" alt="Знак в векторе, увеличенный фрагмент">
+      </div>
+      <figcaption>Стало, ×3</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="logo-vs-section" aria-labelledby="logo-vs-media-title">
+  <h2 class="brand-section-title" id="logo-vs-media-title">На носителях</h2>
+  <div class="logo-mock-grid">
+    <figure class="logo-vs-figure">
+      <div class="logo-mock logo-mock-facade">
+        <div class="logo-mock-sign" aria-hidden="true">
+          <img src="/assets/brand/logo-white.svg" alt="" width="120" height="20">
+        </div>
+      </div>
+      <figcaption>Вывеска на фасаде цеха</figcaption>
+    </figure>
+    <figure class="logo-vs-figure">
+      <div class="logo-mock logo-mock-paper" tabindex="0" role="region" aria-label="Основная надпись чертежа, прокручивается по горизонтали">
+        <div class="logo-mock-sheet">
+          {% include "logotype-title-block.njk" %}
+        </div>
+      </div>
+      <figcaption>Основная надпись чертежа</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="logo-vs-section" aria-labelledby="logo-vs-sizes-title">
+  <h2 class="brand-section-title" id="logo-vs-sizes-title">Масштабы</h2>
+  <div class="logo-vs-sizes">
+    {% for size in sizes %}
+    <figure class="logo-vs-size">
+      <img src="/assets/brand/mark-color.svg" width="{{ (size * 0.571) | round(1) }}" height="{{ size }}" style="height: {{ size }}px;" alt="Знак высотой {{ size }} пикселей" loading="lazy" decoding="async">
+      <figcaption>{{ size }} px</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+<div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>
+

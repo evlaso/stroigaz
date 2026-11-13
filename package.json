@@ -4,11 +4,24 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "eleventy --serve",
-    "start": "eleventy --serve",
-    "build": "eleventy"
+    "dev": "npm run build:scheme && eleventy --serve",
+    "start": "npm run dev",
+    "build": "npm run build:scheme && eleventy",
+    "build:scheme": "tsc --project tools/scheme/tsconfig.json && vite build --config tools/scheme/vite.config.ts",
+    "dev:scheme": "vite build --watch --config tools/scheme/vite.config.ts",
+    "test:scheme": "node --experimental-strip-types --test tools/scheme/tests/*.test.ts",
+    "test:scheme:browser": "node tools/scheme/tests/browser.mjs",
+    "test:scheme:smoke": "node tools/scheme/tests/smoke.mjs"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.7"
+    "@11ty/eleventy": "^3.1.7",
+    "@types/three": "^0.183.1",
+    "occt-import-js": "0.0.23",
+    "playwright-core": "^1.58.2",
+    "three": "0.187.0",
+    "three-gpu-pathtracer": "^0.0.28",
+    "three-mesh-bvh": "^0.9.18",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
   }
 }

@@ -196,6 +196,232 @@ header a:focus-visible {
   color: var(--ids__hover);
 }
 
+.menu-button,
+.mobile-menu {
+  display: none;
+}
+
+.menu-open,
+.menu-open body {
+  overflow: hidden;
+}
+
+@keyframes menu-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (width < 1100px) {
+  /* The ordinary navigation is the fallback until JavaScript is ready. */
+  .header-layout {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--ids__gap-s);
+  }
+
+  header nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-wrap: wrap;
+    gap: var(--ids__gap-s);
+  }
+
+  header .brand,
+  header nav > *,
+  .header-phone {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  header nav > * {
+    padding-inline: var(--ids__gap-s);
+  }
+
+  .menu-ready header nav,
+  .menu-ready .header-phone {
+    display: none;
+  }
+
+  .menu-ready .header-layout {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .menu-ready header .brand {
+    justify-self: start;
+  }
+
+  .menu-button {
+    appearance: none;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--ids__link);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .menu-ready .menu-toggle:not([hidden]),
+  .mobile-menu .menu-close {
+    display: inline-flex;
+  }
+
+  .menu-toggle {
+    justify-self: end;
+  }
+
+  .menu-button:hover,
+  .menu-button:focus-visible {
+    color: var(--ids__hover);
+  }
+
+  .menu-button:focus-visible,
+  .mobile-menu a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .menu-icon {
+    position: relative;
+    display: block;
+    width: 26px;
+    height: 26px;
+  }
+
+  .menu-icon::before,
+  .menu-icon::after {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 26px;
+    height: 2px;
+    background: currentColor;
+    content: "";
+  }
+
+  .menu-icon::after {
+    top: 16px;
+  }
+
+  .menu-close .menu-icon::before,
+  .menu-close .menu-icon::after {
+    top: 12px;
+    transform: rotate(45deg);
+  }
+
+  .menu-close .menu-icon::after {
+    transform: rotate(-45deg);
+  }
+
+  .mobile-menu:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: white;
+    color: var(--ids__text);
+  }
+
+  .mobile-menu-layout {
+    padding-bottom: var(--ids__spacer-l);
+  }
+
+  .mobile-menu-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: flex-end;
+    padding-block: 0.4rem 0.25rem;
+    background: white;
+  }
+
+  .mobile-menu-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 0;
+    font-size: 1.7em;
+    line-height: 1.2;
+  }
+
+  .mobile-menu-nav > * {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0.1em;
+    white-space: normal;
+    text-decoration: none;
+  }
+
+  .mobile-menu-contacts {
+    margin-top: var(--ids__spacer-m);
+  }
+
+  .mobile-menu .footer-grid,
+  .mobile-menu .footer-departments {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ids__gap-m);
+  }
+
+  .mobile-menu .footer-grid > div {
+    grid-column: auto;
+    font-size: 1em;
+  }
+
+  .mobile-menu .footer-departments {
+    gap: 0.75rem;
+  }
+
+  .mobile-menu-contacts p {
+    margin-bottom: 0;
+  }
+
+  .mobile-menu .footer-phone,
+  .mobile-menu .footer-messenger {
+    font-size: 1.1em;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  .mobile-menu .footer-label {
+    margin-bottom: 0;
+    font-weight: 400;
+    color: var(--ids__text-caption);
+  }
+
+  .mobile-menu address {
+    font-style: normal;
+  }
+}
+
+@media (width < 768px) {
+  html:not(.menu-ready) .header-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  html:not(.menu-ready) header .brand,
+  html:not(.menu-ready) .header-phone {
+    justify-self: center;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-menu:not([hidden]) {
+    animation: menu-appear 0.15s ease-out;
+  }
+}
+
 .intro-block {
   position: relative;
   isolation: isolate;
@@ -328,7 +554,8 @@ header a:focus-visible {
   margin-bottom: var(--ids__spacer-m);
 }
 
-.project-intro .page-lead {
+.project-intro .page-lead,
+.project-intro > p:last-child {
   margin-bottom: 0;
 }
 
@@ -341,6 +568,7 @@ header a:focus-visible {
 }
 
 .project-filters[hidden],
+[data-project-audiences] [data-audience-view][hidden],
 .project-card[hidden] {
   display: none;
 }
@@ -360,7 +588,8 @@ header a:focus-visible {
   transition: color 0.5s, background-color 0.5s;
 }
 
-.project-filter[aria-pressed="true"] {
+.project-filter[aria-pressed="true"],
+.project-filter[aria-current="page"] {
   background: color-mix(in srgb, var(--ids__link) 10%, transparent);
   color: var(--ids__link);
 }
@@ -371,7 +600,8 @@ header a:focus-visible {
   color: var(--ids__hover);
 }
 
-.project-filter[aria-pressed="true"]:hover {
+.project-filter[aria-pressed="true"]:hover,
+.project-filter[aria-current="page"]:hover {
   background: color-mix(in srgb, var(--ids__hover) 10%, transparent);
   color: var(--ids__hover);
 }
@@ -379,6 +609,149 @@ header a:focus-visible {
 .project-filter:focus-visible {
   outline: 2px solid var(--ids__accent);
   outline-offset: 3px;
+}
+
+.projects-page {
+  padding-top: var(--ids__spacer-xl);
+}
+
+.project-audience-switch {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  vertical-align: top;
+  width: max-content;
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: var(--ids__spacer-s);
+  border: var(--ids__border-width-s) solid var(--ids__border);
+  border-radius: var(--ids__radius-s);
+  overflow: hidden;
+  background: transparent;
+}
+
+.project-audience-switch .project-audience-segment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 0.2em 0.6em;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ids__link);
+  font: inherit;
+  font-size: 1em;
+  line-height: var(--ids__density);
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  transition: color 0.5s;
+}
+
+.project-audience-switch .project-audience-segment + .project-audience-segment {
+  border-left: 1px solid var(--ids__border);
+}
+
+.project-audience-switch span.project-audience-segment[aria-current="page"] {
+  cursor: default;
+  background: var(--ids__surface);
+  color: var(--ids__text);
+  transition: none;
+}
+
+.project-audience-switch a.project-audience-segment:not([aria-current="page"]):hover {
+  color: var(--ids__hover);
+  transition-duration: 0s;
+}
+
+.project-audience-switch a.project-audience-segment:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--ids__accent);
+  outline-offset: -2px;
+}
+
+@media (width < 1100px) {
+  .project-audience-switch .project-audience-segment {
+    padding-block: 0.35em;
+  }
+}
+
+/*
+ * Light variants of the audience switch for /projects/ (the bordered base stays for .scheme-switch).
+ * Switch by changing the modifier in src/projects.njk:
+ *   --tabs   (A, active): text tabs, active word underlined in --ids__link;
+ *   --plain  (B): text tabs, no underline, active is just darker text;
+ *   --quiet  (C): thin light frame, no fill, caption-sized text.
+ */
+.project-audience-switch:is(.project-audience-switch--tabs, .project-audience-switch--plain) {
+  gap: 1.25em;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  font-size: 1em;
+}
+
+.project-audience-switch:is(.project-audience-switch--tabs, .project-audience-switch--plain) .project-audience-segment {
+  padding: 0.15em 0;
+  color: var(--ids__link);
+}
+
+.project-audience-switch:is(.project-audience-switch--tabs, .project-audience-switch--plain, .project-audience-switch--quiet) .project-audience-segment + .project-audience-segment {
+  border-left: 0;
+}
+
+.project-audience-switch:is(.project-audience-switch--tabs, .project-audience-switch--plain, .project-audience-switch--quiet) span.project-audience-segment[aria-current="page"] {
+  background: transparent;
+  color: var(--ids__text);
+}
+
+/* Табы: серая линия на всю ширину, активный пункт подчёркнут поверх неё. */
+.project-audience-switch.project-audience-switch--tabs {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  border-bottom: 1px solid var(--ids__border);
+}
+
+.project-audience-switch.project-audience-switch--tabs .project-audience-segment {
+  padding-block: 0.15em 0.5em;
+  margin-bottom: -1px;
+  border-bottom: 3px solid transparent;
+}
+
+.project-audience-switch--tabs span.project-audience-segment[aria-current="page"] {
+  font-weight: 600;
+  border-bottom-color: var(--ids__text);
+}
+
+.project-audience-switch:is(.project-audience-switch--tabs, .project-audience-switch--plain, .project-audience-switch--quiet) a.project-audience-segment:not([aria-current="page"]):hover {
+  color: var(--ids__hover);
+}
+
+.project-audience-switch:is(.project-audience-switch--tabs, .project-audience-switch--plain) a.project-audience-segment:focus-visible {
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.project-audience-switch--quiet {
+  border-color: color-mix(in srgb, var(--ids__border) 55%, transparent);
+  font-size: 0.875em;
+}
+
+.project-audience-switch--quiet .project-audience-segment {
+  color: var(--ids__text-caption);
+}
+
+.project-audience-switch.project-audience-switch--quiet .project-audience-segment {
+  padding: 0.15em 0.65em;
+}
+
+.project-audience-switch--quiet .project-audience-segment + .project-audience-segment {
+  box-shadow: inset 1px 0 color-mix(in srgb, var(--ids__border) 55%, transparent);
 }
 
 .project-filter-status {
@@ -689,6 +1062,14 @@ header a:focus-visible {
   border-radius: var(--ids__radius-s);
 }
 
+/* Temporary placeholder for the director's photo on the about page. */
+.about-photo-placeholder {
+  background: color-mix(in srgb, var(--ids__link) 10%, white);
+  border-radius: var(--ids__radius-s);
+  aspect-ratio: 1672 / 941;
+  width: 100%;
+}
+
 .company-section-title {
   font-size: 1.1em;
   font-weight: 600;
@@ -906,8 +1287,24 @@ header a:focus-visible {
 
 @media (width < 768px) {
   .reading-next-links {
-    flex-direction: column;
-    gap: var(--ids__gap-l);
+    flex-direction: row;
+    gap: var(--ids__gap-m) var(--ids__gap-l);
+  }
+
+  .reading-next-link {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ids__gap-s);
+  }
+
+  .reading-next-preview {
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .reading-next-title {
+    font-size: 1.3em;
   }
 
   .project-catalog-vertical {
@@ -916,6 +1313,8 @@ header a:focus-visible {
 
   .client-logos {
     padding-right: 0;
+    gap: 1.25rem 2rem;
+    zoom: 0.72;
   }
 
   .company-facts,
@@ -942,6 +1341,7 @@ header a:focus-visible {
 
   .workflow {
     grid-template-columns: 1fr;
+    margin-inline: calc(-1 * var(--workflow-inset));
   }
 
   .additional-equipment {
@@ -981,7 +1381,7 @@ header a:focus-visible {
 
   .intro-block h1,
   .page-title {
-    font-size: 2.7em;
+    font-size: 2.4em;
   }
 
   .footer-grid {
@@ -993,23 +1393,6 @@ header a:focus-visible {
     gap: var(--ids__gap-s);
   }
 
-  .header-layout {
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
-
-  .brand {
-    justify-self: center;
-  }
-
-  .header-phone {
-    justify-self: center;
-  }
-
-  nav {
-    flex-wrap: wrap;
-    gap: var(--ids__gap-s);
-  }
 }
 
 /* Illustrated project cards and photo galleries. */
@@ -1125,24 +1508,34 @@ ids-gallery.case-study-gallery {
   outline-offset: -2px;
 }
 
-@media (width < 768px) {
+@media (width < 1100px) {
   .case-studies {
     --case-inset: calc(var(--ids__density) * 0.6rem);
   }
 
+  /* On small screens the photos follow the text; the line drawing closes the card. */
   .case-study {
-    height: 36rem;
+    height: auto;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) 3.5rem;
+    grid-template-rows: auto auto 20rem;
+  }
+
+  ids-gallery.case-study-gallery {
+    grid-column: 1;
+    grid-row: 2;
+    flex-wrap: wrap;
+    height: auto;
+    overflow: visible;
   }
 
   .case-study-schematic {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
   }
 
-  ids-gallery.case-study-gallery {
-    grid-row: 3;
+  .case-study-gallery figure {
+    max-width: 100%;
+    height: 3.5rem;
   }
 }
 
@@ -1344,6 +1737,204 @@ ids-gallery.case-study-gallery {
   .brand-color-swatch { aspect-ratio: 1; }
 }
 
+/* Unlisted mark comparison at /logo-vs/. */
+.logo-vs-section + .logo-vs-section {
+  margin-top: var(--ids__spacer-l);
+}
+
+.logo-vs-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ids__gap-m);
+}
+
+.logo-vs-subtitle {
+  margin: var(--ids__spacer-s) 0 var(--ids__gap-s);
+  color: var(--ids__text-caption);
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.logo-vs-figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.logo-vs-figure figcaption {
+  margin-top: 0.6em;
+  color: var(--ids__text-caption);
+  font-size: 0.85em;
+}
+
+/* White stages: the old raster was drawn on white. The border, unlike an
+   inset shadow, stays above the absolutely positioned zoomed image. */
+.logo-vs-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__color-white);
+  border: 1px solid rgb(0 0 0 / 8%);
+}
+
+.logo-vs-stage img {
+  display: block;
+  width: auto;
+  height: 80%;
+}
+
+/* Pixels show only when enlarged; the plain size is downscaled as usual. */
+.logo-vs-zoom .logo-vs-raster {
+  image-rendering: pixelated;
+}
+
+/* Three times the stage size above, centred on the flame tips. */
+.logo-vs-zoom {
+  --fx: 0.5;
+  --fy: 0.21;
+}
+
+.logo-vs-zoom img {
+  position: absolute;
+  top: calc(50% - var(--fy) * 240%);
+  left: calc(50% - var(--fx) * var(--aspect) * 240%);
+  max-width: none;
+  height: 240%;
+}
+
+.logo-vs-construction {
+  border-radius: var(--ids__radius-s);
+  background: #F5F6F7;
+  padding: var(--ids__gap-l);
+}
+
+.logo-vs-construction img {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin-inline: auto;
+}
+
+.logo-vs-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ids__gap-l);
+  padding: var(--ids__gap-l);
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__color-white);
+  border: 1px solid rgb(0 0 0 / 8%);
+}
+
+.logo-vs-size {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.logo-vs-size img {
+  display: block;
+  width: auto;
+  max-width: none;
+}
+
+.logo-vs-size figcaption {
+  margin-top: 0.6em;
+  color: var(--ids__text-caption);
+  font-size: 0.85em;
+}
+
+/* Mock-ups at /logotype/: drawn in CSS, no photos. Two equal cards in a row. */
+.logo-mock-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ids__gap-l) var(--ids__gap-m);
+}
+
+.logo-mock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--ids__radius-s);
+}
+
+.logo-mock img { display: block; }
+
+/* Corrugated cladding of a workshop with a sign box. */
+.logo-mock-facade {
+  background:
+    repeating-linear-gradient(90deg, #C3C8CD 0 14px, #B2B8BE 14px 18px, #CDD2D6 18px 30px);
+}
+
+.logo-mock-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62%;
+  aspect-ratio: 5 / 1;
+  background: var(--ids__accent);
+  box-shadow: 0 6px 14px rgb(0 0 0 / 25%);
+}
+
+.logo-mock-sign img { width: 82%; height: auto; }
+
+/* Drawing sheet; the title block sits in the lower right corner of its frame. */
+.logo-mock-paper {
+  align-items: stretch;
+  padding: 3% 2% 3% 6%;
+  border: 1px solid rgb(0 0 0 / 8%);
+  background: #FFFFFF;
+}
+
+.logo-mock-sheet {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  justify-content: flex-end;
+  border: 1.5px solid #25282B;
+}
+
+.logo-mock-title-block {
+  display: block;
+  flex: none;
+  width: calc(100% + 2px);
+  height: auto;
+  margin: -1px;
+}
+
+@media (width < 768px) {
+  .logo-vs-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .logo-mock-grid { grid-template-columns: minmax(0, 1fr); }
+  .logo-mock { aspect-ratio: 4 / 3; }
+
+  /* Below ~740px the GOST lettering drops under 9px: scroll the sheet instead.
+     Row-reverse opens it scrolled to the right edge, where the mark is. */
+  .logo-mock-paper {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .logo-mock-sheet { flex: none; }
+  .logo-mock-title-block { width: 740px; }
+
+  .logo-vs-construction {
+    padding: var(--ids__gap-s);
+  }
+}
+
 .workflow-step .workflow-note {
   margin-top: 0.5em;
 }
@@ -1432,9 +2023,19 @@ ids-gallery.case-study-gallery {
   transition-duration: 0s;
 }
 
+/* The fourth example only appears in the two-by-two phone grid. */
+.home-projects-item-mobile {
+  display: none;
+}
+
 @media (width < 768px) {
   .home-projects-grid {
-    gap: var(--ids__gap-s);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ids__gap-m) var(--ids__gap-s);
+  }
+
+  .home-projects-item-mobile {
+    display: block;
   }
 
   .home-projects-art {
@@ -1446,6 +2047,17 @@ ids-gallery.case-study-gallery {
   .intro-block {
     grid-template-columns: minmax(0, 1fr);
     aspect-ratio: auto;
+    padding: 1.25rem 1rem 0.5rem;
+  }
+}
+
+/* On phones the hero runs edge to edge, like the project cards. */
+@media (width < 768px) {
+  .intro-block {
+    --hero-inset: calc(var(--ids__density) * 0.6rem);
+    margin-inline: calc(-1 * var(--hero-inset));
+    padding: 1.25rem var(--hero-inset) 0.5rem;
+    border-radius: 0;
   }
 
   .intro-equipment {
@@ -1463,4 +2075,692 @@ ids-gallery.case-study-gallery {
   position: relative;
   z-index: 1;
   min-width: 0;
+}
+
+/* Metalwork photo gallery in projects and a teaser on the homepage. */
+.home-services {
+  min-width: 0;
+}
+
+ids-gallery.service-gallery {
+  gap: 3em;
+  align-items: flex-start;
+}
+
+.service-gallery figure {
+  flex-basis: 7.5em;
+}
+
+.service-gallery a {
+  display: block;
+  cursor: zoom-in;
+}
+
+.service-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.service-gallery a:focus-visible {
+  outline: none;
+}
+
+.home-projects-all-outline {
+  border: var(--ids__border-width-s) solid color-mix(in srgb, var(--ids__link) 35%, transparent);
+  background: transparent;
+}
+
+.home-projects-all-outline:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--ids__hover) 50%, transparent);
+  background: transparent;
+}
+
+/* Keep tablet text readable and compact controls comfortable to tap. */
+@media (768px <= width < 1100px) {
+  html {
+    font-size: max(16px, 1.6vw);
+  }
+
+  .page-title {
+    font-size: 2.7em;
+  }
+
+  .project-catalog-vertical .project-card h3 {
+    font-size: 1.2em;
+  }
+}
+
+@media (width < 1100px) {
+  .footer-grid > :not(.footer-main) {
+    font-size: max(0.8em, 14px);
+  }
+
+  .home-projects-all {
+    min-height: 44px;
+  }
+
+  .project-filters {
+    gap: 0.25rem var(--ids__gap-s);
+  }
+
+  .project-filter {
+    padding-block: 0.1em;
+  }
+
+  .home-projects-all {
+    text-align: center;
+  }
+
+  ids-gallery.service-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--ids__gap-l) var(--ids__gap-m);
+  }
+
+  .service-gallery figure {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .service-gallery figure {
+    align-self: start;
+  }
+
+  .service-gallery figcaption {
+    margin-right: 0;
+  }
+}
+
+@media (width < 768px) {
+  /* Compact footer on phones: one column, regular type, tight lines. */
+  .site-footer {
+    padding: var(--ids__gap-m);
+  }
+
+  .footer-grid {
+    gap: var(--ids__gap-m);
+  }
+
+  .footer-grid > :not(.footer-main) {
+    font-size: 1em;
+  }
+
+  .footer-phone,
+  .footer-messenger {
+    font-size: 1.1em;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  .site-footer p {
+    margin-bottom: 0;
+  }
+
+  .footer-departments {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .site-footer .footer-label {
+    margin-bottom: 0;
+    font-weight: 400;
+    color: var(--ids__text-caption);
+  }
+
+  .footer-bottom {
+    margin-top: var(--ids__spacer-m);
+  }
+
+  ids-gallery.service-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* 3D model → outline scheme. Site grid, IDS tokens; compact playground controls above the canvas. */
+.scheme-app {
+  font-size: 0.8rem;
+}
+
+.scheme-app [hidden] {
+  display: none !important;
+}
+
+/* Settings at ~0.8 of the app text: playground density, captions and values the same size. */
+.scheme-settings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: var(--ids__gap-m) var(--ids__gap-l);
+  font-size: 0.8em;
+  line-height: 1.25;
+}
+
+/* «Открыть модель»: a full-width site button between the settings and the canvas, the file name below it in one line. */
+.scheme-open {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  margin-top: var(--ids__gap-l);
+}
+
+.scheme-app .scheme-open-button {
+  flex: 0 0 auto;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.scheme-open .scheme-file {
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+/* Two short sections sharing one settings column (Ракурс над Модель). */
+.scheme-stack {
+  display: grid;
+  align-content: start;
+  gap: var(--ids__gap-m);
+  min-width: 0;
+}
+
+.scheme-controls {
+  display: grid;
+  grid-template-columns: max-content minmax(2.5rem, 1fr) max-content;
+  grid-auto-rows: min-content;
+  align-content: start;
+  align-items: center;
+  gap: 0.35em 0.75em;
+  min-width: 0;
+}
+
+.scheme-controls > :not(.scheme-field) {
+  grid-column: 1 / -1;
+  justify-self: start;
+  max-width: 100%;
+}
+
+.scheme-controls h2 {
+  margin: 0 0 0.15em;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.scheme-heading-note {
+  margin-left: 0.5em;
+  font-weight: 400;
+}
+
+.scheme-field {
+  display: contents;
+}
+
+.scheme-field label {
+  color: var(--ids__text-caption);
+  white-space: nowrap;
+}
+
+.scheme-field output {
+  min-width: 4.2em;
+  color: var(--ids__text);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/*
+ * Thin slider: a 2 px track in the border grey, the part left of the thumb darker
+ * (--scheme-fill is kept by main.ts), a small dark round thumb without a shadow.
+ */
+.scheme-field input[type="range"] {
+  --scheme-fill: 50%;
+  --scheme-track: var(--ids__border);
+  --scheme-track-fill: color-mix(in srgb, var(--ids__text) 70%, transparent);
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 1.25em;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.scheme-field input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(to right, var(--scheme-track-fill) var(--scheme-fill), var(--scheme-track) var(--scheme-fill));
+}
+
+.scheme-field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  margin-top: -4.5px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ids__text);
+}
+
+.scheme-field input[type="range"]::-moz-range-track {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--scheme-track);
+}
+
+.scheme-field input[type="range"]::-moz-range-progress {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--scheme-track-fill);
+}
+
+.scheme-field input[type="range"]::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ids__text);
+}
+
+.scheme-app .scheme-field input[type="range"]:focus-visible {
+  outline: none;
+}
+
+.scheme-field input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--ids__background), 0 0 0 4px var(--ids__link);
+}
+
+.scheme-field input[type="range"]:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--ids__background), 0 0 0 4px var(--ids__link);
+}
+
+.scheme-row,
+.scheme-colors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+}
+
+/* Floating mode switch in the canvas corner: above the empty state, below the busy overlay. */
+.scheme-switch {
+  flex: 0 0 auto;
+  margin: 0 0 0 auto;
+  background: var(--ids__background);
+  font-size: 0.9em;
+}
+
+/* Переключатель режима нужен только с загруженной моделью. */
+body:not([data-state="ready"]) .scheme-switch {
+  display: none;
+}
+
+/* A running trace: the active segment pulses its caption colour. */
+.scheme-switch button[data-running="true"][aria-pressed="true"] {
+  animation: scheme-tracing 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes scheme-tracing {
+  to { color: var(--ids__text-caption); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scheme-switch button[data-running="true"][aria-pressed="true"] {
+    animation: none;
+  }
+}
+
+.scheme-frame-switch {
+  margin: 0;
+}
+
+:is(.scheme-switch, .scheme-frame-switch) button {
+  padding: 0.25em 0.7em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.project-audience-switch.scheme-frame-switch .project-audience-segment {
+  padding: 0.2em 0.6em;
+}
+
+:is(.scheme-switch, .scheme-frame-switch) button[aria-pressed="true"] {
+  background: var(--ids__surface);
+  color: var(--ids__text);
+}
+
+:is(.scheme-switch, .scheme-frame-switch) button[aria-pressed="false"]:hover {
+  color: var(--ids__hover);
+}
+
+.scheme-app .scheme-button {
+  min-height: 0;
+  margin: 0;
+  padding: 0.2em 0.6em;
+  font: inherit;
+  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.scheme-app .scheme-busy .scheme-button,
+.scheme-app .scheme-empty .scheme-button {
+  min-height: 1.6rem;
+  padding: 0.2em 0.7em;
+}
+
+.scheme-app button:disabled,
+.scheme-app input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.scheme-app :is(button, input, summary):focus-visible {
+  outline: 2px solid var(--ids__link);
+  outline-offset: 2px;
+}
+
+:is(.scheme-switch, .scheme-frame-switch) button:focus-visible {
+  outline-offset: -3px;
+}
+
+.scheme-check,
+.scheme-colors label {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  cursor: pointer;
+}
+
+.scheme-colors {
+  gap: var(--ids__gap-m);
+}
+
+.scheme-check input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--ids__text);
+}
+
+/* Colour chips: a 16 × 16 square with a thin frame; the native input fills it invisibly. */
+.scheme-swatch {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  border: 1px solid var(--ids__border);
+  border-radius: 3px;
+}
+
+.scheme-swatch input[type="color"] {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.scheme-swatch input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.scheme-swatch input[type="color"]::-webkit-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+
+.scheme-swatch input[type="color"]::-moz-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+
+.scheme-swatch:has(input:focus-visible) {
+  outline: 2px solid var(--ids__link);
+  outline-offset: 2px;
+}
+
+.scheme-app .scheme-swatch input:focus-visible {
+  outline: none;
+}
+
+.scheme-caption,
+.scheme-diagnostics summary {
+  margin: 0;
+  color: var(--ids__text-caption);
+  font-size: 0.9em;
+  line-height: var(--ids__density);
+}
+
+.scheme-file {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scheme-stage {
+  margin-top: var(--ids__spacer-s);
+}
+
+.scheme-drop-zone {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--ids__border);
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__background);
+}
+
+.scheme-drag-over {
+  outline: 2px solid var(--ids__link);
+  outline-offset: 3px;
+}
+
+.scheme-canvas-wrap,
+.scheme-canvas-wrap canvas {
+  aspect-ratio: 760 / 500;
+}
+
+.scheme-canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  cursor: ew-resize;
+}
+
+/* With a model the canvas takes every gesture: one finger rotates, two fingers zoom and pan. */
+[data-state="ready"] .scheme-canvas-wrap canvas {
+  touch-action: none;
+}
+
+.scheme-canvas-wrap canvas.scheme-panning {
+  cursor: move;
+}
+
+.scheme-empty,
+.scheme-busy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ids__gap-m);
+  padding: var(--ids__gap-m);
+  background: var(--ids__surface);
+  text-align: center;
+}
+
+.scheme-busy {
+  z-index: 2;
+}
+
+.scheme-empty {
+  padding-block: calc(12px + 2.4rem);
+  background: var(--ids__background);
+}
+
+.scheme-empty h2,
+.scheme-empty p {
+  margin: 0;
+}
+
+.scheme-empty h2 {
+  font-size: 1.4em;
+}
+
+/* Loading overlay: phase and time, progress bar, «Отменить». */
+.scheme-busy-line {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.scheme-busy-line .scheme-caption {
+  font-size: 1em;
+}
+
+.scheme-busy progress {
+  display: block;
+  width: min(20rem, 80%);
+  height: 0.4rem;
+  accent-color: var(--ids__link);
+}
+
+/* Trace progress or the clicked part: a translucent plate at the bottom, the model stays visible. */
+.scheme-stage-note {
+  position: absolute;
+  z-index: 1;
+  bottom: 12px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  margin: 0;
+  padding: 0.25em 0.7em;
+  border-radius: var(--ids__radius-s);
+  background: color-mix(in srgb, var(--ids__background) 82%, transparent);
+  color: var(--ids__text);
+  font-size: 0.9em;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Status, log and credits: one collapsed line under the canvas. */
+.scheme-diagnostics {
+  margin-top: var(--ids__gap-s);
+}
+
+.scheme-diagnostics > * + * {
+  margin-top: 0.5rem;
+}
+
+.scheme-status > * + * {
+  margin-top: 0.25rem;
+}
+
+.scheme-status-line {
+  margin: 0;
+  color: var(--ids__text);
+  font-variant-numeric: tabular-nums;
+}
+
+.scheme-status-line .scheme-caption {
+  font-size: 1em;
+}
+
+.scheme-diagnostics summary {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.scheme-diagnostics pre {
+  max-height: 16em;
+  margin-bottom: 0;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  padding: var(--ids__gap-s);
+  background: var(--ids__surface);
+  color: var(--ids__text);
+  font-size: 0.9em;
+}
+
+.scheme-diagnostics pre:empty {
+  display: none;
+}
+
+.scheme-notice {
+  position: fixed;
+  z-index: 20;
+  bottom: var(--ids__gap-m);
+  left: var(--ids__gap-m);
+  right: var(--ids__gap-m);
+  width: fit-content;
+  max-width: calc(100% - 2 * var(--ids__gap-m));
+  margin: auto;
+  padding: var(--ids__gap-m);
+  border: 1px solid var(--ids__border);
+  border-radius: var(--ids__radius-s);
+  background: var(--ids__background);
+}
+
+.scheme-footnote {
+  max-width: 60em;
+}
+
+@media (width < 1100px) {
+  .scheme-settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ids__gap-m) var(--ids__gap-l);
+  }
+
+}
+
+/* Touch: every control row and button at least 32 px high. */
+@media (width < 1100px), (pointer: coarse) {
+  .scheme-controls {
+    row-gap: 0.25em;
+  }
+
+  .scheme-field input[type="range"] {
+    height: 32px;
+  }
+
+  .scheme-check,
+  .scheme-colors label,
+  :is(.scheme-switch, .scheme-frame-switch) button,
+  .project-audience-switch.scheme-frame-switch .project-audience-segment {
+    min-height: 32px;
+  }
+
+  .scheme-app .scheme-button {
+    min-height: 32px;
+    padding-inline: 0.8em;
+  }
+
+  .scheme-check input {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (width < 600px) {
+  .scheme-settings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scheme-empty {
+    gap: var(--ids__gap-s);
+  }
 }

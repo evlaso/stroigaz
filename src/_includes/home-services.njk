@@ -1,0 +1,17 @@
+<section class="home-services" aria-label="Частным лицам и бизнесу">
+  <div class="ids__text-width">
+    <p>С частными лицами, малым и средним бизнесом работаем так же, как с заводами, ТЭЦ и АЭС. Детали и изделия из металла изготавливаем на том же производстве и теми же операциями: режем лист и трубы лазером, гнём, очищаем и свариваем металл, готовим поверхность и окрашиваем. Пришлите чертёж или описание изделия с материалом и количеством.</p>
+  </div>
+  <div class="ids__space S" aria-hidden="true"></div>
+  <ids-gallery class="service-gallery home-services-gallery" zoom="true" aria-label="Фотографии операций на производстве">
+    {% for technology in technologies %}
+    <figure>
+      <a href="{{ technology.image }}" data-pswp-width="{{ technology.width }}" data-pswp-height="{{ technology.height }}" aria-label="Увеличить: {{ technology.imageAlt }}">
+        <img src="{{ technology.image }}" alt="{{ technology.imageAlt }}" width="{{ technology.width }}" height="{{ technology.height }}" loading="lazy" decoding="async">
+      </a>
+      <figcaption>{{ technology.title }}</figcaption>
+    </figure>
+    {% endfor %}
+  </ids-gallery>
+  <a class="home-projects-all home-projects-all-outline" href="/projects/personal/">Проекты для частных лиц</a>
+</section>

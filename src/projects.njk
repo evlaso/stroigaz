@@ -1,17 +1,32 @@
 ---
 layout: layouts/base.njk
 gallery: true
-title: Проекты — СТРОЙГАЗ
-permalink: /projects/
-contactIntro: >-
-  Если типовое оборудование не подходит, разработаем конструкцию под вашу задачу и изготовим её на собственном производстве.
+readingUrl: /projects/
+pagination:
+  data: projectAudiences
+  size: 1
+  alias: projectAudience
+  addAllPagesToCollections: true
+eleventyComputed:
+  permalink: "{{ projectAudience.url }}"
+  title: "{{ projectAudience.title }}"
+  description: "{{ projectAudience.description }}"
 ---
-<div class="ids__wrapper">
-  <div class="ids__space XL" aria-hidden="true"></div>
-  <div class="ids__text-width project-intro">
-    <h1 class="page-title">Оборудование по нашим проектам</h1>
-    <p class="page-lead">Разработали и изготовили станции отбора проб, установки водоподготовки и дозирования реагентов, насосные станции и металлоконструкции.</p>
+<div class="ids__wrapper projects-page" data-project-audiences>
+  <nav class="project-audience-switch project-audience-switch--tabs" role="group" aria-label="Для кого проекты">
+    {% for audience in projectAudiences %}
+    {% if audience.id == projectAudience.id %}<span{% else %}<a href="{{ audience.url }}"{% endif %} class="project-audience-segment" data-url="{{ audience.url }}" data-audience="{{ audience.id }}" data-title="{{ audience.title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ" data-description="{{ audience.description }}" data-canonical="{{ audience.url | htmlBaseUrl(site.url) }}"{% if audience.id == projectAudience.id %} aria-current="page"{% endif %}>{{ audience.label }}{% if audience.id == projectAudience.id %}</span>{% else %}</a>{% endif %}
+    {% endfor %}
+  </nav>
+  {% for audience in projectAudiences %}
+  <div class="ids__text-width project-intro{% if audience.id == 'private' %} service-intro{% endif %}" data-audience-view="{{ audience.id }}"{% if audience.id != projectAudience.id %} hidden{% endif %}>
+    <h1 class="page-title">{{ audience.heading }}</h1>
+    <p class="page-lead">{{ audience.lead }}</p>
   </div>
+  {% endfor %}
+  {% for audience in projectAudiences %}
+  <div data-audience-view="{{ audience.id }}"{% if audience.id != projectAudience.id %} hidden{% endif %}>
+  {% if audience.id == 'enterprise' %}
   <div class="case-studies">
     {% for project in caseStudies %}
     <article class="case-study" aria-labelledby="case-{{ project.slug }}">
@@ -37,8 +52,31 @@ contactIntro: >-
     </article>
     {% endfor %}
   </div>
+  {% else %}
+  <section aria-label="Фотографии операций на производстве">
+    <ids-gallery class="service-gallery" zoom="true" aria-label="Лазерный раскрой, гибка, лазерная очистка и сварка, окраска: фотографии">
+      {# Фотографии повторяются трижды в перемешанном порядке как заглушка, пока нет полного набора снимков производства. #}
+      {% set galleryOrder = ['laser-cutting', 'laser-cleaning', 'surface-coating', 'laser-welding', 'bending', 'surface-coating', 'laser-cutting', 'laser-welding', 'bending', 'laser-cleaning', 'laser-welding', 'surface-coating', 'laser-cleaning', 'bending', 'laser-cutting'] %}
+      {% for slug in galleryOrder %}
+      {% for technology in technologies %}
+      {% if technology.slug == slug %}
+      <figure>
+        <a href="{{ technology.image }}" data-pswp-width="{{ technology.width }}" data-pswp-height="{{ technology.height }}" aria-label="Увеличить: {{ technology.imageAlt }}">
+          <img src="{{ technology.image }}" alt="{{ technology.imageAlt }}" width="{{ technology.width }}" height="{{ technology.height }}" loading="lazy" decoding="async">
+        </a>
+        <figcaption>{{ technology.title }}</figcaption>
+      </figure>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+    </ids-gallery>
+  </section>
+  {% endif %}
   <div class="ids__space L" aria-hidden="true"></div>
+  {% set contactIntro = audience.contactIntro %}
   {% include "project-contact.njk" %}
   {% include "reading-next.njk" %}
+  </div>
+  {% endfor %}
   <div class="ids__space XL page-end-space" aria-hidden="true"></div>
 </div>

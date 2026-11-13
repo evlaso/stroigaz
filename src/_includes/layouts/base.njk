@@ -5,8 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#078844">
   {% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
-  <title>{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ{% endif %}</title>
+  {% set pageTitle %}{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ{% endif %}{% endset %}
+  {% set pageDescription = description or site.description %}
+  {% set pageUrl = page.url | htmlBaseUrl(site.url) %}
+  {% set pageImage = (ogImage or site.image) | htmlBaseUrl(site.url) %}
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ pageDescription }}">
+  <link rel="canonical" href="{{ pageUrl }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:locale" content="{{ site.locale }}">
+  <meta property="og:title" content="{{ pageTitle }}">
+  <meta property="og:description" content="{{ pageDescription }}">
+  <meta property="og:url" content="{{ pageUrl }}">
+  <meta property="og:image" content="{{ pageImage }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="СТРОЙГАЗ — проектируем и производим промышленное оборудование">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ pageTitle }}">
+  <meta name="twitter:description" content="{{ pageDescription }}">
+  <meta name="twitter:image" content="{{ pageImage }}">
   <link rel="icon" href="/assets/favicon.svg?v=9" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ site.name }}",
+    "legalName": "{{ site.legalName }}",
+    "url": "{{ '/' | htmlBaseUrl(site.url) }}",
+    "logo": "{{ '/assets/brand/logo-color.svg' | htmlBaseUrl(site.url) }}",
+    "image": "{{ site.image | htmlBaseUrl(site.url) }}",
+    "description": "{{ site.description }}",
+    "foundingDate": "{{ site.foundingDate }}",
+    "telephone": "{{ site.phoneRaw }}",
+    "email": "{{ site.email }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ site.address.street }}",
+      "addressLocality": "{{ site.address.city }}",
+      "addressRegion": "{{ site.address.region }}",
+      "postalCode": "{{ site.address.postalCode }}",
+      "addressCountry": "{{ site.address.country }}"
+    }
+  }
+  </script>
   <link rel="preload" href="/assets/fonts/golos-text/GolosText-Variable.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/fonts/prosto-one/ProstoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/assets/ids.css">
@@ -31,41 +75,41 @@
       <strong>СТРОЙГАЗ</strong>
     {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
     <nav aria-label="Основная навигация">
-      {% if page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
+      {% if projectAudience or page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
       {% if page.url == '/partners/' %}<span aria-current="page">Партнёры</span>{% else %}<a href="/partners/">Партнёры</a>{% endif %}
       {% if page.url == '/process/' %}<span aria-current="page">Как мы работаем</span>{% else %}<a href="/process/">Как мы работаем</a>{% endif %}
       {% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}
     </nav>
     <a class="header-phone" href="tel:+78136851219">+7 (81368) 512-19</a>
+    <button class="menu-button menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu" hidden>
+      <span class="menu-icon" aria-hidden="true"></span>
+    </button>
     </div>
   </header>
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Меню" hidden>
+    <div class="ids__wrapper XL mobile-menu-layout">
+      <div class="mobile-menu-toolbar">
+        <button class="menu-button menu-close" type="button" aria-label="Закрыть меню">
+          <span class="menu-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+      <nav class="mobile-menu-nav" aria-label="Основная навигация">
+        {% if projectAudience or page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
+        {% if page.url == '/partners/' %}<span aria-current="page">Партнёры</span>{% else %}<a href="/partners/">Партнёры</a>{% endif %}
+        {% if page.url == '/process/' %}<span aria-current="page">Как мы работаем</span>{% else %}<a href="/process/">Как мы работаем</a>{% endif %}
+        {% if page.url == '/about/' %}<span aria-current="page">О компании</span>{% else %}<a href="/about/">О компании</a>{% endif %}
+      </nav>
+      <div class="mobile-menu-contacts">
+        {% include "contact-list.njk" %}
+      </div>
+    </div>
+  </div>
   <main>
     {{ content | safe }}
   </main>
   <div class="ids__wrapper XL">
     <footer class="site-footer" aria-label="Контакты компании">
-      <div class="footer-grid">
-        <div class="footer-main">
-          <p class="footer-phone"><a href="tel:+78136851219">+7 (81368) 512-19</a></p>
-          <p class="footer-phone"><a href="tel:+78136854201">+7 (81368) 542-01</a></p>
-          <p class="footer-messenger">Написать в {% if contacts.whatsapp %}<a href="{{ contacts.whatsapp }}">WhatsApp</a>{% else %}<a href="#" data-placeholder-link>WhatsApp</a>{% endif %}</p>
-          <p class="footer-messenger">Написать в {% if contacts.telegram %}<a href="{{ contacts.telegram }}">Telegram</a>{% else %}<a href="#" data-placeholder-link>Telegram</a>{% endif %}</p>
-        </div>
-        <div>
-          <div class="footer-departments">
-            {% for department in contacts.departments %}
-            <div>
-              <p class="footer-label">{{ department.name }}</p>
-              <p>{% if department.example %}<a href="#" data-placeholder-link>{{ department.email }}</a>{% else %}<a href="mailto:{{ department.email }}">{{ department.email }}</a>{% endif %}</p>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        <div>
-          <p class="footer-label">Адрес</p>
-          <address>187110, Ленинградская область,<br>г. Кириши, проспект Победы, 30</address>
-        </div>
-      </div>
+      {% include "contact-list.njk" %}
       <div class="footer-bottom">
         <span>© ООО «СТРОЙГАЗ» · 2006–2026</span>
       </div>

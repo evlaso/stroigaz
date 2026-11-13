@@ -1,0 +1,22 @@
+<div class="footer-grid">
+  <div class="footer-main">
+    <p class="footer-phone"><a href="tel:+78136851219">+7 (81368) 512-19</a></p>
+    <p class="footer-phone"><a href="tel:+78136854201">+7 (81368) 542-01</a></p>
+    <p class="footer-messenger">Написать в {% if contacts.whatsapp %}<a href="{{ contacts.whatsapp }}">WhatsApp</a>{% else %}<a href="#" data-placeholder-link>WhatsApp</a>{% endif %}</p>
+    <p class="footer-messenger">Написать в {% if contacts.telegram %}<a href="{{ contacts.telegram }}">Telegram</a>{% else %}<a href="#" data-placeholder-link>Telegram</a>{% endif %}</p>
+  </div>
+  <div>
+    <div class="footer-departments">
+      {% for department in contacts.departments %}
+      <div>
+        <p class="footer-label">{{ department.name }}</p>
+        <p>{% if department.example %}<a href="#" data-placeholder-link>{{ department.email }}</a>{% else %}<a href="mailto:{{ department.email }}">{{ department.email }}</a>{% endif %}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div>
+    <p class="footer-label">Адрес</p>
+    <address>187110, Ленинградская область,<br>г. Кириши, проспект Победы, 30</address>
+  </div>
+</div>

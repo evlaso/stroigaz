@@ -1,0 +1,92 @@
+---
+layout: layouts/base.njk
+title: Генератор моделей — СТРОЙГАЗ
+description: Контурные схемы и рендеры оборудования из 3D-моделей. Всё считается в браузере, файл никуда не отправляется.
+permalink: /3d-gen/
+noindex: true
+eleventyExcludeFromCollections: true
+---
+<div class="ids__wrapper scheme-page">
+  <div class="ids__space XL" aria-hidden="true"></div>
+  <div class="ids__text-width project-intro">
+    <h1 class="page-title">Генератор моделей</h1>
+    <p>Контурные схемы и рендеры оборудования из 3D-моделей. Всё считается в браузере, файл никуда не отправляется.</p>
+  </div>
+  <noscript><p>Для обработки модели нужен JavaScript. Включите его в настройках браузера и обновите страницу.</p></noscript>
+  <div class="scheme-app">
+    <div class="scheme-settings" role="group" aria-label="Настройки схемы">
+      <div class="scheme-stack">
+        <section class="scheme-controls" aria-labelledby="scheme-view-title" title="Камера фиксирована. Вращается модель, зеркало — в исходных осях STEP. GLB поворачивается из Y-up в Z-up. Масштаб и сдвиг меняют кадр 760 × 500 на экране; в PNG и трассировку он попадает, если в экспорте выбрано «Как на экране».">
+          <h2 id="scheme-view-title">Ракурс</h2>
+          <div class="scheme-field"><label for="rotation">Поворот</label><input id="rotation" type="range" min="0" max="359" step="1" value="0"><output id="rotation-value" for="rotation">0°</output></div>
+          <div class="scheme-field" title="Увеличение относительно вписанной модели, 0,5–6×. Колёсико над холстом приближает к курсору."><label for="zoom">Масштаб</label><input id="zoom" type="range" min="-1" max="2.585" step="0.01" value="0"><output id="zoom-value" for="zoom">1.00×</output></div>
+          <div class="scheme-row"><button type="button" class="home-projects-all home-projects-all-outline scheme-button" id="rotate-45">+45°</button><button type="button" class="home-projects-all home-projects-all-outline scheme-button" id="fit-view" title="Масштаб 1× и модель по центру. То же — двойной клик по холсту.">Вписать</button></div>
+          <label class="scheme-check"><input id="mirror" type="checkbox"> Зеркало X</label>
+        </section>
+        <section class="scheme-controls" aria-labelledby="scheme-shading-title" title="Студийный рендер режима «Модель»: окружение, свет, тени модели на себя, затенение в щелях и тонкие рёбра. Фон остаётся чистым. Контур от этих настроек не зависит.">
+          <h2 id="scheme-shading-title">Модель</h2>
+          <div class="scheme-field" title="Затенение в щелях, у крепежа и в местах контакта (ambient occlusion). 0 — выключено, больше 1 — глубже."><label for="occlusion">Затенение</label><input id="occlusion" type="range" min="0" max="2" step="0.05"><output id="occlusion-value" for="occlusion"></output></div>
+          <div class="scheme-field" title="Радиус затенения в пикселях кадра 1×: больше — шире тень у стыков и опор."><label for="occlusion-radius">Радиус</label><input id="occlusion-radius" type="range" min="2" max="40" step="1"><output id="occlusion-radius-value" for="occlusion-radius"></output></div>
+          <label class="scheme-check" title="Тонкие тёмные рёбра поверх модели, как «shaded with edges» в CAD. Для сеток — по порогу нормалей."><input id="model-edges" type="checkbox"> Рёбра на модели</label>
+        </section>
+      </div>
+      <section class="scheme-controls" aria-labelledby="scheme-outline-title" title="Порог глубины выделяет силуэты и перекрытия, порог нормалей — складки и рёбра: для сетки это угол между гранями. Рёбра STEP рисуются всегда. Меньше порог — больше деталей.">
+        <h2 id="scheme-outline-title">Контур</h2>
+        <div class="scheme-field"><label for="depth">Порог глубины</label><input id="depth" type="range" min="0.0001" max="0.03" step="0.0001"><output id="depth-value" for="depth"></output></div>
+        <div class="scheme-field"><label for="normal">Порог нормалей</label><input id="normal" type="range" min="0.02" max="1.5" step="0.01"><output id="normal-value" for="normal"></output></div>
+        <div class="scheme-field" title="Внешний контур: силуэты, перекрытия и границы между деталями."><label for="silhouette">Силуэт</label><input id="silhouette" type="range" min="0.25" max="6" step="0.05"><output id="silhouette-value" for="silhouette"></output></div>
+        <div class="scheme-field" title="Внутренние линии: рёбра модели и изломы поверхности."><label for="edge-width">Рёбра</label><input id="edge-width" type="range" min="0.25" max="3" step="0.05"><output id="edge-width-value" for="edge-width"></output></div>
+        <div class="scheme-field" title="Светлый зазор: рёбра дальней детали обрываются у силуэта ближней. 0 — выключен."><label for="gap">Зазор</label><input id="gap" type="range" min="0" max="3" step="0.25"><output id="gap-value" for="gap"></output></div>
+        <div class="scheme-colors"><label for="ink">Линия <span class="scheme-swatch"><input id="ink" type="color"></span></label><label for="paper">Фон <span class="scheme-swatch"><input id="paper" type="color"></span></label><label class="scheme-check" title="PNG без фона во всех режимах: прозрачно всё, кроме модели и линий. На экране фон остаётся цветом «Фон»."><input id="transparent" type="checkbox"> Прозрачный фон</label></div>
+      </section>
+      <section class="scheme-controls" aria-labelledby="scheme-export-title">
+        <h2 id="scheme-export-title">Экспорт <span class="scheme-caption scheme-heading-note" title="Размер PNG 1×; 2× и 4× — вдвое и вчетверо больше.">760 × 500 · изометрия</span></h2>
+        <div class="project-audience-switch scheme-frame-switch" role="group" aria-label="Кадр экспорта" title="«Вся модель» — модель целиком в кадре 760 × 500 с текущим поворотом, как бы ни были заданы масштаб и сдвиг на экране. «Как на экране» — с масштабом и сдвигом.">
+          <button type="button" class="project-audience-segment" id="export-model" aria-pressed="true">Вся модель</button>
+          <button type="button" class="project-audience-segment" id="export-screen" aria-pressed="false">Как на экране</button>
+        </div>
+        <div class="scheme-row" title="PNG сохраняет текущий режим; в режиме «Трассировка» — трассированный кадр."><button type="button" class="home-projects-all scheme-button" data-scale="1" disabled>PNG 1×</button><button type="button" class="home-projects-all scheme-button" data-scale="2" disabled>2×</button><button type="button" class="home-projects-all scheme-button" data-scale="4" disabled>4×</button></div>
+        <div class="scheme-row" title="Пресет — ракурс, настройки контура и модели, без файла."><button type="button" class="home-projects-all home-projects-all-outline scheme-button" id="save-preset">Пресет</button><button type="button" class="home-projects-all home-projects-all-outline scheme-button" id="load-preset">Импорт JSON</button></div>
+      </section>
+    </div>
+    <div class="scheme-open">
+      <button type="button" class="home-projects-all home-projects-all-outline scheme-button scheme-open-button" id="open-file">Открыть модель</button>
+      <p class="scheme-caption scheme-file" id="file-label">Файл не выбран</p>
+      <div class="project-audience-switch scheme-switch" role="group" aria-label="Режим просмотра">
+        <button type="button" class="project-audience-segment" id="model-mode" aria-pressed="true">Модель</button>
+        <button type="button" class="project-audience-segment" id="outline-mode" aria-pressed="false">Контур</button>
+        <button type="button" class="project-audience-segment" id="trace-mode" aria-pressed="false" disabled>Трассировка</button>
+      </div>
+    </div>
+    <section class="scheme-stage" aria-label="Просмотр модели">
+      <div id="drop-zone" class="scheme-drop-zone">
+        <div class="scheme-canvas-wrap"><canvas id="viewport" aria-label="Модель: перетаскивание — поворот, колёсико — масштаб, Shift + перетаскивание — сдвиг" title="Перетаскивание — поворот вокруг Z · колёсико — масштаб · Shift, средняя или правая кнопка — сдвиг · двойной клик — вписать · клик — имя детали"></canvas></div>
+        <div id="empty" class="scheme-empty">
+          <h2>Перетащите модель сюда</h2>
+          <p class="scheme-caption">STEP, STL, OBJ или GLB, до 384 МиБ.<br>Возможности зависят от сложности модели.</p>
+          <button type="button" class="home-projects-all scheme-button" id="open-empty">Открыть модель</button>
+        </div>
+        <p id="stage-note" class="scheme-stage-note" aria-hidden="true" hidden></p>
+        <div id="busy-overlay" class="scheme-busy" hidden>
+          <p class="scheme-busy-line"><strong id="busy-text">Подготовка</strong><span id="busy-time" class="scheme-caption"></span></p>
+          <progress id="progress" max="1" value="0" aria-label="Ход обработки модели" hidden></progress>
+          <button type="button" class="home-projects-all home-projects-all-outline scheme-button" id="cancel" hidden>Отменить</button>
+        </div>
+      </div>
+    </section>
+    <details class="scheme-diagnostics" id="diagnostics">
+      <summary>Журнал и диагностика</summary>
+      <div class="scheme-status" aria-label="Состояние конвертации" aria-live="polite">
+        <p class="scheme-status-line"><strong id="status">Готово к работе</strong><span id="status-meta" class="scheme-caption"></span></p>
+        <p id="status-detail" class="scheme-caption">Откройте модель, выберите ракурс и переключитесь на контур.</p>
+      </div>
+      <pre id="log"></pre>
+      <p class="scheme-caption scheme-footnote">Контур строится по треугольной сетке модели, а не по кривым CAD. <a href="/assets/scheme/THIRD_PARTY_LICENSES.txt">Компоненты и лицензии</a>.</p>
+    </details>
+    <input id="step-input" type="file" accept=".step,.stp,.stl,.obj,.glb,.gltf" hidden>
+    <input id="preset-input" type="file" accept=".json,application/json" hidden>
+    <div id="notice" class="scheme-notice" role="status" hidden></div>
+  </div>
+  <div class="ids__space XL page-end-space" aria-hidden="true"></div>
+</div>
+<script type="module" src="/assets/scheme/scheme.js"></script>

@@ -1,3 +1,9 @@
 node_modules/
 _site/
 .DS_Store
+/output/anatomy/dosing-hlr/
+/output/anatomy/
+/src/assets/scheme/
+/tools/scheme/test-results/
+__pycache__/
+/output/brand/

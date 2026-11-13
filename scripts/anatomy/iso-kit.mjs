@@ -198,6 +198,45 @@ export function circleRing(cx, cy, radius, steps = 40) {
 export function cylinder(cx, cy, radius, z, height, projection, steps = 32, bevel = 0) {
     return extrude(circleRing(cx, cy, radius, steps), z, height, projection, { convex: true, bevel });
 }
+// Closed surface-of-revolution meshes for the hidden-line scene and metal bake.
+// A profile is a closed loop of [radius, axial distance]: it can describe a
+// solid, a hollow funnel or an annular eye without filling its opening.
+export function revolvedMesh(profile, { origin = [0, 0, 0], axis = 'z', segments = 48, toward = [1, 1, 1], material = 'steel' } = {}) {
+    const unit = v => { const length = Math.hypot(...v); return v.map(n => n / length); };
+    const cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+    const dot = (a, b) => a.reduce((sum, n, i) => sum + n*b[i], 0);
+    const direction = unit(typeof axis === 'string' ? { x:[1,0,0], y:[0,1,0], z:[0,0,1] }[axis] : axis);
+    const u = unit(cross(direction, Math.abs(direction[2]) < .9 ? [0,0,1] : [1,0,0]));
+    const v = cross(direction, u);
+    const phase = Math.atan2(dot(toward, v), dot(toward, u)) + Math.PI/2;
+    const radial = i => u.map((n, j) => n*Math.cos(phase+i/segments*2*Math.PI) + v[j]*Math.sin(phase+i/segments*2*Math.PI));
+    const rings = profile.map(([r, z]) => Array.from({length:segments}, (_, i) => origin.map((n, j) => n + direction[j]*z + radial(i)[j]*r)));
+    const surfaces = [], edges = [];
+    for (let p=0; p<profile.length; p++) {
+        const q=(p+1)%profile.length, dr=profile[q][0]-profile[p][0], dz=profile[q][1]-profile[p][1];
+        if (Math.hypot(dr,dz)<1e-9) continue;
+        const normal = i => unit(radial(i).map((n,j) => n*dz-direction[j]*dr));
+        if (profile[p][0]>0) for (let i=0; i<segments; i++) edges.push([rings[p][i],rings[p][(i+1)%segments]]);
+        // Solid disk caps are one convex polygon, not a fan of coplanar
+        // surfaces. Annular caps still use quads to preserve the actual hole.
+        if (Math.abs(dz)<1e-9 && (profile[p][0]===0 || profile[q][0]===0)) {
+            const pts=rings[profile[p][0]>0?p:q];
+            surfaces.push({pts,normals:pts.map(()=>normal(0)),material});
+            continue;
+        }
+        const facing = Array.from({length:segments}, (_, i) => dot(normal(i+.5),toward)>0);
+        for (let i=0; i<segments; i++) {
+            const j=(i+1)%segments;
+            const candidates=[rings[p][i],rings[p][j],rings[q][j],rings[q][i]];
+            const normals=[normal(i),normal(j),normal(j),normal(i)];
+            const keep=candidates.map((pt,k) => !candidates.slice(0,k).some(other => Math.hypot(...pt.map((n,a)=>n-other[a]))<1e-9));
+            const pts=candidates.filter((_,k)=>keep[k]);
+            if (pts.length>=3) surfaces.push({pts,normals:normals.filter((_,k)=>keep[k]),material});
+            if (Math.abs(dz)>1e-9 && facing[i]!==facing[(i+segments-1)%segments]) edges.push([rings[p][i],rings[q][i]]);
+        }
+    }
+    return {surfaces,edges};
+}
 export const insetPlan = ({ x, y, w, d, r }, by) => ({ x: x + by, y: y + by, w: w - by * 2, d: d - by * 2, r: Math.max(0, r - by) });
 export function onTop(points, z, projection, closed = false) {
     return pathOf(points.map(([x, y]) => iso([x, y, z], projection)), closed);

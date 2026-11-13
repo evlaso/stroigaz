@@ -1,7 +1,14 @@
 ---
 layout: layouts/base.njk
+gallery: true
 title: СТРОЙГАЗ — Проектируем и производим промышленное оборудование
-featuredProjects: [sampling, osmosis, dosing]
+description: >-
+  Проектируем и производим промышленное оборудование: насосные станции, системы водоподготовки, установки дозирования и металлоконструкции. Собственный конструкторский отдел и производство в Киришах с 2006 года.
+featuredProjects:
+  - { slug: sampling, name: Станции отбора проб }
+  - { slug: osmosis, name: Обратный осмос }
+  - { slug: dosing, name: Дозирование реагентов }
+  - { slug: water-pumping, name: Насосные станции, mobileOnly: true }
 contactIntro: >-
   Обсудим, какое оборудование нужно вашему предприятию. Подберём материалы, разработаем конструкцию и изготовим оборудование на своём производстве.
 ---
@@ -25,6 +32,8 @@ contactIntro: >-
       {% include "home-projects.njk" %}
       <div class="ids__space L" aria-hidden="true"></div>
       {% include "clients.njk" %}
+      <div class="ids__space L" aria-hidden="true"></div>
+      {% include "home-services.njk" %}
       <div class="ids__space L" aria-hidden="true"></div>
       {% include "project-contact.njk" %}
       <div class="ids__space XL page-end-space" aria-hidden="true"></div>

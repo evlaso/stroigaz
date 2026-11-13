@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "rotation": 350,
+  "mirrorX": true,
+  "view": {
+    "zoom": 1,
+    "panX": 0,
+    "panY": 0
+  },
+  "outline": {
+    "depthThreshold": 0.002,
+    "normalThreshold": 0.32,
+    "silhouetteWidth": 2,
+    "edgeWidth": 1,
+    "haloGap": 1.5,
+    "lineColor": "#383e43",
+    "background": "#ffffff"
+  },
+  "shading": {
+    "edges": true,
+    "occlusion": 1,
+    "occlusionRadius": 12
+  },
+  "export": {
+    "frame": "model",
+    "transparent": true
+  }
+}

@@ -1,5 +1,6 @@
 """Crop each contour/metal pair to identical visible bounds after generation.
 Requires rsvg-convert and Pillow; preserves each SVG's own coordinate system.
+Figures marked data-frame="canvas" retain their intentional fixed-size canvas.
 """
 from pathlib import Path
 import re
@@ -16,6 +17,9 @@ with tempfile.TemporaryDirectory(prefix='stroygaz-frames-') as temp:
     png = Path(temp) / 'frame.png'
     for line in paths:
         source = line.read_text()
+        if 'data-frame="canvas"' in source:
+            print(f'{line.stem}: fixed canvas retained')
+            continue
         match = re.search(r'viewBox="([^"]+)"', source)
         vx, vy, vw, vh = map(float, match[1].split())
         subprocess.run(['rsvg-convert', '-w', '1520', '-o', str(png), str(line)], check=True)

@@ -1,0 +1,13 @@
+<!doctype html>
+<!-- Rendered by scripts/build-brand.py: {{base}} is the current og-image.png,
+     {{mark}} is src/assets/logo-mark-white.svg. Only the mark area changes. -->
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { position: relative; background: url("{{base}}") 0 0 / 1200px 630px no-repeat; }
+  /* Clears the previous mark; the wordmark starts at x = 147. */
+  .patch { position: absolute; left: 70px; top: 70px; width: 72px; height: 108px; background: #078844; }
+  svg { position: absolute; left: 80px; top: 80px; width: auto; height: 88px; }
+</style>
+<div class="patch"></div>
+{{mark}}
