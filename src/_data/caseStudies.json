@@ -174,7 +174,7 @@
     "slide": 19,
     "design": "/assets/cases/dosing-design.webp",
     "photo": "/assets/cases/dosing-photo.webp",
-    "schematic": "/assets/cases/dosing-schematic.svg",
+    "schematic": "/assets/cases/dosing-3d-schematic.webp",
     "photos": [
       {
         "image": "/assets/cases/dosing-gallery-1.webp",
@@ -189,7 +189,7 @@
         "alt": "Установки дозирования химических реагентов — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/dosing-lit.webp"
+    "colorIllustration": "/assets/cases/dosing-3d-lit.webp"
   },
   {
     "slug": "surface-water",
