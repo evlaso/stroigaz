@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#078844">
   {% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
-  {% set pageTitle %}{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ{% endif %}{% endset %}
+  {% set pageTitle %}{% if page.url == '/' %}{{ title }}{% else %}{{ title | replace(' — Стройгаз', '') }} · Стройгаз{% endif %}{% endset %}
   {% set pageDescription = description or site.description %}
   {% set pageUrl = page.url | htmlBaseUrl(site.url) %}
   {% set pageImage = (ogImage or site.image) | htmlBaseUrl(site.url) %}
@@ -21,7 +21,7 @@
   <meta property="og:image" content="{{ pageImage }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="СТРОЙГАЗ — проектируем и производим промышленное оборудование">
+  <meta property="og:image:alt" content="Стройгаз — проектируем и производим промышленное оборудование">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ pageTitle }}">
   <meta name="twitter:description" content="{{ pageDescription }}">
@@ -52,7 +52,7 @@
   }
   </script>
   <link rel="preload" href="/assets/fonts/golos-text/GolosText-Variable.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="/assets/fonts/prosto-one/ProstoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/assets/fonts/onest/OnestLogo-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/ids.css">
   <link rel="stylesheet" href="/assets/style.css">
   <noscript><style>.project-media:not(.is-loaded) > .project-photo, .project-media:not(.is-loaded) > .project-client-badge, .project-media:not(.is-loaded) > .project-logo-contrast { visibility: visible; }</style></noscript>
@@ -69,10 +69,10 @@
     {% if page.url == '/' %}
     <span class="brand" aria-current="page">
     {% else %}
-    <a class="brand brand-link" href="/" aria-label="СТРОЙГАЗ — на главную">
+    <a class="brand brand-link" href="/" aria-label="Стройгаз — на главную">
     {% endif %}
       {% include "brand-mark.njk" %}
-      <strong>СТРОЙГАЗ</strong>
+      <strong>Стройгаз</strong>
     {% if page.url == '/' %}</span>{% else %}</a>{% endif %}
     <nav aria-label="Основная навигация">
       {% if projectAudience or page.url == '/projects/' %}<span aria-current="page">Проекты</span>{% else %}<a href="/projects/">Проекты</a>{% endif %}
@@ -111,7 +111,7 @@
     <footer class="site-footer" aria-label="Контакты компании">
       {% include "contact-list.njk" %}
       <div class="footer-bottom">
-        <span>© ООО «СТРОЙГАЗ» · 2006–2026</span>
+        <span>© ООО «Стройгаз» · 2006–2026</span>
       </div>
     </footer>
     <div class="ids__space S" aria-hidden="true"></div>

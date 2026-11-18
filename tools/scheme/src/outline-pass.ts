@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass.js';
-import { creaseAngle } from './settings.ts';
+import { creaseAngle, WIDTH } from './settings.ts';
 import type { OutlineStyle } from './types.ts';
+import { exteriorMask } from './exterior.ts';
 
 /** Layer of the feature-edge lines: invisible to the shaded view, the G-buffer and picking. */
 export const EDGE_LAYER = 1;
@@ -13,6 +14,24 @@ export const EDGE_BIAS_PX = 1;
  * the outline (a T-junction), as in assembly instructions, instead of a dashed line.
  */
 const HALO_DEPTH_FACTOR = 4;
+/**
+ * «Упрощение» (outline.simplify = spacing threshold S, px at 1×; 0 = off). Constants are px at 1×
+ * too, so the screen and every export agree:
+ * - a dense area: the share of line pixels in ±window means lines closer than S, a line is
+ *   within S / 2, and the area survives an opening of ±open (bands of bolts stay as drawn);
+ * - inside it the depth is closed over ±close (grating holes vanish) and only the drawn lines
+ *   on a step of that closed depth deeper than `step` stay: plate edges, railings over the
+ *   plate, one platform over another — not the bars;
+ * - `fill` — the tone of the area, a fraction of the line colour.
+ */
+export const SIMPLIFY = { window: 6, close: 1, open: 2, step: 5, fill: 0.1 };
+/**
+ * «Внутри» (outline.innerWidth > 0): only silhouettes next to the background reachable from the
+ * frame border keep the silhouette width; bars, gaps between them, parts over parts get innerWidth.
+ * `passage` — px at 1×: the outer background is opened by this square, so it does not leak
+ * into a railing panel through a crack between parts (exterior.ts).
+ */
+export const EXTERIOR = { passage: 1 };
 
 /**
  * Feature edges (edges.ts) as 1 px lines with a hidden-line test against `depthTexture`.
@@ -71,12 +90,27 @@ export function featureEdgeMaterial(depthTexture: THREE.DepthTexture, texel: THR
  *    passes (horizontal, then vertical in the composite). Silhouettes and inner lines
  *    get their own radius; inner lines on the far side of a silhouette (nearer to a
  *    B core than to an R core) are erased up to `haloGap` beyond the silhouette stroke.
+ * With «Упрощение» (outline.simplify > 0) eight more passes between 2 and 3 replace the cores
+ * inside dense areas (gratings, treads) by the outline of the closed depth, see SIMPLIFY.
+ * With «Внутри» (outline.innerWidth > 0) the G-buffer coverage is read back, the outer background
+ * is flooded on the CPU (exterior.ts) and one more pass before 3 moves the silhouette cores that
+ * do not touch it to A, drawn with the inner silhouette radius.
  */
 export class OutlinePass {
   readonly target: THREE.WebGLRenderTarget;
-  /** Feature-edge lines; later reused for the horizontal distances. */
+  /** Feature-edge lines; later reused for the horizontal distances (and the «Упрощение» passes). */
   private lines: THREE.WebGLRenderTarget;
   private classes: THREE.WebGLRenderTarget;
+  /** «Упрощение» only: two more buffers for the dense area, the closed depth and the merged cores. */
+  private dense?: { mask: THREE.WebGLRenderTarget; cores: THREE.WebGLRenderTarget };
+  private densityRows: THREE.ShaderMaterial;
+  private densityMask: THREE.ShaderMaterial;
+  private morph: THREE.ShaderMaterial;
+  private steps: THREE.ShaderMaterial;
+  private merge: THREE.ShaderMaterial;
+  private split: THREE.ShaderMaterial;
+  /** «Внутри» only: the G-buffer readback and the outer background (exterior.ts) as a texture. */
+  private exterior?: { pixels: Uint8Array; background: Uint8Array; texture: THREE.DataTexture; key: string };
   private gbuffer: THREE.ShaderMaterial;
   private edges: THREE.ShaderMaterial;
   private classify: THREE.ShaderMaterial;
@@ -182,10 +216,181 @@ export class OutlinePass {
         }
       `,
     });
+    // «Упрощение» (see SIMPLIFY). Depth travels between passes in two 8-bit channels, B + A / 255.
+    const packDepth = `
+      vec2 packDepth(float d) { float high = floor(d * 255.) / 255.; return vec2(high, (d - high) * 255.); }
+      float unpackDepth(vec2 v) { return v.x + v.y / 255.; }
+    `;
+    // Line density, horizontal half: per row, the share of line cores (silhouette or inner) in
+    // ±window and in ±near; BA — the nearest depth in ±close (the depth closing starts here).
+    this.densityRows = new THREE.ShaderMaterial({
+      depthTest: false, depthWrite: false,
+      uniforms: {
+        classBuffer: { value: this.classes.texture }, depthBuffer: { value: this.target.depthTexture },
+        texel: { value: texel }, window: { value: 24 }, near: { value: 2 }, close: { value: 4 },
+      },
+      vertexShader: quadVertex,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D classBuffer, depthBuffer;
+        uniform vec2 texel;
+        uniform int window, near, close;
+        ${packDepth}
+        void main() {
+          float count = 0., lines = 0., nearest = 1.;
+          for (int x = -window; x <= window; x++) {
+            vec2 uv = vUv + vec2(float(x) * texel.x, 0.);
+            vec2 core = step(.5, texture2D(classBuffer, uv).rg);
+            float line = max(core.r, core.g);
+            count += line;
+            if (abs(x) <= near) lines += line;
+            if (abs(x) <= close) nearest = min(nearest, texture2D(depthBuffer, uv).x);
+          }
+          gl_FragColor = vec4(count / float(2 * window + 1), lines / float(2 * near + 1), packDepth(nearest));
+        }
+      `,
+    });
+    // Vertical half. R — the dense area: lines in the window closer than the spacing threshold,
+    // and a line within ±near (holes of a grating close up, the area ends at its last line, the
+    // inside of a tube wider than the threshold stays out). BA — the nearest depth.
+    this.densityMask = new THREE.ShaderMaterial({
+      depthTest: false, depthWrite: false,
+      uniforms: {
+        rowBuffer: { value: this.lines.texture }, texel: { value: texel },
+        window: { value: 24 }, near: { value: 2 }, close: { value: 4 }, threshold: { value: 1 },
+      },
+      vertexShader: quadVertex,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D rowBuffer;
+        uniform vec2 texel;
+        uniform int window, near, close;
+        uniform float threshold;
+        ${packDepth}
+        void main() {
+          float count = 0., lines = 0., nearest = 1.;
+          float rowLength = float(2 * window + 1), nearLength = float(2 * near + 1);
+          for (int y = -window; y <= window; y++) {
+            vec4 row = texture2D(rowBuffer, vUv + vec2(0., float(y) * texel.y));
+            count += floor(row.r * rowLength + .5);
+            if (abs(y) <= near) lines += floor(row.g * nearLength + .5);
+            if (abs(y) <= close) nearest = min(nearest, unpackDepth(row.ba));
+          }
+          float dense = count >= threshold * rowLength * rowLength && lines > 0. ? 1. : 0.;
+          gl_FragColor = vec4(dense, 0., packDepth(nearest));
+        }
+      `,
+    });
+    // Square morphology, one axis per pass. BA: the farthest of the nearest depths in ±close
+    // ends the depth closing — grating holes are gone, larger shapes keep their edges. R: the
+    // area eroded, then dilated, by ±open — bands narrower than that (a ring of bolts, a row
+    // of rivets) are not simplified, platforms and treads are.
+    this.morph = new THREE.ShaderMaterial({
+      depthTest: false, depthWrite: false,
+      uniforms: { source: { value: null }, axis: { value: new THREE.Vector2() }, close: { value: 0 }, open: { value: 0 }, dilate: { value: 0 } },
+      vertexShader: quadVertex,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D source;
+        uniform vec2 axis;
+        uniform int close, open;
+        uniform float dilate;
+        ${packDepth}
+        void main() {
+          float farthest = 0., area = 1. - dilate;
+          int reach = close > open ? close : open;
+          for (int i = -reach; i <= reach; i++) {
+            vec4 v = texture2D(source, vUv + float(i) * axis);
+            if (abs(i) <= close) farthest = max(farthest, unpackDepth(v.ba));
+            if (abs(i) <= open) area = dilate > .5 ? max(area, v.r) : min(area, v.r);
+          }
+          gl_FragColor = vec4(area, 0., packDepth(farthest));
+        }
+      `,
+    });
+    // Steps of the closed depth. R — the near side of a step deeper than stepDepth beyond the
+    // slope continued from the other side (plate edges, a railing over a grating, one platform
+    // over another; a plane at any angle is no step). G — the area, A — the area over geometry.
+    this.steps = new THREE.ShaderMaterial({
+      depthTest: false, depthWrite: false,
+      uniforms: { closedBuffer: { value: null }, texel: { value: texel }, stepDepth: { value: 0 } },
+      vertexShader: quadVertex,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D closedBuffer;
+        uniform vec2 texel;
+        uniform float stepDepth;
+        ${packDepth}
+        void main() {
+          vec4 closed = texture2D(closedBuffer, vUv);
+          float d = unpackDepth(closed.ba), edge = 0.;
+          for (int i = 0; i < 4; i++) {
+            vec2 offset = (i == 0 ? vec2(1., 0.) : i == 1 ? vec2(0., 1.) : i == 2 ? vec2(-1., 0.) : vec2(0., -1.)) * texel;
+            float jump = unpackDepth(texture2D(closedBuffer, vUv + offset).ba) - d - (d - unpackDepth(texture2D(closedBuffer, vUv - offset).ba));
+            if (jump > stepDepth) edge = 1.;
+          }
+          float area = step(.5, closed.r);
+          gl_FragColor = vec4(edge, area, 0., area * step(d, .999999));
+        }
+      `,
+    });
+    // In the area only the drawn lines lying on a step of the closed depth (±1 px) stay, as
+    // silhouettes: the exact outline of plates and of what stands over them, without the bars.
+    // A — the fill.
+    this.merge = new THREE.ShaderMaterial({
+      depthTest: false, depthWrite: false,
+      uniforms: { classBuffer: { value: this.classes.texture }, stepBuffer: { value: null }, texel: { value: texel } },
+      vertexShader: quadVertex,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D classBuffer, stepBuffer;
+        uniform vec2 texel;
+        void main() {
+          vec4 cores = vec4(texture2D(classBuffer, vUv).rgb, 0.);
+          vec4 here = texture2D(stepBuffer, vUv);
+          if (here.g > .5) {
+            float edge = 0.;
+            for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++)
+              edge = max(edge, texture2D(stepBuffer, vUv + vec2(float(x), float(y)) * texel).r);
+            cores.rg = vec2(max(step(.5, cores.r), step(.5, cores.g)) * step(.5, edge), 0.);
+            cores.a = here.a;
+          }
+          gl_FragColor = cores;
+        }
+      `,
+    });
+    // «Внутри»: a silhouette core stays in R only next to the outer background (a 4-neighbour
+    // in the exterior mask); the rest — bars against inner gaps, parts over parts — moves to A.
+    this.split = new THREE.ShaderMaterial({
+      depthTest: false, depthWrite: false,
+      uniforms: { classBuffer: { value: null }, exteriorBuffer: { value: null }, texel: { value: texel } },
+      vertexShader: quadVertex,
+      fragmentShader: `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D classBuffer, exteriorBuffer;
+        uniform vec2 texel;
+        void main() {
+          vec3 cores = step(.5, texture2D(classBuffer, vUv).rgb);
+          float outer = 0.;
+          for (int i = 0; i < 4; i++) {
+            vec2 offset = (i == 0 ? vec2(1., 0.) : i == 1 ? vec2(0., 1.) : i == 2 ? vec2(-1., 0.) : vec2(0., -1.)) * texel;
+            outer = max(outer, step(.5, texture2D(exteriorBuffer, vUv + offset).r));
+          }
+          gl_FragColor = vec4(cores.r * outer, cores.g, cores.b, cores.r * (1. - outer));
+        }
+      `,
+    });
     // Horizontal pass: distance in pixels to the nearest core of each class (255 = none).
+    // A — the inner silhouettes of «Внутри» (split > 0), otherwise 1.
     this.spread = new THREE.ShaderMaterial({
       depthTest: false, depthWrite: false,
-      uniforms: { classBuffer: { value: this.classes.texture }, texel: { value: texel }, reach: { value: 3 } },
+      uniforms: { classBuffer: { value: this.classes.texture }, texel: { value: texel }, reach: { value: 3 }, split: { value: 0 } },
       vertexShader: quadVertex,
       fragmentShader: `
         precision highp float;
@@ -193,50 +398,60 @@ export class OutlinePass {
         uniform sampler2D classBuffer;
         uniform vec2 texel;
         uniform int reach;
+        uniform float split;
         void main() {
-          vec3 best = vec3(255.);
+          vec4 best = vec4(255.);
           for (int x = -reach; x <= reach; x++) {
-            vec3 core = step(.5, texture2D(classBuffer, vUv + vec2(float(x) * texel.x, 0.)).rgb);
-            best = min(best, mix(vec3(255.), vec3(abs(float(x))), core));
+            vec4 core = step(.5, texture2D(classBuffer, vUv + vec2(float(x) * texel.x, 0.)));
+            best = min(best, mix(vec4(255.), vec4(abs(float(x))), core));
           }
-          gl_FragColor = vec4(best / 255., 1.);
+          gl_FragColor = vec4(best.rgb / 255., split > .5 ? best.a / 255. : 1.);
         }
       `,
     });
     this.material = new THREE.ShaderMaterial({
       depthTest: false, depthWrite: false,
       uniforms: {
-        spreadBuffer: { value: this.lines.texture }, texel: { value: texel }, reach: { value: 3 },
-        silhouetteRadius: { value: 4 }, edgeRadius: { value: 2 }, gap: { value: 0 },
+        spreadBuffer: { value: this.lines.texture }, maskBuffer: { value: null }, fill: { value: 0 }, texel: { value: texel }, reach: { value: 3 },
+        silhouetteRadius: { value: 4 }, edgeRadius: { value: 2 }, gap: { value: 0 }, innerRadius: { value: 0 }, split: { value: 0 },
         ink: { value: new THREE.Vector3() }, paper: { value: new THREE.Vector3() }, transparent: { value: 0 },
       },
       vertexShader: quadVertex,
       fragmentShader: `
         precision highp float;
         varying vec2 vUv;
-        uniform sampler2D spreadBuffer;
+        uniform sampler2D spreadBuffer, maskBuffer;
         uniform vec2 texel;
         uniform int reach;
-        uniform float silhouetteRadius, edgeRadius, gap, transparent;
+        uniform float silhouetteRadius, edgeRadius, gap, transparent, fill, innerRadius, split;
         uniform vec3 ink, paper;
         void main() {
           // Vertical half of the exact Euclidean distance transform, per class.
-          vec3 nearest = vec3(65025.);
+          vec4 nearest = vec4(65025.);
           for (int y = -reach; y <= reach; y++) {
             float dy = float(y);
-            vec3 dx = texture2D(spreadBuffer, vUv + vec2(0., dy * texel.y)).rgb * 255.;
+            vec4 dx = texture2D(spreadBuffer, vUv + vec2(0., dy * texel.y)) * 255.;
             nearest = min(nearest, dx * dx + dy * dy);
           }
-          vec3 dist = sqrt(nearest);
+          vec4 dist = sqrt(nearest);
           // Strokes cover the core plus the radius, with a one-pixel soft rim.
           float outline = clamp(silhouetteRadius + .5 - dist.r, 0., 1.);
           float inner = clamp(edgeRadius + .5 - dist.g, 0., 1.);
           // Halo: on the far side of a depth step (nearer to its far-side core than to
           // the outline core), inner lines stop gap pixels short of the outline stroke.
-          float farSide = gap > 0. && dist.b < dist.r ? 1. : 0.;
-          inner *= 1. - farSide * clamp(silhouetteRadius + gap + 1. - dist.r, 0., 1.);
+          if (split > .5) {
+            // «Внутри»: silhouettes off the outer background (A) with their own radius and halo.
+            outline = max(outline, clamp(innerRadius + .5 - dist.a, 0., 1.));
+            float farSide = gap > 0. && dist.b < min(dist.r, dist.a) ? 1. : 0.;
+            inner *= 1. - farSide * max(clamp(silhouetteRadius + gap + 1. - dist.r, 0., 1.), clamp(innerRadius + gap + 1. - dist.a, 0., 1.));
+          } else {
+            float farSide = gap > 0. && dist.b < dist.r ? 1. : 0.;
+            inner *= 1. - farSide * clamp(silhouetteRadius + gap + 1. - dist.r, 0., 1.);
+          }
           // Colors are explicitly sRGB values; this raw shader does not apply tone mapping.
           float line = max(outline, inner);
+          // A merged dense area: a light tone of the ink under its contour.
+          if (fill > 0.) line = max(line, fill * step(.5, texture2D(maskBuffer, vUv).a));
           // Transparent: the ink at the stroke coverage, premultiplied (the canvas is
           // premultiplied, drawImage averages premultiplied values): no paper in the rim.
           gl_FragColor = transparent > .5 ? vec4(ink * line, line) : vec4(mix(paper, ink, line), 1.);
@@ -251,6 +466,7 @@ export class OutlinePass {
   setSize(width: number, height: number): void {
     if (width === this.target.width && height === this.target.height) return;
     for (const target of [this.target, this.lines, this.classes]) target.setSize(width, height);
+    if (this.dense) for (const target of [this.dense.mask, this.dense.cores]) target.setSize(width, height);
     this.texel.set(1 / width, 1 / height);
   }
 
@@ -268,8 +484,12 @@ export class OutlinePass {
     u.silhouetteRadius.value = style.silhouetteWidth * scale / 2;
     u.edgeRadius.value = style.edgeWidth * scale / 2;
     u.gap.value = style.haloGap * scale;
+    const split = style.innerWidth > 0;
+    u.innerRadius.value = style.innerWidth * scale / 2;
+    u.split.value = this.spread.uniforms.split.value = split ? 1 : 0;
     // Both distance passes look this far: the outline stroke plus the halo, or the inner stroke.
-    const reach = Math.ceil(Math.max(u.silhouetteRadius.value + u.gap.value + 1, u.edgeRadius.value + .5));
+    const reach = Math.ceil(Math.max(u.silhouetteRadius.value + u.gap.value + 1, u.edgeRadius.value + .5,
+      split ? u.innerRadius.value + u.gap.value + 1 : 0));
     u.reach.value = this.spread.uniforms.reach.value = reach;
     // Depth threshold is a fraction of the frame width, i.e. of the fitted model size,
     // independent of file units and of how deep the model is along the view axis.
@@ -279,6 +499,32 @@ export class OutlinePass {
     c.worldToDepth.value.set(frameWidth / depthRange, (camera.top - camera.bottom) / depthRange);
     this.edges.uniforms.minAngle.value = creaseAngle(style.normalThreshold);
     this.edges.uniforms.bias.value = EDGE_BIAS_PX * frameWidth / this.target.width / depthRange;
+    const simplify = style.simplify > 0;
+    if (simplify && !this.dense) {
+      const options = { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: false };
+      const { width, height } = this.target;
+      this.dense = { mask: new THREE.WebGLRenderTarget(width, height, options), cores: new THREE.WebGLRenderTarget(width, height, options) };
+      this.merge.uniforms.stepBuffer.value = this.dense.mask.texture;
+    }
+    // Radii of «Упрощение» in G-buffer pixels.
+    const px = (value: number) => Math.min(100, Math.max(1, Math.round(value * scale)));
+    if (simplify) {
+      const rows = this.densityRows.uniforms, mask = this.densityMask.uniforms;
+      rows.window.value = mask.window.value = px(SIMPLIFY.window);
+      rows.near.value = mask.near.value = px(style.simplify / 2);
+      rows.close.value = mask.close.value = px(SIMPLIFY.close);
+      // Lines spaced `simplify` px at 1× cover 1 / (simplify × scale) of the G-buffer pixels.
+      mask.threshold.value = 1 / (style.simplify * scale);
+      this.steps.uniforms.stepDepth.value = SIMPLIFY.step * frameWidth / WIDTH / depthRange;
+    }
+    // With «Упрощение» the merged cores are in `lines`, the distances go to `dense.cores`.
+    // «Внутри» splits the cores into a free buffer first: `lines` (or `dense.mask`), and the
+    // distances go to `classes` without «Упрощение».
+    this.spread.uniforms.classBuffer.value = simplify ? (split ? this.dense!.mask.texture : this.lines.texture)
+      : split ? this.lines.texture : this.classes.texture;
+    u.spreadBuffer.value = simplify ? this.dense!.cores.texture : split ? this.classes.texture : this.lines.texture;
+    u.maskBuffer.value = simplify ? this.lines.texture : null;
+    u.fill.value = simplify ? SIMPLIFY.fill : 0;
     toRGB(style.lineColor, u.ink.value);
     toRGB(style.background, u.paper.value);
     u.transparent.value = transparent ? 1 : 0;
@@ -298,13 +544,44 @@ export class OutlinePass {
       renderer.setRenderTarget(this.target);
       renderer.clear();
       renderer.render(scene, camera);
+      if (split) this.findExterior(renderer, scene, camera, EXTERIOR.passage * scale);
       scene.overrideMaterial = this.edges;
       camera.layers.set(EDGE_LAYER);
       renderer.setRenderTarget(this.lines);
       renderer.clear();
       renderer.render(scene, camera);
       pass(this.classify, this.classes);
-      pass(this.spread, this.lines);
+      if (simplify) {
+        const { mask, cores } = this.dense!;
+        const m = this.morph.uniforms;
+        const close = px(SIMPLIFY.close), open = px(SIMPLIFY.open);
+        const morph = (source: THREE.WebGLRenderTarget, target: THREE.WebGLRenderTarget, x: boolean, dilate: boolean) => {
+          m.source.value = source.texture;
+          m.axis.value.set(x ? this.texel.x : 0, x ? 0 : this.texel.y);
+          m.close.value = dilate ? 0 : close;
+          m.open.value = open;
+          m.dilate.value = dilate ? 1 : 0;
+          pass(this.morph, target);
+        };
+        pass(this.densityRows, this.lines);
+        pass(this.densityMask, mask);
+        morph(mask, cores, true, false);
+        morph(cores, this.lines, false, false);
+        morph(this.lines, mask, true, true);
+        morph(mask, cores, false, true);
+        this.steps.uniforms.closedBuffer.value = cores.texture;
+        pass(this.steps, mask);
+        pass(this.merge, this.lines);
+        if (split) {
+          this.split.uniforms.classBuffer.value = this.lines.texture;
+          pass(this.split, mask);
+        }
+        pass(this.spread, cores);
+      } else if (split) {
+        this.split.uniforms.classBuffer.value = this.classes.texture;
+        pass(this.split, this.lines);
+        pass(this.spread, this.classes);
+      } else pass(this.spread, this.lines);
       pass(this.material, output);
     } finally {
       camera.layers.mask = layers;
@@ -315,10 +592,46 @@ export class OutlinePass {
     }
   }
 
+  /**
+   * Reads the G-buffer coverage (alpha 0 = empty) and uploads the outer background (exterior.ts).
+   * The coverage depends only on the camera and the model: line widths and thresholds reuse it.
+   */
+  private findExterior(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera, passage: number): void {
+    const { width, height } = this.target;
+    const n = width * height;
+    const parts: unknown[] = [];
+    scene.traverseVisible(object => { if (object instanceof THREE.Mesh) parts.push(object.uuid, ...object.matrixWorld.elements); });
+    const key = [width, height, passage, ...camera.matrixWorldInverse.elements, ...camera.projectionMatrix.elements, ...parts].join();
+    if (this.exterior?.key === key) return;
+    if (!this.exterior || this.exterior.background.length !== n) {
+      this.exterior?.texture.dispose();
+      const texture = new THREE.DataTexture(new Uint8Array(n), width, height, THREE.RedFormat, THREE.UnsignedByteType);
+      texture.minFilter = texture.magFilter = THREE.NearestFilter;
+      texture.unpackAlignment = 1;
+      this.exterior = { pixels: new Uint8Array(n * 4), background: new Uint8Array(n), texture, key: '' };
+      this.split.uniforms.exteriorBuffer.value = texture;
+    }
+    const { pixels, background, texture } = this.exterior;
+    renderer.readRenderTargetPixels(this.target, 0, 0, width, height, pixels);
+    for (let i = 0; i < n; i++) background[i] = pixels[i * 4 + 3] === 0 ? 1 : 0;
+    texture.image.data = exteriorMask(background, width, height, passage);
+    texture.needsUpdate = true;
+    this.exterior.key = key;
+  }
+
   dispose(): void {
+    this.exterior?.texture.dispose();
     this.target.dispose();
     this.lines.dispose();
     this.classes.dispose();
+    this.dense?.mask.dispose();
+    this.dense?.cores.dispose();
+    this.densityRows.dispose();
+    this.densityMask.dispose();
+    this.morph.dispose();
+    this.steps.dispose();
+    this.merge.dispose();
+    this.split.dispose();
     this.gbuffer.dispose();
     this.edges.dispose();
     this.classify.dispose();

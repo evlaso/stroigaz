@@ -59,7 +59,7 @@ line = 'fill="none" vector-effect="non-scaling-stroke"'
 cross = 9
 parts = [
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x0:.1f} {y0:.1f} {w:.1f} {h:.1f}" width="{w:.0f}" height="{h:.0f}">',
-    '<title>Построение знака СТРОЙГАЗ</title>',
+    '<title>Построение знака Стройгаз</title>',
     f'<g stroke="#A3A8AE" stroke-width="1" {line}>',
     f'<line x1="{axis:.1f}" y1="{y0:.1f}" x2="{axis:.1f}" y2="{y1:.1f}"/>',
     *(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}"/>' for cx, cy, r in circles),

@@ -6,7 +6,7 @@
     "slide": 13,
     "design": "/assets/cases/sampling-design.webp",
     "photo": "/assets/cases/sampling-photo.webp",
-    "schematic": "/assets/cases/sampling-schematic.svg",
+    "schematic": "/assets/cases/sampling-3d-schematic.webp",
     "photos": [
       {
         "image": "/assets/cases/sampling-gallery-1.webp",
@@ -33,7 +33,9 @@
         "alt": "Станции отбора проб высокого давления — фотография 4"
       }
     ],
-    "colorIllustration": "/assets/cases/sampling-lit.webp"
+    "colorIllustration": "/assets/cases/sampling-3d-lit.webp",
+    "illustrationShift": -4.4,
+    "illustrationRatio": 0.609
   },
   {
     "slug": "boiler",
@@ -69,7 +71,9 @@
         "alt": "Котельные для газового оборудования — фотография 4"
       }
     ],
-    "colorIllustration": "/assets/cases/boiler-lit.webp"
+    "colorIllustration": "/assets/cases/boiler-lit.webp",
+    "illustrationShift": -8.7,
+    "illustrationRatio": 0.9427
   },
   {
     "slug": "structures",
@@ -78,7 +82,7 @@
     "slide": 15,
     "design": "/assets/cases/structures-design.webp",
     "photo": "/assets/cases/structures-photo.webp",
-    "schematic": "/assets/cases/structures-schematic.svg",
+    "schematic": "/assets/cases/structures-3d-schematic.webp",
     "photos": [
       {
         "image": "/assets/cases/structures-gallery-1.webp",
@@ -93,7 +97,9 @@
         "alt": "Опорные конструкции и площадки обслуживания — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/structures-lit.webp"
+    "colorIllustration": "/assets/cases/structures-3d-lit.webp",
+    "illustrationShift": 8.0,
+    "illustrationRatio": 1.015
   },
   {
     "slug": "cip",
@@ -102,7 +108,7 @@
     "slide": 16,
     "design": "/assets/cases/cip-design.webp",
     "photo": "/assets/cases/cip-photo.webp",
-    "schematic": "/assets/cases/cip-schematic.svg",
+    "schematic": "/assets/cases/cip-3d-schematic.webp",
     "photos": [
       {
         "image": "/assets/cases/cip-gallery-1.webp",
@@ -117,7 +123,9 @@
         "alt": "Установки химической промывки — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/cip-lit.webp"
+    "colorIllustration": "/assets/cases/cip-3d-lit.webp",
+    "illustrationShift": 11.7,
+    "illustrationRatio": 1.3162
   },
   {
     "slug": "osmosis",
@@ -141,7 +149,9 @@
         "alt": "Установки обратного осмоса — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/osmosis-lit.webp"
+    "colorIllustration": "/assets/cases/osmosis-lit.webp",
+    "illustrationShift": 3.1,
+    "illustrationRatio": 0.9677
   },
   {
     "slug": "vacuum",
@@ -165,7 +175,9 @@
         "alt": "Установка вакуумирования с насосной станцией — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/vacuum-lit.webp"
+    "colorIllustration": "/assets/cases/vacuum-lit.webp",
+    "illustrationShift": -0.4,
+    "illustrationRatio": 1.131
   },
   {
     "slug": "dosing",
@@ -189,7 +201,9 @@
         "alt": "Установки дозирования химических реагентов — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/dosing-3d-lit.webp"
+    "colorIllustration": "/assets/cases/dosing-3d-lit.webp",
+    "illustrationShift": 4.1,
+    "illustrationRatio": 1.1514
   },
   {
     "slug": "surface-water",
@@ -207,7 +221,9 @@
         "alt": "Установка очистки поверхностных вод — фотография 1"
       }
     ],
-    "colorIllustration": "/assets/cases/surface-water-lit.webp"
+    "colorIllustration": "/assets/cases/surface-water-lit.webp",
+    "illustrationShift": -0.1,
+    "illustrationRatio": 1.131
   },
   {
     "slug": "water-pumping",
@@ -231,7 +247,9 @@
         "alt": "Насосная станция технического водоснабжения — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/water-pumping-lit.webp"
+    "colorIllustration": "/assets/cases/water-pumping-lit.webp",
+    "illustrationShift": -0.1,
+    "illustrationRatio": 1.131
   },
   {
     "slug": "drinking-water",
@@ -255,6 +273,8 @@
         "alt": "Мобильный комплекс подготовки питьевой воды — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/drinking-water-lit.webp"
+    "colorIllustration": "/assets/cases/drinking-water-lit.webp",
+    "illustrationShift": -0.1,
+    "illustrationRatio": 1.131
   }
 ]

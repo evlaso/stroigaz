@@ -121,7 +121,7 @@ try {
   await page.locator('#rotate-45').click();
   await page.waitForFunction(() => window.__outlineLab.trace === null);
   await page.locator('#rotation').evaluate(input => { input.value = '20'; input.dispatchEvent(new Event('input', { bubbles: true })); });
-  for (const [id, key, value] of [['depth', 'depthThreshold', '0.004'], ['normal', 'normalThreshold', '0.45'], ['silhouette', 'silhouetteWidth', '2.5'], ['edge-width', 'edgeWidth', '0.75'], ['gap', 'haloGap', '0.5'], ['ink', 'lineColor', '#225533'], ['paper', 'background', '#f5f6f7']]) {
+  for (const [id, key, value] of [['depth', 'depthThreshold', '0.004'], ['normal', 'normalThreshold', '0.45'], ['silhouette', 'silhouetteWidth', '2.5'], ['edge-width', 'edgeWidth', '0.75'], ['gap', 'haloGap', '0.5'], ['simplify', 'simplify', '1.25'], ['inner-width', 'innerWidth', '0.8'], ['ink', 'lineColor', '#225533'], ['paper', 'background', '#f5f6f7']]) {
     await page.locator(`#${id}`).evaluate((input, value) => { input.value = value; input.dispatchEvent(new Event('input', { bubbles: true })); }, value);
     assert.equal(await page.evaluate(key => window.__outlineLab.preset.outline[key], key), Number.isNaN(Number(value)) ? value : Number(value));
   }
@@ -145,7 +145,7 @@ try {
   // Presets without `shading` get the studio defaults; export writes the block.
   // Presets before zoom get the fitted frame, before the export switch — the whole model, no background.
   assert.deepEqual(exported, { version: 1, rotation: 90, mirrorX: false, view: { zoom: 1, panX: 0, panY: 0 },
-    outline: { ...legacyOutline, silhouetteWidth: lineWidth * 2, edgeWidth: lineWidth, haloGap: 1.5 },
+    outline: { ...legacyOutline, silhouetteWidth: lineWidth * 2, edgeWidth: lineWidth, haloGap: 1.5, simplify: 0, innerWidth: 0 },
     shading: { edges: true, occlusion: 1, occlusionRadius: 12 }, export: { frame: 'model', transparent: true } });
   // Drag and drop a local cube, without copying any CAD input into the repository.
   const data = await page.evaluateHandle(base64 => {

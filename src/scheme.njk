@@ -1,6 +1,6 @@
 ---
 layout: layouts/base.njk
-title: Генератор моделей — СТРОЙГАЗ
+title: Генератор моделей — Стройгаз
 description: Контурные схемы и рендеры оборудования из 3D-моделей. Всё считается в браузере, файл никуда не отправляется.
 permalink: /3d-gen/
 noindex: true
@@ -36,7 +36,9 @@ eleventyExcludeFromCollections: true
         <div class="scheme-field"><label for="normal">Порог нормалей</label><input id="normal" type="range" min="0.02" max="1.5" step="0.01"><output id="normal-value" for="normal"></output></div>
         <div class="scheme-field" title="Внешний контур: силуэты, перекрытия и границы между деталями."><label for="silhouette">Силуэт</label><input id="silhouette" type="range" min="0.25" max="6" step="0.05"><output id="silhouette-value" for="silhouette"></output></div>
         <div class="scheme-field" title="Внутренние линии: рёбра модели и изломы поверхности."><label for="edge-width">Рёбра</label><input id="edge-width" type="range" min="0.25" max="3" step="0.05"><output id="edge-width-value" for="edge-width"></output></div>
+        <div class="scheme-field" title="Силуэты внутри рисунка: прутки ограждений и лестниц, просветы между ними, деталь поверх детали. Толщину «Силуэт» сохраняет только внешний контур — граница с фоном, связанным с краем кадра. 0 — как силуэт."><label for="inner-width">Внутри</label><input id="inner-width" type="range" min="0" max="6" step="0.05"><output id="inner-width-value" for="inner-width"></output></div>
         <div class="scheme-field" title="Светлый зазор: рёбра дальней детали обрываются у силуэта ближней. 0 — выключен."><label for="gap">Зазор</label><input id="gap" type="range" min="0" max="3" step="0.25"><output id="gap-value" for="gap"></output></div>
+        <div class="scheme-field" title="Решётчатый настил, ступени: где линии чаще, чем через столько пикселей кадра 1×, область становится светлой плоскостью с контуром; узкие полосы вроде кольца болтов остаются как есть. 0 — выключено."><label for="simplify">Упрощение</label><input id="simplify" type="range" min="0" max="4" step="0.25"><output id="simplify-value" for="simplify"></output></div>
         <div class="scheme-colors"><label for="ink">Линия <span class="scheme-swatch"><input id="ink" type="color"></span></label><label for="paper">Фон <span class="scheme-swatch"><input id="paper" type="color"></span></label><label class="scheme-check" title="PNG без фона во всех режимах: прозрачно всё, кроме модели и линий. На экране фон остаётся цветом «Фон»."><input id="transparent" type="checkbox"> Прозрачный фон</label></div>
       </section>
       <section class="scheme-controls" aria-labelledby="scheme-export-title">

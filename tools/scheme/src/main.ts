@@ -79,6 +79,8 @@ function syncControls(): void {
     ['silhouette', preset.outline.silhouetteWidth, `${preset.outline.silhouetteWidth.toFixed(2)} px`],
     ['edge-width', preset.outline.edgeWidth, `${preset.outline.edgeWidth.toFixed(2)} px`],
     ['gap', preset.outline.haloGap, preset.outline.haloGap ? `${preset.outline.haloGap.toFixed(2)} px` : 'нет'],
+    ['simplify', preset.outline.simplify, preset.outline.simplify ? `${preset.outline.simplify.toFixed(2)} px` : 'нет'],
+    ['inner-width', preset.outline.innerWidth, preset.outline.innerWidth ? `${preset.outline.innerWidth.toFixed(2)} px` : 'как силуэт'],
     ['occlusion', preset.shading.occlusion, preset.shading.occlusion ? preset.shading.occlusion.toFixed(2) : 'нет'],
     ['occlusion-radius', preset.shading.occlusionRadius, `${preset.shading.occlusionRadius} px`],
   ];
@@ -298,7 +300,7 @@ function rotate(value: number): void { untrace(); preset.rotation = degrees(valu
 input('rotation').oninput = () => rotate(Number(input('rotation').value));
 input('mirror').onchange = () => { untrace(); preset.mirrorX = input('mirror').checked; viewer.fit(preset); render(); };
 el('rotate-45').onclick = () => rotate(preset.rotation + 45);
-for (const [id, key] of [['depth', 'depthThreshold'], ['normal', 'normalThreshold'], ['silhouette', 'silhouetteWidth'], ['edge-width', 'edgeWidth'], ['gap', 'haloGap']] as const) {
+for (const [id, key] of [['depth', 'depthThreshold'], ['normal', 'normalThreshold'], ['silhouette', 'silhouetteWidth'], ['edge-width', 'edgeWidth'], ['gap', 'haloGap'], ['simplify', 'simplify'], ['inner-width', 'innerWidth']] as const) {
   // The crease threshold also filters the edges over the model.
   input(id).oninput = () => { if (key === 'normalThreshold') untrace(); preset.outline[key] = Number(input(id).value); syncControls(); render(); };
 }

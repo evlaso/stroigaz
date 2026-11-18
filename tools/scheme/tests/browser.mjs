@@ -44,6 +44,24 @@ function pngAlpha(path) {
   }, png.toString('base64')));
 }
 
+/** Differing RGBA bytes of two PNG files. */
+async function pngDiff(a, b) {
+  const [x, y] = await Promise.all([readFile(a), readFile(b)]);
+  return page.evaluate(async ([a, b]) => {
+    const data = async base64 => {
+      const bitmap = await createImageBitmap(new Blob([Uint8Array.from(atob(base64), c => c.charCodeAt(0))], { type: 'image/png' }));
+      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+      const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0);
+      return ctx.getImageData(0, 0, bitmap.width, bitmap.height).data;
+    };
+    const [p, q] = await Promise.all([data(a), data(b)]);
+    if (p.length !== q.length) return Infinity;
+    let count = 0;
+    for (let i = 0; i < p.length; i++) if (p[i] !== q[i]) count++;
+    return count;
+  }, [x.toString('base64'), y.toString('base64')]);
+}
+
 async function layout(width) {
   await page.setViewportSize({ width, height: 1100 });
   const sizes = await page.evaluate(() => {
@@ -128,6 +146,36 @@ try {
       assert.equal(alpha.max, 255, 'контур: пиксель линии непрозрачный');
     }
   }
+  // «Упрощение»: off by default; the slider writes outline.simplify, and back at 0 the outline
+  // is the same PNG as before, byte for byte.
+  {
+    const setSimplify = value => rendered(() => page.locator('#simplify').evaluate((input, value) => { input.value = value; input.dispatchEvent(new Event('input', { bubbles: true })); }, value));
+    const export1x = async name => {
+      const downloadEvent = page.waitForEvent('download');
+      await page.locator('[data-scale="1"]').click();
+      await (await downloadEvent).saveAs(`${out}/${name}`);
+      return `${out}/${name}`;
+    };
+    assert.equal(await page.evaluate(() => window.__outlineLab.preset.outline.simplify), 0);
+    assert.equal(await page.locator('#simplify-value').textContent(), 'нет');
+    await setSimplify('1.5');
+    assert.equal(await page.evaluate(() => window.__outlineLab.preset.outline.simplify), 1.5);
+    assert.equal(await page.locator('#simplify-value').textContent(), '1.50 px');
+    assert.equal((await readFile(await export1x('scheme-outline-simplify-1x.png'))).readUInt32BE(16), 760);
+    await setSimplify('0');
+    assert.equal(await pngDiff(`${out}/scheme-outline-1x.png`, await export1x('scheme-outline-simplify-off-1x.png')), 0, '«Упрощение» 0 — контур как без него');
+    // «Внутри»: off by default. The cube has only the outer contour (every silhouette touches the
+    // background around it), so even with «Внутри» the PNG is the same, byte for byte; back at 0 too.
+    const setInner = value => rendered(() => page.locator('#inner-width').evaluate((input, value) => { input.value = value; input.dispatchEvent(new Event('input', { bubbles: true })); }, value));
+    assert.equal(await page.evaluate(() => window.__outlineLab.preset.outline.innerWidth), 0);
+    assert.equal(await page.locator('#inner-width-value').textContent(), 'как силуэт');
+    await setInner('0.75');
+    assert.equal(await page.evaluate(() => window.__outlineLab.preset.outline.innerWidth), 0.75);
+    assert.equal(await page.locator('#inner-width-value').textContent(), '0.75 px');
+    assert.equal(await pngDiff(`${out}/scheme-outline-1x.png`, await export1x('scheme-outline-inner-1x.png')), 0, 'у куба только внешний контур');
+    await setInner('0');
+    assert.equal(await pngDiff(`${out}/scheme-outline-1x.png`, await export1x('scheme-outline-inner-off-1x.png')), 0, '«Внутри» 0 — контур как без него');
+  }
   // Without «Прозрачный фон» the PNG has the «Фон» colour (white, opaque); the screen is the same either way.
   for (const mode of ['model', 'outline']) {
     await rendered(() => page.locator(`#${mode}-mode`).click());
@@ -145,7 +193,9 @@ try {
   const presetEvent = page.waitForEvent('download');
   await page.locator('#save-preset').click();
   await (await presetEvent).saveAs(`${out}/exported.preset.json`);
-  assert.deepEqual(JSON.parse(await readFile(`${out}/exported.preset.json`, 'utf8')), JSON.parse(await readFile(presetPath, 'utf8')));
+  // The example predates «Упрощение» and «Внутри»: the export adds them, switched off.
+  const example = JSON.parse(await readFile(presetPath, 'utf8'));
+  assert.deepEqual(JSON.parse(await readFile(`${out}/exported.preset.json`, 'utf8')), { ...example, outline: { ...example.outline, simplify: 0, innerWidth: 0 } });
   await rendered(() => page.locator('#rotate-45').click());
   assert.equal(await page.evaluate(() => window.__outlineLab.preset.rotation), 35);
   await rendered(() => page.locator('#mirror').uncheck());
@@ -253,7 +303,8 @@ try {
   assert.ok(assets.some(response => /step\.worker-/.test(response.url)), 'Дочерний worker должен загрузиться');
   assert.ok(assets.some(response => /generateMeshBVH\.worker-/.test(response.url)), 'Worker BVH трассировки должен загрузиться');
   assert.ok(responses.some(response => /WebGLPathTracer-.*\.js$/.test(response.url) && response.status === 200), 'Модуль трассировки грузится отдельным чанком');
-  const prefix = new URL(url).pathname.replace(/scheme\/$/, 'assets/scheme/');
+  // /3d-gen/ → /assets/scheme/, /stroigaz/3d-gen/ → /stroigaz/assets/scheme/.
+  const prefix = new URL(url).pathname.replace(/[^/]+\/$/, 'assets/scheme/');
   assert.ok(assets.every(response => new URL(response.url).pathname.startsWith(prefix) && response.status === 200), 'Пути worker/WASM должны сохранять префикс');
   assert.ok(assets.filter(response => response.url.endsWith('.wasm')).every(response => response.type === 'application/wasm'));
   assert.deepEqual(errors, []);

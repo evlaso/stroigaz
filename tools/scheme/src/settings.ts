@@ -15,6 +15,8 @@ export const MAX_DISPLAY_WIDTH = 4096;
 export const ZOOM = Object.freeze({ min: 0.5, max: 6, step: 0.05 });
 /** The frame centre may move up to the edge of the fitted frame: every point of the model stays reachable. */
 export const PAN_LIMIT = 0.5;
+/** Upper limit of «Упрощение», px at 1×. */
+export const SIMPLIFY_MAX = 4;
 export const TOO_LARGE = 'Файл слишком большой для браузерной конвертации';
 
 export const defaults: Preset = {
@@ -32,6 +34,10 @@ export const defaults: Preset = {
     silhouetteWidth: 2,
     edgeWidth: 1,
     haloGap: 1.5,
+    // Off: every line is drawn. 1.5–2 px turns gratings and treads into plain surfaces.
+    simplify: 0,
+    // Off: inner silhouettes as heavy as the outer contour. ≈ edgeWidth — light railings.
+    innerWidth: 0,
     lineColor: '#383e43',
     background: '#ffffff',
   },
@@ -143,6 +149,10 @@ export function parsePreset(value: unknown): Preset {
       silhouetteWidth: legacyWidth === undefined ? numeric(o.silhouetteWidth, 0.25, 6, 'силуэт') : legacyWidth * 2,
       edgeWidth: legacyWidth ?? numeric(o.edgeWidth, 0.25, 3, 'рёбра'),
       haloGap: o.haloGap === undefined ? defaults.outline.haloGap : numeric(o.haloGap, 0, 3, 'зазор'),
+      // Presets before the simplification draw every line.
+      simplify: o.simplify === undefined ? defaults.outline.simplify : numeric(o.simplify, 0, SIMPLIFY_MAX, 'упрощение'),
+      // Presets before the outer contour: every silhouette has the silhouette width.
+      innerWidth: o.innerWidth === undefined ? defaults.outline.innerWidth : numeric(o.innerWidth, 0, 6, 'внутри'),
       lineColor: color(o.lineColor),
       background: color(o.background),
     },

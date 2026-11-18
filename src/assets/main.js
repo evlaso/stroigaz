@@ -188,7 +188,7 @@ document.querySelectorAll('.diagram-variant:not([data-linked-reveal])').forEach(
     const bounds = diagram.getBoundingClientRect();
     diagram.style.setProperty('--diagram-x', `${point.x - bounds.left}px`);
     diagram.style.setProperty('--diagram-y', `${point.y - bounds.top}px`);
-    diagram.style.setProperty('--diagram-radius', `${Math.min(270, Math.max(150, bounds.width * 0.4))}px`);
+    diagram.style.setProperty('--diagram-radius', `${Math.min(540, Math.max(280, bounds.width * 0.75))}px`);
     diagram.classList.add('is-revealing');
   }
 

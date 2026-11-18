@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { clampView, defaults, degrees, exportFrame, PAN_LIMIT, panBy, parsePreset, projectStep, TESSELLATION, ZOOM, zoomAt } from '../src/settings.ts';
+import { exteriorMask } from '../src/exterior.ts';
+import { clampView, defaults, degrees, exportFrame, PAN_LIMIT, panBy, parsePreset, projectStep, SIMPLIFY_MAX, TESSELLATION, ZOOM, zoomAt } from '../src/settings.ts';
 
 test('поворот — целые градусы с переходом через 360', () => {
   assert.equal(degrees(350 + 45), 35);
@@ -58,6 +59,60 @@ test('два веса линии: силуэт вдвое толще рёбер,
   const { haloGap: _, ...noGap } = defaults.outline;
   assert.equal(parsePreset({ ...defaults, outline: noGap }).outline.haloGap, defaults.outline.haloGap);
   assert.equal(parsePreset({ ...defaults, outline: { ...defaults.outline, haloGap: 0 } }).outline.haloGap, 0);
+});
+
+test('упрощение плотных деталей: по умолчанию выключено, старые пресеты без поля — 0', () => {
+  assert.equal(defaults.outline.simplify, 0);
+  const { simplify: _, ...legacy } = defaults.outline;
+  assert.equal(parsePreset({ ...defaults, outline: legacy }).outline.simplify, 0);
+  assert.equal(parsePreset({ ...defaults, outline: { ...defaults.outline, simplify: 1 } }).outline.simplify, 1);
+  assert.equal(parsePreset({ ...defaults, outline: { ...defaults.outline, simplify: SIMPLIFY_MAX } }).outline.simplify, SIMPLIFY_MAX);
+  assert.throws(() => parsePreset({ ...defaults, outline: { ...defaults.outline, simplify: -0.5 } }));
+  assert.throws(() => parsePreset({ ...defaults, outline: { ...defaults.outline, simplify: SIMPLIFY_MAX + 1 } }));
+  assert.throws(() => parsePreset({ ...defaults, outline: { ...defaults.outline, simplify: '1' } }));
+  // Пример площадки обслуживания сделан с упрощением 1 px, примеры до него читаются с 0.
+  const structures = parsePreset(JSON.parse(readFileSync(new URL('../examples/structures-3d.preset.json', import.meta.url), 'utf8')));
+  assert.equal(structures.outline.simplify, 1);
+  const dosing = parsePreset(JSON.parse(readFileSync(new URL('../examples/dosing.preset.json', import.meta.url), 'utf8')));
+  assert.equal(dosing.outline.simplify, 0);
+});
+
+test('внешний контур: по умолчанию выключен, старые пресеты без поля — 0', () => {
+  assert.equal(defaults.outline.innerWidth, 0);
+  const { innerWidth: _, ...legacy } = defaults.outline;
+  assert.equal(parsePreset({ ...defaults, outline: legacy }).outline.innerWidth, 0);
+  assert.equal(parsePreset({ ...defaults, outline: { ...defaults.outline, innerWidth: 0.85 } }).outline.innerWidth, 0.85);
+  assert.throws(() => parsePreset({ ...defaults, outline: { ...defaults.outline, innerWidth: -0.1 } }));
+  assert.throws(() => parsePreset({ ...defaults, outline: { ...defaults.outline, innerWidth: 7 } }));
+  assert.throws(() => parsePreset({ ...defaults, outline: { ...defaults.outline, innerWidth: '1' } }));
+  // Площадка обслуживания: внутри 0,85 px; пример дозирования до параметра — 0.
+  const structures = parsePreset(JSON.parse(readFileSync(new URL('../examples/structures-3d.preset.json', import.meta.url), 'utf8')));
+  assert.equal(structures.outline.innerWidth, 0.85);
+  const dosing = parsePreset(JSON.parse(readFileSync(new URL('../examples/dosing.preset.json', import.meta.url), 'utf8')));
+  assert.equal(dosing.outline.innerWidth, 0);
+});
+
+test('внешний фон: заливка от края кадра, замкнутые просветы и щели уже прохода — внутри', () => {
+  // 20 × 12 frame, a part 8 × 8 with a hole 4 × 4 (x, y 4–7) and a crack 1 px wide (y 5) to its right side.
+  const w = 20, h = 12;
+  const ring = (gap: number) => {
+    const background = new Uint8Array(w * h).fill(1);
+    for (let y = 2; y < 10; y++) for (let x = 2; x < 10; x++) background[y * w + x] = 0;
+    for (let y = 4; y < 8; y++) for (let x = 4; x < 8; x++) background[y * w + x] = 1;
+    for (let y = 4; y < 4 + gap; y++) for (let x = 8; x < 10; x++) background[y * w + x] = 1;
+    return background;
+  };
+  const at = (mask: Uint8Array, x: number, y: number) => mask[y * w + x];
+  const tight = exteriorMask(ring(1), w, h, 0);
+  assert.equal(at(tight, 0, 0), 255);
+  assert.equal(at(tight, 3, 3), 0, 'деталь — не фон');
+  assert.equal(at(tight, 5, 5), 255, 'без прохода заливка проходит в щель');
+  const opened = exteriorMask(ring(1), w, h, 1);
+  assert.equal(at(opened, 11, 5), 255, 'фон вплотную к детали снаружи — внешний');
+  assert.equal(at(opened, 5, 5), 0, 'щель в 1 px уже прохода: просвет внутри');
+  assert.equal(at(opened, 9, 4), 0);
+  assert.equal(at(exteriorMask(ring(0), w, h, 0), 5, 5), 0, 'замкнутый просвет — внутри');
+  assert.equal(at(exteriorMask(ring(4), w, h, 1), 5, 5), 255, 'проём шире прохода — снаружи');
 });
 
 test('старый пресет с lineWidth: рёбра = lineWidth, силуэт = ×2, поле не экспортируется', () => {

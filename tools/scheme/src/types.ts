@@ -12,6 +12,17 @@ export interface OutlineStyle {
   edgeWidth: number;
   /** Halo: inner lines of farther geometry are erased this far beyond a silhouette stroke. Px at 1×, 0 = off. */
   haloGap: number;
+  /**
+   * Simplify dense detail: where lines are closer than this (px at 1×) — gratings, treads,
+   * bolt rows — the area becomes one light surface with a contour. 0 = off.
+   */
+  simplify: number;
+  /**
+   * Silhouettes inside the drawing — bars against gaps that do not reach the frame border,
+   * parts over parts — get this width; only the outer contour keeps silhouetteWidth.
+   * Px at 1×, 0 = off (every silhouette is silhouetteWidth).
+   */
+  innerWidth: number;
   lineColor: string;
   background: string;
 }

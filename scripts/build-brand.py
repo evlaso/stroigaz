@@ -1,7 +1,7 @@
 # /// script
 # dependencies = ["fonttools", "uharfbuzz"]
 # ///
-"""Build portable outlined SVG logos using the same Prosto One as the header.
+"""Build portable outlined SVG logos: the mark and «Стройгаз» in Onest 600.
 
 Usage:
   uv run scripts/build-brand.py
@@ -30,6 +30,7 @@ import zipfile
 import xml.etree.ElementTree as ET
 import uharfbuzz as hb
 from fontTools.ttLib import TTFont
+from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.svgLib.path import parse_path
@@ -70,29 +71,31 @@ if args.mark:
         f'<svg width="{round(height * vb[2] / vb[3])}" height="{height}" viewBox="{" ".join(f"{v:.3f}" for v in vb)}" fill="none" xmlns="http://www.w3.org/2000/svg">\n{body}\n</svg>\n')
 out = root / 'src/assets/brand'
 out.mkdir(exist_ok=True)
-font = TTFont(root / 'src/assets/fonts/prosto-one/ProstoOne-Regular.ttf')
-assert all(ord(c) in font.getBestCmap() for c in 'СТРОЙГАЗ'), 'Missing Cyrillic glyphs'
+WORDMARK = 'Стройгаз'
+# Same weight and tracking as the header (.brand strong in style.css).
+WORDMARK_WEIGHT = 600
+WORDMARK_TRACKING = -0.02
+FAVICON_WEIGHT = 750
+
+
+def onest(weight):
+    """A static instance of the variable Onest at the given weight."""
+    return instantiateVariableFont(TTFont(root / 'src/assets/fonts/onest/Onest-Variable.ttf'), {'wght': weight})
+
+
+font = onest(WORDMARK_WEIGHT)
+assert all(ord(c) in font.getBestCmap() for c in WORDMARK), 'Missing Cyrillic glyphs'
 stream = BytesIO()
 font.save(stream)
 face = hb.Face(stream.getvalue())
 hfont = hb.Font(face)
 hfont.scale = (face.upem, face.upem)
 buffer = hb.Buffer()
-buffer.add_str('СТРОЙГАЗ')
+buffer.add_str(WORDMARK)
 buffer.guess_segment_properties()
 hb.shape(hfont, buffer)
 glyphs = font.getGlyphSet()
 order = font.getGlyphOrder()
-scale = 50 / font['OS/2'].sCapHeight
-x = 86
-# Match the header's subtle 0.018em outline.
-letter_stroke = 0.018 * face.upem
-letters = []
-for info, pos in zip(buffer.glyph_infos, buffer.glyph_positions):
-    pen = SVGPathPen(glyphs)
-    glyphs[order[info.codepoint]].draw(pen)
-    letters.append(f'<path transform="translate({x + pos.x_offset * scale:.4f} {72 - pos.y_offset * scale:.4f}) scale({scale:.8f} {-scale:.8f})" d="{pen.getCommands()}"/>')
-    x += pos.x_advance * scale
 source = (root / 'src/assets/logo-mark.svg').read_text()
 def recolor(svg, color):
     if color is None:
@@ -105,30 +108,60 @@ source_root = ET.fromstring(source)
 inline = re.sub(r'<svg[^>]*>', '<svg class="brand-mark" width="32" height="32" aria-hidden="true" viewBox="' + source_root.attrib['viewBox'] + '" fill="none" xmlns="http://www.w3.org/2000/svg">', source, count=1)
 (root / 'src/_includes/brand-mark.njk').write_text(inline)
 paths = '\n'.join(re.findall(r'<path[^>]+/>', source))
-# Fit the mark's real outline bounds into the place of the previous symbol:
-# y 2.205..84.897 in the wordmark's 88-unit layout, right edge 70.885
-# (15.115 units before the first letter at x=86).
+# The mark's real outline bounds take y 2.205..84.897 of the 88-unit layout,
+# LOGO_MARGIN from the left edge of the viewBox; the same margin follows the
+# last letter.
 mark_vb = [float(v) for v in source_root.attrib['viewBox'].split()]
 mark_x0, mark_y0, mark_x1, mark_y1 = outline_bounds(re.findall(r' d="([^"]+)"', source))
-mark_top, mark_bottom, mark_right = 2.205, 84.897, 70.885
-mark_scale = (mark_bottom - mark_top) / (mark_y1 - mark_y0)
-mark_left = mark_right - (mark_x1 - mark_x0) * mark_scale
-mark = f'<g transform="translate({mark_right - mark_x1 * mark_scale:.4f} {mark_top - mark_y0 * mark_scale:.4f}) scale({mark_scale:.8f})">{paths}</g>'
-# Keep the previous 3.116-unit margin left of the mark and the same right edge.
-logo_left = mark_left - 3.116
-logo_right = 12 + x + 6
-# A large Cyrillic С stays readable at browser-tab sizes.
-favicon_glyph = glyphs[font.getBestCmap()[ord('С')]]
-favicon_pen = SVGPathPen(glyphs)
+mark_top, mark_bottom = 2.205, 84.897
+mark_height = mark_bottom - mark_top
+LOGO_MARGIN = 3.116
+mark_scale = mark_height / (mark_y1 - mark_y0)
+mark_left = LOGO_MARGIN
+mark_right = mark_left + (mark_x1 - mark_x0) * mark_scale
+mark = f'<g transform="translate({mark_left - mark_x0 * mark_scale:.4f} {mark_top - mark_y0 * mark_scale:.4f}) scale({mark_scale:.8f})">{paths}</g>'
+# Wordmark, in shares of the mark's outline height: cap height, the gap
+# between the ink of the mark and of С, and the baseline below the mark's top.
+CAP_HEIGHT = 0.57
+GAP = 0.14
+BASELINE = 0.82
+scale = CAP_HEIGHT * mark_height / font['OS/2'].sCapHeight
+baseline = mark_top + BASELINE * mark_height
+tracking = WORDMARK_TRACKING * face.upem
+
+
+def ink(glyph):
+    pen = BoundsPen(glyphs)
+    glyph.draw(pen)
+    return pen.bounds
+
+
+x = mark_right + GAP * mark_height - ink(glyphs[order[buffer.glyph_infos[0].codepoint]])[0] * scale
+letters = []
+for n, (info, pos) in enumerate(zip(buffer.glyph_infos, buffer.glyph_positions)):
+    glyph = glyphs[order[info.codepoint]]
+    pen = SVGPathPen(glyphs)
+    glyph.draw(pen)
+    letters.append(f'<path transform="translate({x + pos.x_offset * scale:.4f} {baseline - pos.y_offset * scale:.4f}) scale({scale:.8f} {-scale:.8f})" d="{pen.getCommands()}"/>')
+    ink_right = x + (pos.x_offset + ink(glyph)[2]) * scale
+    if n < len(buffer.glyph_infos) - 1:
+        x += (pos.x_advance + tracking) * scale
+logo_left = 0
+logo_right = ink_right + LOGO_MARGIN
+# A bold Cyrillic С from Onest stays readable at browser-tab sizes; its open
+# side needs a quarter unit to the right to look centred.
+favicon_font = onest(FAVICON_WEIGHT)
+favicon_glyphs = favicon_font.getGlyphSet()
+favicon_glyph = favicon_glyphs[favicon_font.getBestCmap()[ord('С')]]
+favicon_pen = SVGPathPen(favicon_glyphs)
 favicon_glyph.draw(favicon_pen)
-favicon_bounds = BoundsPen(glyphs)
+favicon_bounds = BoundsPen(favicon_glyphs)
 favicon_glyph.draw(favicon_bounds)
 left, bottom, right, top = favicon_bounds.bounds
-favicon_scale = 19 / max(right - left, top - bottom)
-favicon_x = 15.75 - (left + right) / 2 * favicon_scale
+favicon_scale = 20 / max(right - left, top - bottom)
+favicon_x = 16.25 - (left + right) / 2 * favicon_scale
 favicon_y = 16 + (bottom + top) / 2 * favicon_scale
-favicon_stroke = 1.1 / favicon_scale
-favicon = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#078844"/><path fill="#FFFFFF" stroke="#FFFFFF" stroke-width="{favicon_stroke:.4f}" stroke-linejoin="round" transform="translate({favicon_x:.4f} {favicon_y:.4f}) scale({favicon_scale:.8f} {-favicon_scale:.8f})" d="{favicon_pen.getCommands()}"/></svg>'
+favicon = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#078844"/><path fill="#FFFFFF" transform="translate({favicon_x:.4f} {favicon_y:.4f}) scale({favicon_scale:.8f} {-favicon_scale:.8f})" d="{favicon_pen.getCommands()}"/></svg>'
 (root / 'src/assets/favicon.svg').write_text(favicon)
 
 # None keeps the supplied green shades of the mark.
@@ -136,7 +169,7 @@ variants = [('color', None, '#25282B'), ('white', '#FFFFFF', '#FFFFFF'), ('mono'
 for name, ink, text in variants:
     symbol = recolor(mark, ink)
     (out / f'mark-{name}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{source_root.attrib["viewBox"]}">{recolor(paths, ink)}</svg>')
-    (out / f'logo-{name}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{logo_left:.3f} 0 {logo_right - logo_left:.3f} 88">{symbol}<g fill="{text}" stroke="{text}" stroke-width="{letter_stroke:.4f}" stroke-linejoin="round" paint-order="stroke fill">{"".join(letters)}</g></svg>')
+    (out / f'logo-{name}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{logo_left:.3f} 0 {logo_right - logo_left:.3f} 88">{symbol}<g fill="{text}">{"".join(letters)}</g></svg>')
 with zipfile.ZipFile(out / 'stroigaz-logos.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
     # Only the downloadable variants; the folder also holds page illustrations.
     for file in sorted(out / f'{kind}-{name}.svg' for kind in ('logo', 'mark') for name, *_ in variants):
@@ -178,10 +211,15 @@ if not args.no_raster:
     # Apple touch icon: white mark, outline 128 px high, centred on 180 x 180.
     render('apple-touch-icon.html', (180, 180), root / 'src/assets/apple-touch-icon.png',
            mark=white_mark, height=f'{128 * (mark_vb[3] / (mark_y1 - mark_y0)):.3f}')
-    # Open Graph: repaint only the mark area of the existing 1200 x 630 card;
-    # the mark's viewBox sits at (80, 80) and is 88 px high.
+    # Open Graph: repaint only the logo area of the existing 1200 x 630 card.
+    # The mark keeps its place: its viewBox at (80, 80), 88 px high.
     og = root / 'src/assets/og-image.png'
+    og_unit = 88 / mark_vb[3]
+    og_scale = (mark_y1 - mark_y0) * og_unit / mark_height
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'og-base.png'
         shutil.copy(og, base)
-        render('og-image.html', (1200, 630), og, mark=white_mark, base=base.as_uri())
+        render('og-image.html', (1200, 630), og, logo=(out / 'logo-white.svg').read_text(), base=base.as_uri(),
+               left=f'{80 + (mark_x0 - mark_vb[0]) * og_unit - mark_left * og_scale:.3f}',
+               top=f'{80 + (mark_y0 - mark_vb[1]) * og_unit - mark_top * og_scale:.3f}',
+               height=f'{88 * og_scale:.3f}')

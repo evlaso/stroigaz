@@ -15,7 +15,7 @@ eleventyComputed:
 <div class="ids__wrapper projects-page" data-project-audiences>
   <nav class="project-audience-switch project-audience-switch--tabs" role="group" aria-label="Для кого проекты">
     {% for audience in projectAudiences %}
-    {% if audience.id == projectAudience.id %}<span{% else %}<a href="{{ audience.url }}"{% endif %} class="project-audience-segment" data-url="{{ audience.url | htmlBaseUrl }}" data-audience="{{ audience.id }}" data-title="{{ audience.title | replace(' — СТРОЙГАЗ', '') }} · СТРОЙГАЗ" data-description="{{ audience.description }}" data-canonical="{{ audience.url | htmlBaseUrl(site.url) }}"{% if audience.id == projectAudience.id %} aria-current="page"{% endif %}>{{ audience.label }}{% if audience.id == projectAudience.id %}</span>{% else %}</a>{% endif %}
+    {% if audience.id == projectAudience.id %}<span{% else %}<a href="{{ audience.url }}"{% endif %} class="project-audience-segment" data-url="{{ audience.url | htmlBaseUrl }}" data-audience="{{ audience.id }}" data-title="{{ audience.title | replace(' — Стройгаз', '') }} · Стройгаз" data-description="{{ audience.description }}" data-canonical="{{ audience.url | htmlBaseUrl(site.url) }}"{% if audience.id == projectAudience.id %} aria-current="page"{% endif %}>{{ audience.label }}{% if audience.id == projectAudience.id %}</span>{% else %}</a>{% endif %}
     {% endfor %}
   </nav>
   {% for audience in projectAudiences %}
@@ -35,7 +35,7 @@ eleventyComputed:
           <h2 id="case-{{ project.slug }}">{{ project.title }}</h2>
           {% if project.description %}<p>{{ project.description }}</p>{% endif %}
         </div>
-        <div class="case-study-schematic diagram-variant" tabindex="0" role="img" aria-label="Иллюстративная схема: {{ project.title }}">
+        <div class="case-study-schematic diagram-variant{% if project.illustrationRatio %} diagram-shifted" style="--diagram-shift: {{ ((project.illustrationShift or 0) / 100) | round(4) }}; --diagram-ratio: {{ project.illustrationRatio }}{% endif %}" tabindex="0" role="img" aria-label="Иллюстративная схема: {{ project.title }}">
           <img class="diagram-line" src="{{ project.schematic }}" alt="" aria-hidden="true" width="760" height="500" loading="lazy" decoding="async">
           <img class="diagram-color" src="{% if project.colorIllustration %}{{ project.colorIllustration }}{% else %}{{ project.schematic | replace('-schematic.svg', '-color.svg') }}{% endif %}" alt="" aria-hidden="true" width="760" height="500" loading="lazy" decoding="async">
         </div>

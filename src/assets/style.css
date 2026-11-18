@@ -1,9 +1,11 @@
+/* Onest 600 cut down to the letters of the wordmark «Стройгаз»; the full
+   variable font in fonts/onest/ is the source for scripts/build-brand.py. */
 @font-face {
-  font-family: "Prosto One";
+  font-family: "Onest Logo";
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("./fonts/prosto-one/ProstoOne-Regular.ttf") format("truetype");
+  font-weight: 600;
+  font-display: block;
+  src: url("./fonts/onest/OnestLogo-SemiBold.woff2") format("woff2");
 }
 
 /* Page widths, text measure, typography and spacing come from IDS. */
@@ -133,14 +135,18 @@ header {
   white-space: nowrap;
 }
 
+/* Same proportions as src/assets/brand/logo-*.svg (scripts/build-brand.py):
+   cap height 57% of the mark, 4.3 px between the inks of the mark and С,
+   baseline at 82% of the mark. */
 .brand strong {
-  font-family: "Prosto One", sans-serif;
-  font-weight: 400;
-  letter-spacing: 0;
-  -webkit-text-stroke: 0.018em currentColor;
-  paint-order: stroke fill;
+  font-family: "Onest Logo", sans-serif;
+  font-weight: 600;
+  font-size: 24.75px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-left: -4.2px;
   position: relative;
-  top: 0.07em;
+  top: 0.065em;
 }
 
 .brand-mark {
@@ -157,6 +163,15 @@ header {
 
 .brand-link {
   color: var(--ids__link);
+}
+
+.brand-mark path {
+  transition: fill var(--ids__duration-base) var(--ids__easing-base);
+}
+
+.brand-link:is(:hover, :focus-visible) .brand-mark path {
+  fill: var(--ids__hover);
+  transition-duration: var(--ids__duration-instant);
 }
 
 
@@ -714,12 +729,10 @@ header a:focus-visible {
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  border-bottom: 1px solid var(--ids__border);
 }
 
 .project-audience-switch.project-audience-switch--tabs .project-audience-segment {
-  padding-block: 0.15em 0.5em;
-  margin-bottom: -1px;
+  padding-block: 0.15em 0.3em;
   border-bottom: 3px solid transparent;
 }
 
@@ -1626,6 +1639,26 @@ ids-gallery.case-study-gallery {
   mask-image: radial-gradient(circle var(--diagram-radius, 0px) at var(--diagram-x, 50%) var(--diagram-y, 50%), rgb(0 0 0 / calc(1 - var(--diagram-strength) * 1)) 0%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.97)) 10%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.89)) 20%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.74)) 35%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.5)) 50%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.26)) 65%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.1)) 80%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0.02)) 92%, rgb(0 0 0 / calc(1 - var(--diagram-strength) * 0)) 100%);
 }
 
+/* Optical centring (scripts/illustration-shift.py): the picture moves by
+   --diagram-shift of its own rendered width so the bulk of the equipment, not
+   its frame, sits on the axis. Asymmetric padding narrows the content box
+   instead of moving the images, so both versions stay registered and the
+   reveal spot stays under the pointer. Where the frame is tight the picture
+   shrinks by at most 4%, and the shift is clamped so nothing is cropped. */
+.diagram-shifted {
+  container-type: size;
+}
+
+.diagram-shifted > img {
+  --diagram-fit: min(100cqw, 100cqh * var(--diagram-ratio));
+  --diagram-shift-abs: max(var(--diagram-shift), -1 * var(--diagram-shift));
+  --diagram-width: max(var(--diagram-fit) * 0.96, min(var(--diagram-fit), 100cqw / (1 + 2 * var(--diagram-shift-abs))));
+  --diagram-dx: clamp((var(--diagram-width) - 100cqw) / 2, var(--diagram-shift) * var(--diagram-width), (100cqw - var(--diagram-width)) / 2);
+  box-sizing: border-box;
+  padding-left: calc((100cqw - var(--diagram-width)) / 2 + var(--diagram-dx));
+  padding-right: calc((100cqw - var(--diagram-width)) / 2 - var(--diagram-dx));
+}
+
 .diagram-variant:focus-visible {
   outline: 2px solid var(--ids__accent);
   outline-offset: 4px;
@@ -1786,6 +1819,9 @@ ids-gallery.case-study-gallery {
   height: 80%;
 }
 
+.logo-vs-stage.logo-vs-lockup { aspect-ratio: 3 / 1; }
+.logo-vs-lockup img { width: 70%; height: auto; }
+
 /* Pixels show only when enlarged; the plain size is downscaled as usual. */
 .logo-vs-zoom .logo-vs-raster {
   image-rendering: pixelated;
@@ -1879,12 +1915,12 @@ ids-gallery.case-study-gallery {
   align-items: center;
   justify-content: center;
   width: 62%;
-  aspect-ratio: 5 / 1;
+  aspect-ratio: 4 / 1;
   background: var(--ids__accent);
   box-shadow: 0 6px 14px rgb(0 0 0 / 25%);
 }
 
-.logo-mock-sign img { width: 82%; height: auto; }
+.logo-mock-sign img { width: 72%; height: auto; }
 
 /* Drawing sheet; the title block sits in the lower right corner of its frame. */
 .logo-mock-paper {
@@ -2237,6 +2273,8 @@ ids-gallery.service-gallery {
 /* «Открыть модель»: a full-width site button between the settings and the canvas, the file name below it in one line. */
 .scheme-open {
   display: flex;
+  /* At 390 px the mode switch moves to its own line, still right-aligned. */
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
   min-width: 0;
