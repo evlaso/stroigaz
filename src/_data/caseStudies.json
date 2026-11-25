@@ -44,7 +44,7 @@
     "slide": 14,
     "design": "/assets/cases/boiler-design.webp",
     "photo": "/assets/cases/boiler-photo.webp",
-    "schematic": "/assets/cases/boiler-schematic.svg",
+    "schematic": "/assets/cases/boiler-3d-schematic.webp",
     "photos": [
       {
         "image": "/assets/cases/boiler-gallery-1.webp",
@@ -71,9 +71,9 @@
         "alt": "Котельные для газового оборудования — фотография 4"
       }
     ],
-    "colorIllustration": "/assets/cases/boiler-lit.webp",
-    "illustrationShift": -8.7,
-    "illustrationRatio": 0.9427
+    "colorIllustration": "/assets/cases/boiler-3d-lit.webp",
+    "illustrationShift": -15.6,
+    "illustrationRatio": 0.6795
   },
   {
     "slug": "structures",
@@ -154,30 +154,55 @@
     "illustrationRatio": 0.9677
   },
   {
+    "slug": "decarbonization",
+    "title": "Блоки декарбонизации",
+    "description": "Делаем блоки, которые удаляют из воды свободный диоксид углерода. Это защищает системы водоснабжения и оборудование от углекислотной коррозии.",
+    "design": "/assets/cases/decarbonization-gallery-1.webp",
+    "photo": "/assets/cases/decarbonization-gallery-1.webp",
+    "schematic": "/assets/cases/decarbonization-3d-schematic.webp",
+    "photos": [
+      {
+        "image": "/assets/cases/decarbonization-gallery-1.webp",
+        "width": 1800,
+        "height": 1347,
+        "alt": "Блоки декарбонизации — фотография 1"
+      },
+      {
+        "image": "/assets/cases/decarbonization-gallery-2.webp",
+        "width": 1800,
+        "height": 1347,
+        "alt": "Блоки декарбонизации — фотография 2"
+      }
+    ],
+    "colorIllustration": "/assets/cases/decarbonization-3d-lit.webp",
+    "illustrationShift": 15.5,
+    "illustrationRatio": 0.8611
+  },
+  {
     "slug": "vacuum",
-    "title": "Установка вакуумирования с насосной станцией",
-    "description": "Установка выполняет вакуумную обработку в автоматическом режиме и входит в состав блочно-модульной насосной станции. Предусмотрен удалённый контроль её работы.",
+    "title": "Установка вакуумирования активного ила",
+    "description": "Собираем установку из башни вакуумирования и автономной насосной станции блочно-модульного исполнения. Она удаляет воздух из активного ила, и вторичные отстойники работают лучше.",
     "slide": 18,
     "design": "/assets/cases/vacuum-design.webp",
     "photo": "/assets/cases/vacuum-photo.webp",
-    "schematic": "/assets/cases/vacuum-schematic.svg",
+    "schematic": "/assets/cases/vacuum-3d-schematic.webp",
     "photos": [
       {
         "image": "/assets/cases/vacuum-gallery-1.webp",
         "width": 1024,
         "height": 1024,
-        "alt": "Установка вакуумирования с насосной станцией — фотография 1"
+        "alt": "Установка вакуумирования активного ила — фотография 1"
       },
       {
         "image": "/assets/cases/vacuum-gallery-2.webp",
         "width": 1024,
         "height": 1024,
-        "alt": "Установка вакуумирования с насосной станцией — фотография 2"
+        "alt": "Установка вакуумирования активного ила — фотография 2"
       }
     ],
-    "colorIllustration": "/assets/cases/vacuum-lit.webp",
-    "illustrationShift": -0.4,
-    "illustrationRatio": 1.131
+    "colorIllustration": "/assets/cases/vacuum-3d-lit.webp",
+    "illustrationShift": 6.2,
+    "illustrationRatio": 1.015
   },
   {
     "slug": "dosing",
@@ -204,6 +229,37 @@
     "colorIllustration": "/assets/cases/dosing-3d-lit.webp",
     "illustrationShift": 4.1,
     "illustrationRatio": 1.1514
+  },
+  {
+    "slug": "flocculant",
+    "title": "Станции приготовления и дозирования флокулянта",
+    "description": "Собираем полимерные станции, которые автоматически растворяют сухой или гранулированный флокулянт. Рабочий раствор станция точно подаёт в системы очистки воды или обезвоживания осадка.",
+    "design": "/assets/cases/flocculant-gallery-1.webp",
+    "photo": "/assets/cases/flocculant-gallery-1.webp",
+    "schematic": "/assets/cases/flocculant-3d-schematic.webp",
+    "photos": [
+      {
+        "image": "/assets/cases/flocculant-gallery-1.webp",
+        "width": 1280,
+        "height": 960,
+        "alt": "Станции приготовления и дозирования флокулянта — фотография 1"
+      },
+      {
+        "image": "/assets/cases/flocculant-gallery-2.webp",
+        "width": 1800,
+        "height": 1350,
+        "alt": "Станции приготовления и дозирования флокулянта — фотография 2"
+      },
+      {
+        "image": "/assets/cases/flocculant-gallery-3.webp",
+        "width": 1800,
+        "height": 1350,
+        "alt": "Станции приготовления и дозирования флокулянта — фотография 3"
+      }
+    ],
+    "colorIllustration": "/assets/cases/flocculant-3d-lit.webp",
+    "illustrationShift": 10.3,
+    "illustrationRatio": 1.2628
   },
   {
     "slug": "surface-water",
@@ -250,6 +306,43 @@
     "colorIllustration": "/assets/cases/water-pumping-lit.webp",
     "illustrationShift": -0.1,
     "illustrationRatio": 1.131
+  },
+  {
+    "slug": "sewage-pumping",
+    "title": "Канализационные насосные станции",
+    "description": "Делаем станции для перекачки хозяйственно-бытовых, промышленных и ливневых сточных вод. Они работают в любую погоду — и в сильный мороз, и в жару.",
+    "design": "/assets/cases/sewage-pumping-gallery-1.webp",
+    "photo": "/assets/cases/sewage-pumping-gallery-1.webp",
+    "schematic": "/assets/cases/sewage-pumping-3d-schematic.webp",
+    "photos": [
+      {
+        "image": "/assets/cases/sewage-pumping-gallery-1.webp",
+        "width": 1280,
+        "height": 720,
+        "alt": "Канализационные насосные станции — фотография 1"
+      },
+      {
+        "image": "/assets/cases/sewage-pumping-gallery-2.webp",
+        "width": 768,
+        "height": 768,
+        "alt": "Канализационные насосные станции — фотография 2"
+      },
+      {
+        "image": "/assets/cases/sewage-pumping-gallery-3.webp",
+        "width": 1280,
+        "height": 720,
+        "alt": "Канализационные насосные станции — фотография 3"
+      },
+      {
+        "image": "/assets/cases/sewage-pumping-gallery-4.webp",
+        "width": 768,
+        "height": 768,
+        "alt": "Канализационные насосные станции — фотография 4"
+      }
+    ],
+    "colorIllustration": "/assets/cases/sewage-pumping-3d-lit.webp",
+    "illustrationShift": 17.2,
+    "illustrationRatio": 0.6154
   },
   {
     "slug": "drinking-water",
